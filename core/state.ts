@@ -1,5 +1,5 @@
-import type { DataSourceType } from './market-data/data-source.interface'
-import type { MarketRegime, Opportunity, Performance, SignalSet } from './types'
+import type { DataSourceType } from './market-data/data-source.interface.js'
+import type { MarketRegime, Opportunity, Performance, SignalSet } from './types.js'
 
 export let latestState: {
   opportunity: Opportunity | null

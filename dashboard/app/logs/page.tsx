@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Card from '../../components/Card'
-import { useLiveState } from '../hooks/useLiveState'
+import Card from '../../components/Card.tsx'
+import { useLiveState } from '../hooks/useLiveState.ts'
 import { Terminal } from 'lucide-react'
 
 const c: Record<string, string> = {

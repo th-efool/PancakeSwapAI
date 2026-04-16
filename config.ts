@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-import type { DataSourceType } from './core/market-data/data-source.interface'
-import type { Config } from './core/types'
+import type { DataSourceType } from './core/market-data/data-source.interface.js'
+import type { Config } from './core/types.js'
 
 type AppConfig = Config & {
   chainId: number

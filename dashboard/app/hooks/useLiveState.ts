@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { isDataSource, normalizeMarketRegime, type DataSource, type MarketRegime } from '../../lib/market'
+import { isDataSource, normalizeMarketRegime, type DataSource, type MarketRegime } from '../../lib/market.ts'
 
 export type LiveState = {
   timestamp?: string

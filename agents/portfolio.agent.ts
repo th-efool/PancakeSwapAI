@@ -1,6 +1,6 @@
-import { updateStrategyStats } from '../core/memory/strategyMemory'
-import { log } from '../core/logger'
-import type { Opportunity, TradeResult } from '../core/types'
+import { updateStrategyStats } from '../core/memory/strategyMemory.js'
+import { log } from '../core/logger.js'
+import type { Opportunity, TradeResult } from '../core/types.js'
 
 type StrategyStat = { trades: number; profit: number }
 

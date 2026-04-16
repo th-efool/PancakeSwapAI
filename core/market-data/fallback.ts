@@ -1,6 +1,6 @@
-import { createDataSource } from './data-source.factory'
-import type { DataSourceType, RawPool } from './data-source.interface'
-import { normalizePoolsDetailed, type NormalizerDebugSummary } from './normalizer'
+import { createDataSource } from './data-source.factory.js'
+import type { DataSourceType, RawPool } from './data-source.interface.js'
+import { normalizePoolsDetailed, type NormalizerDebugSummary } from './normalizer.js'
 
 type Failure = {
   source: DataSourceType

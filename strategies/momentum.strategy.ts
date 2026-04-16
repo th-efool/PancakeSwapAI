@@ -1,5 +1,5 @@
-import config, { estimateGasCost } from '../config'
-import type { MarketState, Opportunity, SignalSet } from '../core/types'
+import config, { estimateGasCost } from '../config.js'
+import type { MarketState, Opportunity, SignalSet } from '../core/types.js'
 
 const MOMENTUM_MIN = 0.3
 const VOLUME_SPIKE_MIN = 1.5

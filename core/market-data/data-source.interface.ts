@@ -1,4 +1,4 @@
-import type { Token } from '../types'
+import type { Token } from '../types.js'
 
 export type DataSourceType = 'ON_CHAIN' | 'DEXSCREENER' | 'SUBGRAPH'
 

@@ -1,12 +1,12 @@
-import { runPipeline } from './core/pipeline'
-import marketAgent from './agents/market.agent'
-import strategyAgent from './agents/strategy.agent'
-import arbitrageStrategy from './strategies/arbitrage.strategy'
-import meanReversionStrategy from './strategies/meanReversion.strategy'
-import liquidityImbalanceStrategy from './strategies/liquidityImbalance.strategy'
-import momentumStrategy from './strategies/momentum.strategy'
-import riskAgent from './agents/risk.agent'
-import executionAgent from './agents/execution.agent'
+import { runPipeline } from './core/pipeline.js'
+import marketAgent from './agents/market.agent.js'
+import strategyAgent from './agents/strategy.agent.js'
+import arbitrageStrategy from './strategies/arbitrage.strategy.js'
+import meanReversionStrategy from './strategies/meanReversion.strategy.js'
+import liquidityImbalanceStrategy from './strategies/liquidityImbalance.strategy.js'
+import momentumStrategy from './strategies/momentum.strategy.js'
+import riskAgent from './agents/risk.agent.js'
+import executionAgent from './agents/execution.agent.js'
 
 const pipeline = {
   market: marketAgent,

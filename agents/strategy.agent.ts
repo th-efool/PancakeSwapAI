@@ -1,6 +1,6 @@
-import { computePerformanceScore, getStrategyStats } from '../core/memory/strategyMemory'
-import { log } from '../core/logger'
-import type { MarketRegime, MarketState, Opportunity, SignalSet } from '../core/types'
+import { computePerformanceScore, getStrategyStats } from '../core/memory/strategyMemory.js'
+import { log } from '../core/logger.js'
+import type { MarketRegime, MarketState, Opportunity, SignalSet } from '../core/types.js'
 
 export type StrategyFn = (state: MarketState, signals: SignalSet | null, regime: MarketRegime) => Opportunity | null
 export type StrategyInput = StrategyFn | StrategyFn[]

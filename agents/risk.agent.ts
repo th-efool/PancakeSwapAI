@@ -1,6 +1,6 @@
-import { log } from '../core/logger'
-import type { Opportunity } from '../core/types'
-import config from '../config'
+import { log } from '../core/logger.js'
+import type { Opportunity } from '../core/types.js'
+import config from '../config.js'
 
 type Decision = { approved: boolean; reason: string }
 

@@ -1,6 +1,6 @@
-import { log } from '../core/logger'
-import type { MarketState, Opportunity, Pool } from '../core/types'
-import config, { estimateGasCost } from '../config'
+import { log } from '../core/logger.js'
+import type { MarketState, Opportunity, Pool } from '../core/types.js'
+import config, { estimateGasCost } from '../config.js'
 
 type PairGroup = Record<string, Pool[]>
 

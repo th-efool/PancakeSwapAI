@@ -1,5 +1,5 @@
-import type { Pool } from '../types'
-import type { RawPool } from './data-source.interface'
+import type { Pool } from '../types.js'
+import type { RawPool } from './data-source.interface.js'
 
 export type NormalizerRejectionReason = 'missing price' | 'NaN' | 'zero liquidity'
 
