@@ -1,4 +1,4 @@
-import fs from 'fs'
+import * as fs from 'fs'
 import path from 'path'
 import type { DataSourceType } from './core/market-data/data-source.interface.js'
 import type { Config } from './core/types.js'
