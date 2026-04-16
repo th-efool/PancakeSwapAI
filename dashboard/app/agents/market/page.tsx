@@ -19,12 +19,12 @@ export default function MarketPage() {
                 />
                 <MetricBox
                     label="Global Avg Price"
-                    value={data?.market?.summary?.avgPrice?.toFixed(6) ?? '0.000000'}
+                    value={data?.market?.summary?.avgPrice?.toFixed(8) ?? '0.000000'}
                     icon={<CandlestickChart />}
                 />
                 <MetricBox
                     label="Total Liquidity"
-                    value={`$${data?.market?.summary?.totalLiquidity?.toFixed(2) ?? '0.00'}`}
+                    value={`$${data?.market?.summary?.totalLiquidity?.toFixed(3) ?? '0.000'}`}
                     icon={<Waves />}
                     tone="good"
                 />

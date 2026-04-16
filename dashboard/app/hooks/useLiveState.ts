@@ -70,7 +70,7 @@ export function useLiveState() {
   const [blink, setBlink] = useState(false)
   const [connected, setConnected] = useState(false)
   const [timeline, setTimeline] = useState<TimelineItem[]>([])
-  const last = useRef<string | undefined>()
+  const last = useRef<string | undefined>(undefined)
 
   useEffect(() => {
     let t: ReturnType<typeof setTimeout> | null = null
