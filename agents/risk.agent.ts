@@ -6,8 +6,19 @@ type Decision = { approved: boolean; reason: string }
 
 let lastDecision: Decision = { approved: false, reason: 'Not evaluated' }
 
+const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v))
+
+function riskBuffer(volatility: number, confidence: number): number {
+  const vol = clamp(volatility)
+  const conf = clamp(confidence)
+  return clamp(0.1 + vol * 0.5 + (1 - conf) * 0.3, 0.05, 0.85)
+}
+
 function checkProfitability(opp: Opportunity): boolean {
-  return opp.expectedProfit >= opp.gasCost * 2
+  const buffer = riskBuffer(opp.volatility ?? 0, opp.confidence)
+  const threshold = opp.gasCost * (1 + buffer)
+  if (opp.expectedProfit >= threshold) return true
+  return opp.confidence > 0.8 && opp.expectedProfit > opp.gasCost
 }
 
 function checkTradeSize(opp: Opportunity): boolean {

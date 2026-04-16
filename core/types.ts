@@ -72,6 +72,7 @@ export type Opportunity = {
   slippage: number;
   strategy: string;
   confidence: number;
+  volatility?: number;
   signalStrength?: number;
   reason?: string;
   score?: number;
