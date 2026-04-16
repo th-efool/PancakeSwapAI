@@ -24,6 +24,15 @@ export async function marketAgent(): Promise<MarketState> {
       log('market', `Source failed: source=${f.source} reason=${f.error}`)
     }
 
+    console.log('DEBUG SUMMARY:')
+    for (const summary of result.debugSummary) {
+      console.log(`- ${summary.source}: raw=${summary.rawFetchedCount} normalized=${summary.normalizedCount} rejected=${summary.rejectedCount}`, summary.rejectionReasons)
+      log(
+        'market',
+        `DEBUG SUMMARY: source=${summary.source} raw=${summary.rawFetchedCount} normalized=${summary.normalizedCount} rejected=${summary.rejectedCount} reasons=${JSON.stringify(summary.rejectionReasons)}`,
+      )
+    }
+
     log(
       'market',
       `Pool summary: selected=${config.dataSource} used=${result.usedSource ?? 'NONE'} attempted=${result.attemptedSources.join(',')} valid=${result.pools.length}`,

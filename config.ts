@@ -37,8 +37,8 @@ export const config: AppConfig = {
   dataSource: (process.env.MARKET_DATA_SOURCE as DataSourceType) || DEFAULT_DATA_SOURCE,
   marketData: {
     fallbackOrder: ['ON_CHAIN', 'DEXSCREENER', 'SUBGRAPH'],
-    timeoutMs: 2500,
-    minPools: 2,
+    timeoutMs: 8000,
+    minPools: 0,
   },
 }
 

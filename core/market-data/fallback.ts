@@ -1,6 +1,6 @@
 import { createDataSource } from './data-source.factory'
 import type { DataSourceType, RawPool } from './data-source.interface'
-import { normalizePools } from './normalizer'
+import { normalizePoolsDetailed, type NormalizerDebugSummary } from './normalizer'
 
 type Failure = {
   source: DataSourceType
@@ -15,10 +15,17 @@ type RunFallbackInput = {
 }
 
 export type FallbackResult = {
-  pools: ReturnType<typeof normalizePools>
+  pools: ReturnType<typeof normalizePoolsDetailed>['pools']
   usedSource: DataSourceType | null
   attemptedSources: DataSourceType[]
   failures: Failure[]
+  debugSummary: Array<{
+    source: DataSourceType
+    rawFetchedCount: number
+    normalizedCount: number
+    rejectedCount: number
+    rejectionReasons: NormalizerDebugSummary['rejectionReasons']
+  }>
 }
 
 function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
@@ -54,14 +61,27 @@ export async function runWithFallback(input: RunFallbackInput): Promise<Fallback
   const attempts = uniqueOrder(input.selectedSource, input.fallbackOrder)
   const attemptedSources: DataSourceType[] = []
   const failures: Failure[] = []
+  const debugSummary: FallbackResult['debugSummary'] = []
+  const effectiveMinPools = 0
 
   for (const sourceType of attempts) {
     attemptedSources.push(sourceType)
     try {
       const source = createDataSource(sourceType)
       const rawPools = await withTimeout<RawPool[]>(source.fetchPools({ now: Date.now() }), input.timeoutMs)
-      const pools = normalizePools(rawPools)
-      if (pools.length < input.minPools) {
+      console.log(`[${sourceType}] raw response length`, rawPools.length)
+      console.log(`[${sourceType}] sample item`, rawPools[0] ?? null)
+
+      const { pools, debug } = normalizePoolsDetailed(rawPools)
+      debugSummary.push({
+        source: sourceType,
+        rawFetchedCount: rawPools.length,
+        normalizedCount: debug.normalizedCount,
+        rejectedCount: debug.rejectedCount,
+        rejectionReasons: debug.rejectionReasons,
+      })
+
+      if (pools.length < effectiveMinPools) {
         failures.push({ source: sourceType, error: `min_pools:${pools.length}` })
         continue
       }
@@ -71,6 +91,7 @@ export async function runWithFallback(input: RunFallbackInput): Promise<Fallback
         usedSource: sourceType,
         attemptedSources,
         failures,
+        debugSummary,
       }
     } catch (e) {
       failures.push({ source: sourceType, error: toMsg(e) })
@@ -82,5 +103,6 @@ export async function runWithFallback(input: RunFallbackInput): Promise<Fallback
     usedSource: null,
     attemptedSources,
     failures,
+    debugSummary,
   }
 }

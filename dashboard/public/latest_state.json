@@ -1,12 +1,52 @@
 {
-  "timestamp": "2026-04-16T10:06:08.257Z",
-  "cycleId": 1041,
+  "timestamp": "2026-04-16T14:38:41.591Z",
+  "cycleId": 19,
   "market": {
-    "pools": [],
+    "pools": [
+      {
+        "address": "0x16b9a82891338f9bA80E2D6970FddA79D1eb0daE",
+        "token0": {
+          "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+          "symbol": "WBNB"
+        },
+        "token1": {
+          "address": "0x55d398326f99059fF775485246999027B3197955",
+          "symbol": "USDT"
+        },
+        "price": 617.21,
+        "liquidity": 34703460.73
+      },
+      {
+        "address": "0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
+        "token0": {
+          "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+          "symbol": "BUSD"
+        },
+        "token1": {
+          "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+          "symbol": "WBNB"
+        },
+        "price": 1.002,
+        "liquidity": 8495380.25
+      },
+      {
+        "address": "0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
+        "token0": {
+          "address": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+          "symbol": "Cake"
+        },
+        "token1": {
+          "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+          "symbol": "WBNB"
+        },
+        "price": 1.57,
+        "liquidity": 15352293.11
+      }
+    ],
     "summary": {
-      "poolCount": 0,
-      "avgPrice": 0,
-      "totalLiquidity": 0
+      "poolCount": 3,
+      "avgPrice": 206.59400000000002,
+      "totalLiquidity": 58551134.089999996
     }
   },
   "strategies": [],
@@ -14,9 +54,9 @@
   "temporalSignals": {
     "priceDelta": 0,
     "priceVelocity": 0,
-    "volatility": 0
+    "volatility": 0.05599999999999454
   },
-  "regime": "MEAN_REVERTING",
+  "regime": "VOLATILE",
   "risk": {
     "approved": true,
     "reason": "All checks passed"
@@ -25,1030 +65,927 @@
     "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
     "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
     "amountIn": 0.05,
-    "amountOutQuote": 0.09966968458075535,
-    "amountOutMin": 0.09917133615785158,
+    "amountOutQuote": 0.05674999999999932,
+    "amountOutMin": 0.05646624999999932,
     "gasEstimate": "300000",
     "mode": "DRY_RUN"
   },
   "performance": {
-    "totalTrades": 454,
-    "successfulTrades": 454,
+    "totalTrades": 1,
+    "successfulTrades": 1,
     "winRate": 1,
-    "totalProfit": 7224.772349943762,
-    "totalGasSpent": 0.13619999999999896,
-    "netProfit": 7224.772349943762,
-    "gasEfficiency": 53045.31828152582,
-    "avgProfitPerTrade": 15.913595484457625,
-    "avgProfit": 15.913595484457625,
-    "stdDev": 15.518558637820826,
-    "sharpe": 1.0254557030972156,
+    "totalProfit": 0.006449999999999318,
+    "totalGasSpent": 0.00030000000000000003,
+    "netProfit": 0.006449999999999318,
+    "gasEfficiency": 21.499999999997726,
+    "avgProfitPerTrade": 0.006449999999999318,
+    "avgProfit": 0.006449999999999318,
+    "stdDev": 0,
+    "sharpe": 6449.999999999319,
     "strategyBreakdown": {
-      "liquidityImbalance": {
-        "trades": 454,
-        "profit": 7224.772349943762
+      "meanReversion": {
+        "trades": 1,
+        "profit": 0.006449999999999318
       }
     }
   },
   "logs": [
     {
+      "agent": "pipeline",
+      "message": "Cycle 1 start",
+      "time": 1776350267395
+    },
+    {
       "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333801261
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350267826
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350267826
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: UNKNOWN",
+      "time": 1776350267826
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: null",
+      "time": 1776350267826
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=UNKNOWN",
+      "time": 1776350267826
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350267828
+    },
+    {
+      "agent": "pipeline",
+      "message": "No opportunity",
+      "time": 1776350267828
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 2 start",
+      "time": 1776350270397
+    },
+    {
+      "agent": "market",
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350270422
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350270422
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333801261
+      "time": 1776350270422
     },
     {
       "agent": "pipeline",
       "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333801261
+      "time": 1776350270422
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350270422
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
+      "time": 1776350270422
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350270423
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333801261
+      "message": "No opportunity",
+      "time": 1776350270423
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1014 start",
-      "time": 1776333801266
+      "message": "Cycle 3 start",
+      "time": 1776350273411
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333801266
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350273439
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333805959
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333805959
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350273439
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333805959
+      "time": 1776350273439
     },
     {
       "agent": "pipeline",
       "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333805959
+      "time": 1776350273439
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350273439
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
+      "time": 1776350273439
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350273439
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333805959
+      "message": "No opportunity",
+      "time": 1776350273439
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1015 start",
-      "time": 1776333805964
+      "message": "Cycle 4 start",
+      "time": 1776350276420
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333805964
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350276440
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333814586
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333814586
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350276440
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333814586
+      "time": 1776350276440
     },
     {
       "agent": "pipeline",
       "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333814586
+      "time": 1776350276440
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350276440
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
+      "time": 1776350276440
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350276440
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333814586
+      "message": "No opportunity",
+      "time": 1776350276440
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1016 start",
-      "time": 1776333814591
+      "message": "Cycle 5 start",
+      "time": 1776350279426
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333814591
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350279453
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333817929
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333817929
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350279453
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333817930
+      "time": 1776350279453
     },
     {
       "agent": "pipeline",
       "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333817930
+      "time": 1776350279453
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350279453
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
+      "time": 1776350279453
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350279454
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333817930
+      "message": "No opportunity",
+      "time": 1776350279454
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1017 start",
-      "time": 1776333817935
+      "message": "Cycle 6 start",
+      "time": 1776350282442
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333817935
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350282469
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333823324
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333823324
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350282469
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333823324
+      "time": 1776350282469
     },
     {
       "agent": "pipeline",
       "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333823324
+      "time": 1776350282469
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350282469
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
+      "time": 1776350282469
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350282469
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333823324
+      "message": "No opportunity",
+      "time": 1776350282469
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1018 start",
-      "time": 1776333823326
+      "message": "Cycle 7 start",
+      "time": 1776350285452
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333823326
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350285477
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333829974
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333829974
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350285477
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333829974
+      "time": 1776350285478
     },
     {
       "agent": "pipeline",
       "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333829974
+      "time": 1776350285478
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350285478
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
+      "time": 1776350285478
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350285478
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333829974
+      "message": "No opportunity",
+      "time": 1776350285478
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1019 start",
-      "time": 1776333829978
+      "message": "Cycle 8 start",
+      "time": 1776350288461
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333829978
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350288486
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333835691
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333835691
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350288486
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333835692
+      "time": 1776350288487
     },
     {
       "agent": "pipeline",
       "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333835692
+      "time": 1776350288487
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350288487
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
+      "time": 1776350288487
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350288487
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333835692
+      "message": "No opportunity",
+      "time": 1776350288487
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1020 start",
-      "time": 1776333835695
+      "message": "Cycle 9 start",
+      "time": 1776350291467
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333835695
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350291489
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333841624
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333841624
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350291489
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333841624
+      "time": 1776350291490
     },
     {
       "agent": "pipeline",
       "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333841624
+      "time": 1776350291490
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350291490
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
+      "time": 1776350291490
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350291490
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333841624
+      "message": "No opportunity",
+      "time": 1776350291490
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1021 start",
-      "time": 1776333841629
+      "message": "Cycle 10 start",
+      "time": 1776350294479
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333841629
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350294506
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333845849
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333845849
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350294506
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333845849
+      "time": 1776350294506
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333845849
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":1.1368683772161603e-13}",
+      "time": 1776350294506
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350294506
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":1.1368683772161603e-13}",
+      "time": 1776350294506
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350294507
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333845849
+      "message": "No opportunity",
+      "time": 1776350294507
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1022 start",
-      "time": 1776333845853
+      "message": "Cycle 11 start",
+      "time": 1776350297489
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333845853
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350297515
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333849665
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333849665
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350297515
     },
     {
       "agent": "pipeline",
       "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333849666
+      "time": 1776350297515
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333849666
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":1.1368683772161603e-13}",
+      "time": 1776350297515
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776350297515
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":1.1368683772161603e-13}",
+      "time": 1776350297516
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350297516
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333849666
+      "message": "No opportunity",
+      "time": 1776350297516
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1023 start",
-      "time": 1776333849670
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333849670
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333853852
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333853852
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333853853
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333853853
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333853853
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1024 start",
-      "time": 1776333853856
+      "message": "Cycle 12 start",
+      "time": 1776350300495
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333853856
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350300848
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333857645
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350300848
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: VOLATILE",
+      "time": 1776350300848
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: {\"priceDelta\":0.13999999999998636,\"priceVelocity\":0.13999999999998636,\"volatility\":0.0419999999999959}",
+      "time": 1776350300848
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776350300848
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0.13999999999998636,\"priceVelocity\":0.13999999999998636,\"volatility\":0.0419999999999959}",
+      "time": 1776350300849
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776350300849
+    },
+    {
+      "agent": "strategy",
+      "message": "strategy=meanReversion expectedProfit=0.006449999999999318 confidence=0.45499999999999996 score=0.0029347499999996893",
+      "time": 1776350300849
+    },
+    {
+      "agent": "strategy",
+      "message": "Opportunity found",
+      "time": 1776350300849
+    },
+    {
+      "agent": "risk",
+      "message": "Risk approved",
+      "time": 1776350300850
+    },
+    {
+      "agent": "execution",
+      "message": "Prepared swap via smart router",
+      "time": 1776350300850
+    },
+    {
+      "agent": "execution",
+      "message": "Execution mode: DRY_RUN",
+      "time": 1776350300850
+    },
+    {
+      "agent": "portfolio",
+      "message": "Total trades: 1",
+      "time": 1776350300850
+    },
+    {
+      "agent": "portfolio",
+      "message": "Win rate: 1.0000",
+      "time": 1776350300850
+    },
+    {
+      "agent": "portfolio",
+      "message": "Total profit: 0.006450",
+      "time": 1776350300850
+    },
+    {
+      "agent": "portfolio",
+      "message": "Net profit: 0.006450",
+      "time": 1776350300850
+    },
+    {
+      "agent": "pipeline",
+      "message": "Trade success | profit: 0.006449999999999318",
+      "time": 1776350300855
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 13 start",
+      "time": 1776350303507
     },
     {
       "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333857645
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333857645
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333857645
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333857645
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1025 start",
-      "time": 1776333857649
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350303529
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333857649
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350303529
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: VOLATILE",
+      "time": 1776350303530
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.05599999999999454}",
+      "time": 1776350303530
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776350303530
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.05599999999999454}",
+      "time": 1776350303530
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350303530
+    },
+    {
+      "agent": "pipeline",
+      "message": "No opportunity",
+      "time": 1776350303530
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 14 start",
+      "time": 1776350306528
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333862776
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350306555
     },
     {
       "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333862776
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350306555
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333862776
+      "message": "Market regime: VOLATILE",
+      "time": 1776350306555
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333862776
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.06415605972937552}",
+      "time": 1776350306555
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776350306555
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.06415605972937552}",
+      "time": 1776350306556
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350306556
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333862776
+      "message": "No opportunity",
+      "time": 1776350306556
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1026 start",
-      "time": 1776333862780
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333862780
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333864919
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333864919
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333864920
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333864920
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333864920
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1027 start",
-      "time": 1776333865793
+      "message": "Cycle 15 start",
+      "time": 1776350309531
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333865793
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350309606
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333875547
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350309606
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: VOLATILE",
+      "time": 1776350309607
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0685857127979223}",
+      "time": 1776350309607
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776350309607
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0685857127979223}",
+      "time": 1776350309607
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350309607
+    },
+    {
+      "agent": "pipeline",
+      "message": "No opportunity",
+      "time": 1776350309607
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 16 start",
+      "time": 1776350312540
     },
     {
       "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333875547
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333875547
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333875547
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333875547
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1028 start",
-      "time": 1776333875550
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350312564
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333875550
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350312564
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: VOLATILE",
+      "time": 1776350312564
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.06999999999999316}",
+      "time": 1776350312564
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776350312564
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.06999999999999316}",
+      "time": 1776350312565
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350312565
+    },
+    {
+      "agent": "pipeline",
+      "message": "No opportunity",
+      "time": 1776350312565
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 17 start",
+      "time": 1776350315554
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333879699
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350315579
     },
     {
       "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333879699
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350315579
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333879700
+      "message": "Market regime: VOLATILE",
+      "time": 1776350315579
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333879700
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0685857127979223}",
+      "time": 1776350315579
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776350315579
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0685857127979223}",
+      "time": 1776350315579
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350315580
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333879700
+      "message": "No opportunity",
+      "time": 1776350315580
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 1029 start",
-      "time": 1776333879702
+      "message": "Cycle 18 start",
+      "time": 1776350318561
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333879702
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350318594
     },
     {
       "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333884413
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350318594
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: VOLATILE",
+      "time": 1776350318595
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0641560597293755}",
+      "time": 1776350318595
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776350318595
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0641560597293755}",
+      "time": 1776350318595
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350318595
+    },
+    {
+      "agent": "pipeline",
+      "message": "No opportunity",
+      "time": 1776350318595
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 19 start",
+      "time": 1776350321569
     },
     {
       "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333884413
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333884413
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333884413
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333884413
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1030 start",
-      "time": 1776333884415
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776350321591
     },
     {
       "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333884415
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333904118
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333904118
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
+      "time": 1776350321591
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333904118
+      "message": "Market regime: VOLATILE",
+      "time": 1776350321591
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333904118
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.05599999999999454}",
+      "time": 1776350321591
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776350321591
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.05599999999999454}",
+      "time": 1776350321591
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 0 opportunities",
+      "time": 1776350321591
     },
     {
       "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333904118
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1031 start",
-      "time": 1776333904122
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333904122
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333907985
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333907985
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333907985
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333907985
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333907985
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1032 start",
-      "time": 1776333907988
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333907988
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333913882
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333913882
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333913882
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333913882
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333913882
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1033 start",
-      "time": 1776333913885
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333913885
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333919551
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333919551
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333919551
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333919551
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333919551
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1034 start",
-      "time": 1776333919553
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333919553
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333926804
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333926804
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333926804
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333926804
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333926804
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1035 start",
-      "time": 1776333926806
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333926807
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333933181
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333933181
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333933181
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333933181
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333933181
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1036 start",
-      "time": 1776333933184
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333933184
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333940457
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333940457
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333940458
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333940458
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333940458
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1037 start",
-      "time": 1776333940461
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333940461
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333950062
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333950062
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333950062
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333950062
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333950062
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1038 start",
-      "time": 1776333950066
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333950066
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333953339
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333953339
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333953339
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333953339
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333953339
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1039 start",
-      "time": 1776333953345
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333953345
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333958769
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333958769
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333958769
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333958769
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333958769
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1040 start",
-      "time": 1776333958771
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333958771
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333964659
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333964659
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333964660
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333964660
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333964660
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 1041 start",
-      "time": 1776333964663
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776333964663
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776333968257
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: attempted=3 valid=1 invalid_skipped=2",
-      "time": 1776333968257
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776333968257
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776333968257
-    },
-    {
-      "agent": "pipeline",
-      "message": "No market data",
-      "time": 1776333968257
+      "message": "No opportunity",
+      "time": 1776350321591
     }
-  ]
+  ],
+  "configuredSource": "DEXSCREENER",
+  "usedSource": "DEXSCREENER"
 }

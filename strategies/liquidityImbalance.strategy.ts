@@ -1,28 +1,27 @@
 import type { MarketState, Opportunity, Pool } from '../core/types';
 import config, { estimateGasCost } from '../config';
 
-const THRESHOLD = 0.02;
+const THRESHOLD = 0.001;
+const lastPrices: Record<string, number> = {};
 
-function imbalance(pool: Pool): number {
-  return Math.abs(pool.price - 1);
+function getPoolId(pool: Pool): string {
+  return pool.address;
 }
 
-function buildOpportunity(pool: Pool): Opportunity | null {
+function buildOpportunity(pool: Pool, imbalance: number): Opportunity | null {
   const amountIn = config.maxTradeSize;
-  const im = imbalance(pool);
-  if (im <= THRESHOLD) return null;
+  if (imbalance < THRESHOLD) return null;
 
-  const buyAmount = amountIn;
-  const sellAmount = amountIn * (1 + im);
-  const grossProfit = sellAmount - buyAmount;
   const gasCost = estimateGasCost();
   const slippageCost = config.slippageTolerance * amountIn;
-  const expectedProfit = grossProfit - gasCost - slippageCost;
+  const expectedProfit = Math.min(imbalance * amountIn * 10, amountIn * 0.03) - gasCost - slippageCost;
   if (expectedProfit <= 0) return null;
 
-  const isSell = pool.price > 1;
+  const previousPrice = lastPrices[getPoolId(pool)] ?? pool.price;
+  const isSell = pool.price > previousPrice;
 
   console.log('Imbalance detected');
+  console.log('Temporal imbalance:', imbalance);
   return {
     tokenIn: isSell ? pool.token0.address : pool.token1.address,
     tokenOut: isSell ? pool.token1.address : pool.token0.address,
@@ -41,7 +40,17 @@ export function liquidityImbalanceStrategy(state: MarketState): Opportunity | nu
 
   let best: Opportunity | null = null;
   for (const pool of state.pools) {
-    const opp = buildOpportunity(pool);
+    const poolId = getPoolId(pool);
+    const lastPrice = lastPrices[poolId];
+
+    if (typeof lastPrice !== 'number' || lastPrice <= 0) {
+      lastPrices[poolId] = pool.price;
+      continue;
+    }
+
+    const imbalance = Math.abs(pool.price - lastPrice) / lastPrice;
+    const opp = buildOpportunity(pool, imbalance);
+    lastPrices[poolId] = pool.price;
     if (!opp) continue;
     if (!best || opp.expectedProfit > best.expectedProfit) best = opp;
   }

@@ -5,9 +5,12 @@
   "main": "dist/index.js",
   "type": "commonjs",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
     "start": "node dist/index.js",
-    "dev": "ts-node index.ts"
+    "build": "tsc -p tsconfig.build.json",
+    "start:backend": "node dist/index.js",
+    "dev:frontend": "npm --prefix dashboard run dev",
+    "dev": "concurrently \"npm run start:backend\" \"npm run dev:frontend\"",
+    "dev:full": "npm run build && npm run dev"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
@@ -15,6 +18,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.19.39",
+    "concurrently": "^9.2.1",
+    "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.2"
   }

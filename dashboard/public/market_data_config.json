@@ -1,0 +1,8 @@
+{
+  "dataSource": "DEXSCREENER",
+  "fallbackOrder": [
+    "ON_CHAIN",
+    "DEXSCREENER",
+    "SUBGRAPH"
+  ]
+}
