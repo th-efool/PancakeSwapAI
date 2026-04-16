@@ -1,4 +1,4 @@
-export const MARKET_REGIMES = ['TRENDING', 'MEAN_REVERTING', 'VOLATILE', 'CHAOTIC', 'IDLE', 'UNKNOWN'] as const
+export const MARKET_REGIMES = ['TRENDING', 'MEAN_REVERTING', 'VOLATILE', 'CHAOTIC', 'IDLE', 'INSUFFICIENT_DATA', 'UNKNOWN'] as const
 export type MarketRegime = (typeof MARKET_REGIMES)[number]
 
 export const DATA_SOURCES = ['ON_CHAIN', 'DEXSCREENER', 'SUBGRAPH'] as const

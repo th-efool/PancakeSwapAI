@@ -1,6 +1,6 @@
 import type { MarketState } from './types.js';
 
-const MAX_HISTORY = 10;
+const MAX_HISTORY = 20;
 
 export let marketHistory: MarketState[] = [];
 
@@ -15,4 +15,8 @@ export function pushMarketState(state: MarketState) {
 export function getPreviousState(): MarketState | null {
   if (marketHistory.length < 2) return null;
   return marketHistory[marketHistory.length - 2];
+}
+
+export function getMarketHistory(): MarketState[] {
+  return marketHistory;
 }

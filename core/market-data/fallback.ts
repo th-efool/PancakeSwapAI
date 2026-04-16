@@ -62,7 +62,7 @@ export async function runWithFallback(input: RunFallbackInput): Promise<Fallback
   const attemptedSources: DataSourceType[] = []
   const failures: Failure[] = []
   const debugSummary: FallbackResult['debugSummary'] = []
-  const effectiveMinPools = 0
+  const effectiveMinPools = Math.max(input.minPools, 0)
 
   for (const sourceType of attempts) {
     attemptedSources.push(sourceType)

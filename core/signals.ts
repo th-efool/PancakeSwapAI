@@ -28,9 +28,54 @@ function poolSignal(pool: Pool, totalLiquidity: number): MarketSignal {
   }
 }
 
-export function extractSignals(state: MarketState): SignalSet | null {
+function computeTemporalSignals(history: MarketState[], current: MarketState) {
+  const byAddress = new Map<string, number[]>()
+
+  for (const snap of history) {
+    for (const pool of snap.pools) {
+      if (!Number.isFinite(pool.price) || pool.price <= 0) continue
+      const arr = byAddress.get(pool.address) ?? []
+      arr.push(pool.price)
+      byAddress.set(pool.address, arr)
+    }
+  }
+
+  for (const pool of current.pools) {
+    if (!Number.isFinite(pool.price) || pool.price <= 0) continue
+    const arr = byAddress.get(pool.address) ?? []
+    arr.push(pool.price)
+    byAddress.set(pool.address, arr)
+  }
+
+  const deltas: number[] = []
+  for (const prices of byAddress.values()) {
+    if (prices.length < 2) continue
+    for (let i = 1; i < prices.length; i += 1) {
+      deltas.push(prices[i] - prices[i - 1])
+    }
+  }
+
+  if (!deltas.length) {
+    return { priceDelta: 0, velocity: 0, volatility: 0, length: history.length + 1 }
+  }
+
+  const priceDelta = deltas[deltas.length - 1]
+  const velocity = deltas.reduce((a, b) => a + b, 0) / deltas.length
+  const variance = deltas.reduce((a, b) => a + (b - velocity) ** 2, 0) / deltas.length
+  const volatility = Math.sqrt(variance)
+
+  return {
+    priceDelta: Number.isFinite(priceDelta) ? priceDelta : 0,
+    velocity: Number.isFinite(velocity) ? velocity : 0,
+    volatility: Number.isFinite(volatility) ? volatility : 0,
+    length: history.length + 1,
+  }
+}
+
+export function extractSignals(state: MarketState, history: MarketState[]): SignalSet | null {
   if (!state.pools.length) return null
 
+  const temporal = computeTemporalSignals(history, state)
   const totalLiquidity = state.pools.reduce((a, p) => a + p.liquidity, 0)
   const perPool = state.pools.map((p) => ({
     poolAddress: p.address,
@@ -67,5 +112,27 @@ export function extractSignals(state: MarketState): SignalSet | null {
     aggregate.signalStrength = perPool.reduce((a, x) => a + x.signal.signalStrength, 0) / n
   }
 
-  return { perPool, aggregate }
+  const hasCrossPool = perPool.length >= 2
+  const hasTemporal = temporal.length >= 3
+  const source: SignalSet['source'] = hasCrossPool && hasTemporal ? 'hybrid' : hasCrossPool ? 'cross_pool' : hasTemporal ? 'temporal' : 'none'
+
+  const temporalMomentum = clamp(Math.abs(temporal.velocity), 0, 3)
+  const temporalVolatility = clamp(temporal.volatility, 0, 3)
+  const temporalStrength = clamp(temporalMomentum * 0.6 + temporalVolatility * 0.4, 0, 1)
+  aggregate.momentum = aggregate.momentum * 0.7 + temporal.velocity * 0.3
+  aggregate.higherTFMomentum = aggregate.higherTFMomentum * 0.7 + temporal.priceDelta * 0.3
+  aggregate.signalStrength = clamp(aggregate.signalStrength * 0.7 + temporalStrength * 0.3)
+
+  return {
+    perPool,
+    aggregate,
+    temporal: {
+      priceDelta: temporal.priceDelta,
+      velocity: temporal.velocity,
+      volatility: temporal.volatility,
+    },
+    source,
+    poolCount: state.pools.length,
+    historyLength: temporal.length,
+  }
 }

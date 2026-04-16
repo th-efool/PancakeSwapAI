@@ -19,7 +19,8 @@ const allowedStrategies = (regime: MarketRegime): string[] => {
   if (regime === 'TRENDING') return ['momentum', 'arbitrage', 'liquidityImbalance']
   if (regime === 'MEAN_REVERTING') return ['meanReversion', 'arbitrage']
   if (regime === 'CHAOTIC') return ['arbitrage']
-  if (regime === 'IDLE') return []
+  if (regime === 'IDLE') return ['meanReversion', 'liquidityImbalance']
+  if (regime === 'INSUFFICIENT_DATA') return ['meanReversion']
   if (regime === 'VOLATILE') return ['arbitrage', 'liquidityImbalance']
   return ['arbitrage', 'meanReversion', 'liquidityImbalance', 'momentum']
 }
@@ -44,6 +45,10 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
     .filter((opportunity): opportunity is Opportunity => opportunity !== null)
     .map((opportunity) => ({
       ...opportunity,
+      confidence: clamp(
+        opportunity.confidence *
+          (regime === 'IDLE' ? 0.7 : regime === 'INSUFFICIENT_DATA' ? 0.5 : 1),
+      ),
       signalStrength: clamp(opportunity.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
     }))
 
