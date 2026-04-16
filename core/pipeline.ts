@@ -51,6 +51,8 @@ const buildState = (state: MarketState | null, selectedOpportunity: Opportunity 
     execution: getLastExecution(),
     performance,
     logs: getLogs(),
+    configuredSource: latestState.marketData.configuredSource,
+    usedSource: latestState.marketData.usedSource,
   }
 }
 

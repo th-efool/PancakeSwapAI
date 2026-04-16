@@ -84,11 +84,13 @@ export default function Page() {
         <p className="mt-2 text-sm text-slate-400">Last updated: {new Date(data.timestamp).toLocaleString()}</p>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <MetricBox label="Current Opportunity" value={opp?.strategy ?? 'No opportunity'} />
         <MetricBox label="Best Strategy" value={best?.name ?? '—'} />
         <MetricBox label="Expected Profit" value={typeof opp?.expectedProfit === 'number' ? `${n(opp.expectedProfit, 4)} BNB` : '—'} />
         <MetricBox label="System Status" value={stateTag.toUpperCase()} tone={stateTag === 'executing' ? 'good' : stateTag === 'adapting' ? 'warn' : 'default'} />
+        <MetricBox label="Configured Source" value={data.configuredSource ?? '—'} />
+        <MetricBox label="Used Source" value={data.usedSource ?? '—'} />
       </div>
 
       <Card title="Market Regime">

@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Activity, Terminal, Globe, BarChart3, ShieldAlert, Zap, Wallet, Droplets } from 'lucide-react'
+import { Activity, Terminal, Globe, BarChart3, ShieldAlert, Zap, Wallet, Droplets, SlidersHorizontal } from 'lucide-react'
 
 const links = [
     { href: '/', label: 'Live Monitor', icon: Activity },
@@ -10,12 +10,12 @@ const links = [
     { href: '/agents/execution', label: 'Execution', icon: Zap },
     { href: '/agents/portfolio', label: 'Portfolio', icon: Wallet },
     { href: '/liquidity', label: 'Liquidity', icon: Droplets },
+    { href: '/settings', label: 'Settings', icon: SlidersHorizontal },
 ]
 
 export default function Sidebar() {
     return (
         <aside className="w-64 border-r border-white/5 bg-slate-950/50 backdrop-blur-2xl flex flex-col h-screen p-4">
-            {/* Header: More compact */}
             <div className="mb-8 flex items-center gap-3 px-2">
                 <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center">
                     <Activity className="h-4 w-4 text-slate-950" />
@@ -26,7 +26,6 @@ export default function Sidebar() {
                 </div>
             </div>
 
-            {/* Nav: Thinner, tighter spacing */}
             <nav className="flex flex-col gap-1">
                 {links.map((l) => {
                     const Icon = l.icon;
