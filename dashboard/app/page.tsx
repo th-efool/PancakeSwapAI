@@ -1,65 +1,163 @@
-mport Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useEffect, useMemo, useState } from 'react';
+import Card from '@/components/Card';
+import MetricBox from '@/components/MetricBox';
+
+type Strategy = {
+  name: string;
+  profit: number;
+  confidence: number;
+  score: number;
+};
+
+type DashboardData = {
+  opportunity?: {
+    strategy?: string;
+    confidence?: number;
+    expectedProfit?: number;
+    tokenIn?: { symbol?: string };
+    tokenOut?: { symbol?: string };
+    amountIn?: number;
+    score?: number;
+  } | null;
+  performance?: {
+    totalTrades?: number;
+    winRate?: number;
+    totalProfit?: number;
+    netProfit?: number;
+    gasEfficiency?: number;
+    sharpeRatio?: number;
+  } | null;
+  strategies?: Strategy[];
+  timestamp?: number;
+};
+
+const mock: Strategy[] = [
+  { name: 'Arbitrage', profit: 0, confidence: 0, score: 0 },
+  { name: 'Mean Reversion', profit: 0, confidence: 0, score: 0 },
+  { name: 'Liquidity Imbalance', profit: 0, confidence: 0, score: 0 },
+];
+
+const n = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '—');
+
+export default function Page() {
+  const [data, setData] = useState<DashboardData | null>(null);
+
+  useEffect(() => {
+    let on = true;
+
+    const load = async () => {
+      try {
+        const r = await fetch('/latest_state.json', { cache: 'no-store' });
+        if (!r.ok) return;
+        const json = (await r.json()) as DashboardData;
+        if (on) setData(json);
+      } catch {}
+    };
+
+    load();
+    const id = setInterval(load, 2000);
+    return () => {
+      on = false;
+      clearInterval(id);
+    };
+  }, []);
+
+  const opp = data?.opportunity;
+  const perf = data?.performance;
+  const strategies = useMemo(() => {
+    if (data?.strategies?.length) return data.strategies;
+    if (opp?.strategy) {
+      return [
+        {
+          name: opp.strategy,
+          profit: opp.expectedProfit ?? 0,
+          confidence: opp.confidence ?? 0,
+          score: opp.score ?? 0,
+        },
+        ...mock.filter((s) => s.name !== opp.strategy),
+      ];
+    }
+    return mock;
+  }, [data?.strategies, opp]);
+
+  if (!data) {
+    return (
+        <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-slate-200">
+          <p className="text-xl font-semibold">Waiting for bot data...</p>
+        </main>
+    );
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 text-slate-100">
+        <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-1 gap-6 lg:grid-cols-12">
+          <Card className="lg:col-span-12">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h1 className="text-2xl font-bold md:text-3xl">AI Trading Agent Dashboard</h1>
+              <span className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-1 text-sm font-semibold text-emerald-300">
+              ACTIVE
+            </span>
+            </div>
+          </Card>
+
+          <Card title="Current Trade" className="lg:col-span-5">
+            <div className="grid grid-cols-2 gap-4">
+              <MetricBox label="Strategy" value={opp?.strategy ?? '—'} tone="good" />
+              <MetricBox label="Confidence" value={`${n(opp?.confidence, 1)}%`} />
+              <MetricBox label="Expected Profit" value={`${n(opp?.expectedProfit)} BNB`} tone="good" />
+              <MetricBox
+                  label="Pair"
+                  value={`${opp?.tokenIn?.symbol ?? '—'} → ${opp?.tokenOut?.symbol ?? '—'}`}
+              />
+              <MetricBox label="Amount In" value={`${n(opp?.amountIn)} ${opp?.tokenIn?.symbol ?? ''}`.trim()} />
+              <MetricBox label="Score" value={n(opp?.score)} />
+            </div>
+          </Card>
+
+          <Card title="Strategy Comparison" className="lg:col-span-7">
+            <div className="space-y-3">
+              {strategies.map((s) => (
+                  <div
+                      key={s.name}
+                      className="grid grid-cols-4 items-center rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-sm"
+                  >
+                    <p className="font-semibold text-slate-100">{s.name}</p>
+                    <p className="text-emerald-300">{n(s.profit)} BNB</p>
+                    <p className="text-cyan-300">{n(s.confidence, 1)}%</p>
+                    <p className="text-slate-300">{n(s.score)}</p>
+                  </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card title="Performance Panel" className="lg:col-span-8">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+              <MetricBox label="Total Trades" value={perf?.totalTrades ?? '—'} />
+              <MetricBox label="Win Rate" value={`${n(perf?.winRate, 1)}%`} tone="good" />
+              <MetricBox label="Total Profit" value={`${n(perf?.totalProfit)} BNB`} tone="good" />
+              <MetricBox label="Net Profit" value={`${n(perf?.netProfit)} BNB`} tone="good" />
+              <MetricBox label="Gas Efficiency" value={`${n(perf?.gasEfficiency, 1)}%`} />
+              <MetricBox label="Sharpe Ratio" value={n(perf?.sharpeRatio)} />
+            </div>
+          </Card>
+
+          <Card title="System Status" className="lg:col-span-4">
+            <div className="space-y-4">
+              <div className="rounded-2xl border border-white/10 bg-slate-900/50 p-4">
+                <p className="text-xs uppercase tracking-wide text-slate-400">Last Update</p>
+                <p className="mt-2 text-lg font-semibold text-slate-100">
+                  {data?.timestamp ? new Date(data.timestamp).toLocaleString() : '—'}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-center">
+                <p className="text-xs uppercase tracking-wide text-amber-300">Mode</p>
+                <p className="mt-2 text-xl font-bold text-amber-200">DRY RUN MODE</p>
+              </div>
+            </div>
+          </Card>
         </div>
       </main>
-    </div>
   );
 }
