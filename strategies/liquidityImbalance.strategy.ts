@@ -2,23 +2,18 @@ import type { MarketState, Opportunity, Pool } from '../core/types';
 import config, { estimateGasCost } from '../config';
 
 const THRESHOLD = 0.001;
-const lastPrices: Record<string, number> = {};
-
-function getPoolId(pool: Pool): string {
-  return pool.address;
-}
+const VOLUME_THRESHOLD = 1000;
 
 function buildOpportunity(pool: Pool, imbalance: number): Opportunity | null {
   const amountIn = config.maxTradeSize;
-  if (imbalance < THRESHOLD) return null;
+  if (imbalance < THRESHOLD || pool.volumeM5 <= VOLUME_THRESHOLD) return null;
 
   const gasCost = estimateGasCost();
   const slippageCost = config.slippageTolerance * amountIn;
   const expectedProfit = Math.min(imbalance * amountIn * 10, amountIn * 0.03) - gasCost - slippageCost;
   if (expectedProfit <= 0) return null;
 
-  const previousPrice = lastPrices[getPoolId(pool)] ?? pool.price;
-  const isSell = pool.price > previousPrice;
+  const isSell = pool.priceChangeM5 > 0;
 
   console.log('Imbalance detected');
   console.log('Temporal imbalance:', imbalance);
@@ -37,20 +32,12 @@ function buildOpportunity(pool: Pool, imbalance: number): Opportunity | null {
 export function liquidityImbalanceStrategy(state: MarketState): Opportunity | null {
   console.log('Running liquidity imbalance strategy');
   if (!state.pools.length) return null;
+  console.log('Using DexScreener temporal data');
 
   let best: Opportunity | null = null;
   for (const pool of state.pools) {
-    const poolId = getPoolId(pool);
-    const lastPrice = lastPrices[poolId];
-
-    if (typeof lastPrice !== 'number' || lastPrice <= 0) {
-      lastPrices[poolId] = pool.price;
-      continue;
-    }
-
-    const imbalance = Math.abs(pool.price - lastPrice) / lastPrice;
+    const imbalance = Math.abs(pool.priceChangeM5) / 100;
     const opp = buildOpportunity(pool, imbalance);
-    lastPrices[poolId] = pool.price;
     if (!opp) continue;
     if (!best || opp.expectedProfit > best.expectedProfit) best = opp;
   }

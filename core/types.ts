@@ -11,6 +11,11 @@ export type Pool = {
   token1: Token;
   price: number;
   liquidity: number;
+  priceChangeM5: number;
+  volumeM5: number;
+  buysM5: number;
+  sellsM5: number;
+  priceChangeH1?: number;
 };
 
 export type MarketState = {
