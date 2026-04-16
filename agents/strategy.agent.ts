@@ -49,6 +49,7 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
         opportunity.confidence *
           (regime === 'IDLE' ? 0.7 : regime === 'INSUFFICIENT_DATA' ? 0.5 : 1),
       ),
+      volatility: opportunity.volatility ?? signals?.temporal.volatility ?? 0,
       signalStrength: clamp(opportunity.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
     }))
 
