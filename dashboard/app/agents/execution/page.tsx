@@ -17,11 +17,11 @@ export default function ExecutionPage() {
               <div className="flex flex-col md:flex-col items-center justify-center gap-6 w-full">
 
                 {/* Input Box */}
-                <div className="flex flex-row items-center gap-2 w-full max-w-[620px]">
+                <div className="flex flex-row items-center gap-2 w-full max-w-[720px]">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Input</span>
                   <div className="flex h-20 w-full flex-col items-center justify-center rounded-2xl border border-white/10 bg-slate-900/50 shadow-inner px-4 overflow-hidden">
                   <span
-                      className="text-xl font-black text-slate-200 truncate w-full text-center"
+                      className="text-lg font-black text-slate-200 truncate w-full text-center"
                       title={ex?.tokenIn ?? undefined}
                   >
                     {ex?.tokenIn ?? '—'}
@@ -36,11 +36,11 @@ export default function ExecutionPage() {
                 </div>
 
                 {/* Output Box */}
-                <div className="flex flex-row items-center gap-2 w-full max-w-[620px]">
+                <div className="flex flex-row items-center gap-2 w-full max-w-[720px]">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Expected Output</span>
                   <div className="flex h-20 w-full flex-col items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/5 shadow-[0_0_20px_rgba(16,185,129,0.1)] px-4 overflow-hidden">
                   <span
-                      className="text-xl font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)] truncate w-full text-center"
+                      className="text-lg font-black text-emerald-400 drop-shadow-[0_0_10px_rgba(16,185,129,0.5)] truncate w-full text-center"
                       title={ex?.tokenOut ?? undefined}
                   >
                     {ex?.tokenOut ?? '—'}
