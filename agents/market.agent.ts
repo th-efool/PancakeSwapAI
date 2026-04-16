@@ -2,10 +2,13 @@ import { Contract, JsonRpcProvider, formatUnits, getAddress } from 'ethers'
 import { log } from '../core/logger'
 import type { MarketState, Pool, Token } from '../core/types'
 
-const PRIMARY_RPC = process.env.BSC_RPC_URL || 'https://bsc-dataseed.binance.org/'
-const FALLBACK_RPCS = ['https://bsc-dataseed1.defibit.io/', 'https://bsc-dataseed1.ninicoin.io/']
+const PRIMARY_RPC = process.env.BSC_RPC_URL || 'https://bsc-rpc.publicnode.com'
+const FALLBACK_RPCS = ['https://bsc-dataseed.bnbchain.org', 'https://rpc.ankr.com/bsc']
 
 const PAIR_ABI = ['function getReserves() view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast)']
+const PAIR_VALIDATION_ABI = ['function token0() view returns (address)', 'function token1() view returns (address)']
+const invalidPools = new Set<string>()
+const loggedInvalidPools = new Set<string>()
 
 const WBNB: Token = {
   address: getAddress('0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'),
@@ -29,7 +32,7 @@ const CAKE: Token = {
 
 const TARGET_POOLS: Array<{ address: string; token0: Token; token1: Token }> = [
   {
-    address: getAddress('0x16b9a828b4fc56de6ff5facf5ff6fa4a38f1fd5f'),
+    address: getAddress('0x16b9a82891338f9ba80e2d6970fdda79d1eb0dae'),
     token0: WBNB,
     token1: USDT,
   },
@@ -66,9 +69,43 @@ async function fetchPools(): Promise<Pool[]> {
   const pools: Pool[] = []
 
   for (const p of TARGET_POOLS) {
+    if (invalidPools.has(p.address)) continue
     try {
+      const code = await provider.getCode(p.address)
+      if (code === '0x') {
+        invalidPools.add(p.address)
+        if (!loggedInvalidPools.has(p.address)) {
+          log('market', `Invalid pool skipped: ${p.address}`)
+          loggedInvalidPools.add(p.address)
+        }
+        continue
+      }
+
+      const validator = new Contract(p.address, PAIR_VALIDATION_ABI, provider)
+      try {
+        await Promise.all([validator.token0(), validator.token1()])
+      } catch {
+        invalidPools.add(p.address)
+        if (!loggedInvalidPools.has(p.address)) {
+          log('market', `Invalid pool skipped: ${p.address}`)
+          loggedInvalidPools.add(p.address)
+        }
+        continue
+      }
+
       const pair = new Contract(p.address, PAIR_ABI, provider)
-      const [r0, r1] = await pair.getReserves()
+      let reserves: [bigint, bigint, number]
+      try {
+        reserves = await pair.getReserves()
+      } catch {
+        invalidPools.add(p.address)
+        if (!loggedInvalidPools.has(p.address)) {
+          log('market', `Invalid pool skipped: ${p.address}`)
+          loggedInvalidPools.add(p.address)
+        }
+        continue
+      }
+      const [r0, r1] = reserves
       const n0 = Number(formatUnits(r0, 18))
       const n1 = Number(formatUnits(r1, 18))
       if (!Number.isFinite(n0) || !Number.isFinite(n1) || n0 <= 0) continue
@@ -85,8 +122,12 @@ async function fetchPools(): Promise<Pool[]> {
 
       pools.push(pool)
       log('market', `Fetched pool ${p.address}`)
-    } catch (e) {
-      console.error('Pool fetch failed:', p.address, e)
+    } catch {
+      invalidPools.add(p.address)
+      if (!loggedInvalidPools.has(p.address)) {
+        log('market', `Invalid pool skipped: ${p.address}`)
+        loggedInvalidPools.add(p.address)
+      }
       continue
     }
   }
@@ -98,6 +139,16 @@ export async function marketAgent(): Promise<MarketState> {
   log('market', 'Fetching pools')
   try {
     const pools = await fetchPools()
+    const attempted = TARGET_POOLS.length
+    const valid = pools.length
+    const invalidSkipped = attempted - valid
+    log('market', `Pool summary: attempted=${attempted} valid=${valid} invalid_skipped=${invalidSkipped}`)
+    if (pools.length < 2) {
+      return {
+        pools: [],
+        timestamp: Date.now(),
+      }
+    }
     return {
       pools,
       timestamp: Date.now(),
