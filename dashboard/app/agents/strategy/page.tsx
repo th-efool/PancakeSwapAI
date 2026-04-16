@@ -1,7 +1,7 @@
 'use client'
 
-import Card from '../../../components/Card'
-import { useLiveState } from '../../hooks/useLiveState'
+import Card from '../../../components/Card.tsx'
+import { useLiveState } from '../../hooks/useLiveState.ts'
 import { Target, Trophy } from 'lucide-react'
 
 export default function StrategyPage() {

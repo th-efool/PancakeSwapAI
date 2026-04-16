@@ -1,8 +1,8 @@
 'use client'
 
-import Card from '../../../components/Card'
-import MetricBox from '../../../components/MetricBox'
-import { useLiveState } from '../../hooks/useLiveState'
+import Card from '../../../components/Card.tsx'
+import MetricBox from '../../../components/MetricBox.tsx'
+import { useLiveState } from '../../hooks/useLiveState.ts'
 import { Layers, CandlestickChart, Waves } from 'lucide-react'
 
 export default function MarketPage() {

@@ -1,6 +1,6 @@
 import { Contract, JsonRpcProvider, formatUnits, getAddress } from 'ethers'
-import { log } from '../logger'
-import type { Token } from '../types'
+import { log } from '../logger.js'
+import type { Token } from '../types.js'
 import type {
   DataSource,
   DataSourceType,
@@ -9,7 +9,7 @@ import type {
   OnChainRawPool,
   RawPool,
   SubgraphRawPool,
-} from './data-source.interface'
+} from './data-source.interface.js'
 
 const PRIMARY_RPC = process.env.BSC_RPC_URL || 'https://bsc-rpc.publicnode.com'
 const FALLBACK_RPCS = ['https://bsc-dataseed.bnbchain.org', 'https://rpc.ankr.com/bsc']

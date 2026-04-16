@@ -1,4 +1,4 @@
-import type { MarketRegime } from '../shared/market'
+import type { MarketRegime } from '../shared/market.js'
 
 export type { MarketRegime }
 

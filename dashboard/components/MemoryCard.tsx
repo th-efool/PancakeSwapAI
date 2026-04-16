@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import Card from './Card'
-import type { LiveState } from '../app/hooks/useLiveState'
+import Card from './Card.tsx'
+import type { LiveState } from '../app/hooks/useLiveState.ts'
 
 type Props = {
   memory?: LiveState['memory']

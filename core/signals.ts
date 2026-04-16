@@ -1,4 +1,4 @@
-import type { MarketSignal, MarketState, Pool, SignalSet } from './types'
+import type { MarketSignal, MarketState, Pool, SignalSet } from './types.js'
 
 const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v))
 

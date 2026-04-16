@@ -1,13 +1,13 @@
 'use client'
 
-import Card from '../components/Card'
-import DecisionCard from '../components/DecisionCard'
-import MemoryCard from '../components/MemoryCard'
-import MetricBox from '../components/MetricBox'
-import SimulationCard from '../components/SimulationCard'
-import TemporalMetric from '../components/TemporalMetric'
-import { type TimelineItem, useLiveState } from './hooks/useLiveState'
-import { type MarketRegime, normalizeMarketRegime } from '../lib/market'
+import Card from '../components/Card.tsx'
+import DecisionCard from '../components/DecisionCard.tsx'
+import MemoryCard from '../components/MemoryCard.tsx'
+import MetricBox from '../components/MetricBox.tsx'
+import SimulationCard from '../components/SimulationCard.tsx'
+import TemporalMetric from '../components/TemporalMetric.tsx'
+import { type TimelineItem, useLiveState } from './hooks/useLiveState.ts'
+import { type MarketRegime, normalizeMarketRegime } from '../lib/market.ts'
 
 const n = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '--')
 const signed = (v: number, d = 3) => `${v >= 0 ? '+' : ''}${v.toFixed(d)}`

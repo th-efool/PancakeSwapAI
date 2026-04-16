@@ -1,5 +1,5 @@
-import type { MarketState, Opportunity, Pool } from '../core/types';
-import config, { estimateGasCost } from '../config';
+import type { MarketState, Opportunity, Pool } from '../core/types.js';
+import config, { estimateGasCost } from '../config.js';
 
 const THRESHOLD = 0.001;
 const VOLUME_THRESHOLD = 1000;

@@ -1,11 +1,13 @@
-﻿{
+{
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "commonjs",
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "rootDir": ".",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "types": ["node"]
@@ -14,13 +16,9 @@
     "core/**/*.ts",
     "agents/**/*.ts",
     "strategies/**/*.ts",
+    "shared/**/*.ts",
     "index.ts",
     "config.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dashboard",
-    "pancakeswap-ai"
-  ],
-
+  "exclude": ["node_modules", "dashboard", "pancakeswap-ai"]
 }

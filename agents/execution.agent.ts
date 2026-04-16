@@ -1,6 +1,6 @@
-import { log } from '../core/logger'
-import type { Opportunity, TradeResult } from '../core/types'
-import config from '../config'
+import { log } from '../core/logger.js'
+import type { Opportunity, TradeResult } from '../core/types.js'
+import config from '../config.js'
 
 const DRY_RUN = true
 

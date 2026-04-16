@@ -1,7 +1,7 @@
 'use client'
 
-import Card from '../../components/Card'
-import { useLiveState } from '../hooks/useLiveState'
+import Card from '../../components/Card.tsx'
+import { useLiveState } from '../hooks/useLiveState.ts'
 
 export default function LiquidityPage() {
   const { data } = useLiveState()

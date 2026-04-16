@@ -1,4 +1,4 @@
-import type { MarketState } from './types';
+import type { MarketState } from './types.js';
 
 const MAX_HISTORY = 10;
 

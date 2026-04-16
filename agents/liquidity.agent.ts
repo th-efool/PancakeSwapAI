@@ -1,5 +1,5 @@
-import { log } from '../core/logger'
-import type { MarketState, Pool } from '../core/types'
+import { log } from '../core/logger.js'
+import type { MarketState, Pool } from '../core/types.js'
 
 export type PoolInsight = {
   poolAddress: string

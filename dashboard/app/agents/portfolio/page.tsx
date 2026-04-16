@@ -1,8 +1,8 @@
 'use client'
 
-import Card from '../../../components/Card'
-import MetricBox from '../../../components/MetricBox'
-import { useLiveState } from '../../hooks/useLiveState'
+import Card from '../../../components/Card.tsx'
+import MetricBox from '../../../components/MetricBox.tsx'
+import { useLiveState } from '../../hooks/useLiveState.ts'
 import { BarChart2, PieChart, TrendingUp, Activity } from 'lucide-react'
 
 const n = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '—')

@@ -1,8 +1,8 @@
-import config, { syncMarketDataConfigFromDisk } from '../config'
-import { runWithFallback } from '../core/market-data/fallback'
-import { log } from '../core/logger'
-import { latestState } from '../core/state'
-import type { MarketState } from '../core/types'
+import config, { syncMarketDataConfigFromDisk } from '../config.js'
+import { runWithFallback } from '../core/market-data/fallback.js'
+import { log } from '../core/logger.js'
+import { latestState } from '../core/state.js'
+import type { MarketState } from '../core/types.js'
 
 export async function marketAgent(): Promise<MarketState> {
   try {

@@ -1,13 +1,13 @@
-import { getLastExecution } from '../agents/execution.agent'
-import { getPerformance, logPerformance, recordTrade } from '../agents/portfolio.agent'
-import { getLastRiskDecision } from '../agents/risk.agent'
-import { getLogs, log } from './logger'
-import { detectRegime } from './regime'
-import { exportState } from './exportState'
-import { pushMarketState } from './history'
-import { extractSignals } from './signals'
-import type { MarketRegime, MarketState, Opportunity, TradeResult, RegimeAssessment, SignalSet } from './types'
-import { latestState } from './state'
+import { getLastExecution } from '../agents/execution.agent.js'
+import { getPerformance, logPerformance, recordTrade } from '../agents/portfolio.agent.js'
+import { getLastRiskDecision } from '../agents/risk.agent.js'
+import { getLogs, log } from './logger.js'
+import { detectRegime } from './regime.js'
+import { exportState } from './exportState.js'
+import { pushMarketState } from './history.js'
+import { extractSignals } from './signals.js'
+import type { MarketRegime, MarketState, Opportunity, TradeResult, RegimeAssessment, SignalSet } from './types.js'
+import { latestState } from './state.js'
 
 export type Pipeline = {
   market: () => Promise<MarketState>
