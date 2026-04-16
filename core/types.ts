@@ -1,4 +1,6 @@
-export type MarketRegime = 'TRENDING' | 'MEAN_REVERTING' | 'VOLATILE' | 'CHAOTIC' | 'IDLE' | 'UNKNOWN'
+import type { MarketRegime } from '../shared/market'
+
+export type { MarketRegime }
 
 export type Token = {
   address: string;

@@ -1,11 +1,12 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { isDataSource, normalizeMarketRegime, type DataSource, type MarketRegime } from '../../lib/market'
 
 export type LiveState = {
   timestamp?: string
   cycleId?: number
-  regime?: 'TRENDING' | 'MEAN_REVERTING' | 'VOLATILE' | 'UNKNOWN'
+  regime?: MarketRegime
   market?: {
     pools?: Array<{
       address: string
@@ -78,8 +79,8 @@ export type LiveState = {
   }
   logs?: Array<{ agent: string; message: string; time: number }>
 
-  configuredSource?: 'ON_CHAIN' | 'DEXSCREENER' | 'SUBGRAPH'
-  usedSource?: 'ON_CHAIN' | 'DEXSCREENER' | 'SUBGRAPH' | null
+  configuredSource?: DataSource
+  usedSource?: DataSource | null
 }
 
 export type TimelineItem = {
@@ -89,6 +90,18 @@ export type TimelineItem = {
   expectedProfit: number
   confidence: number
   score: number
+}
+
+function normalizeLiveState(input: unknown): LiveState | null {
+  if (!input || typeof input !== 'object') return null
+  const raw = input as LiveState
+
+  return {
+    ...raw,
+    regime: normalizeMarketRegime(raw.regime),
+    configuredSource: isDataSource(raw.configuredSource) ? raw.configuredSource : undefined,
+    usedSource: raw.usedSource == null ? null : isDataSource(raw.usedSource) ? raw.usedSource : null,
+  }
 }
 
 export function useLiveState() {
@@ -104,7 +117,8 @@ export function useLiveState() {
     const fetchData = async () => {
       try {
         const res = await fetch('/latest_state.json', { cache: 'no-store' })
-        const json = (await res.json()) as LiveState
+        const json = normalizeLiveState(await res.json())
+        if (!json) return
         setData(json)
         setConnected(true)
         if (json.timestamp && json.timestamp !== last.current) {
