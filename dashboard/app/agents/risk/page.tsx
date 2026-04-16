@@ -1,8 +1,8 @@
 'use client'
 
-import Card from '../../../../components/Card'
-import MetricBox from '../../../../components/MetricBox'
-import { useLiveState } from '../../../hooks/useLiveState'
+import Card from '../../../components/Card'
+import MetricBox from '../../../components/MetricBox'
+import { useLiveState } from '../../hooks/useLiveState'
 
 export default function RiskPage() {
   const { data } = useLiveState()

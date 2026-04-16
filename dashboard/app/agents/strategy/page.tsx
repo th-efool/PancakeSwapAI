@@ -1,7 +1,7 @@
 'use client'
 
-import Card from '../../../../components/Card'
-import { useLiveState } from '../../../hooks/useLiveState'
+import Card from '../../../components/Card'
+import { useLiveState } from '../../hooks/useLiveState'
 
 export default function StrategyPage() {
   const { data } = useLiveState()
