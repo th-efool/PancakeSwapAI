@@ -38,6 +38,11 @@ const regimeMap: Record<MarketRegime, { badge: string; glow: string; note: strin
     glow: 'shadow-[0_0_18px_rgba(45,212,191,0.18)]',
     note: 'Participation is muted and momentum is flat. System stays selective and conservative.',
   },
+  INSUFFICIENT_DATA: {
+    badge: 'bg-indigo-500/20 text-indigo-200 border-indigo-400/40',
+    glow: 'shadow-[0_0_20px_rgba(99,102,241,0.2)]',
+    note: 'Not enough stable observations yet. Holding until minimum signal quality is met.',
+  },
   UNKNOWN: {
     badge: 'bg-slate-500/20 text-slate-300 border-slate-400/40',
     glow: 'shadow-[0_0_20px_rgba(148,163,184,0.18)]',
@@ -105,7 +110,7 @@ export default function Page() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <MetricBox label="Current Opportunity" value={noTrade ? 'No opportunity' : opp.strategy} />
+        <MetricBox label="Current Opportunity" value={noTrade ? 'No opportunity' : (opp?.strategy ?? '--')} />
         <MetricBox label="Best Strategy" value={best?.name ?? '--'} />
         <MetricBox label="Expected Profit" value={typeof opp?.expectedProfit === 'number' ? `${n(opp.expectedProfit, 4)} BNB` : '--'} />
         <MetricBox label="System Status" value={stateTag.toUpperCase()} tone={stateTag === 'executing' ? 'good' : stateTag === 'adapting' ? 'warn' : 'default'} />
