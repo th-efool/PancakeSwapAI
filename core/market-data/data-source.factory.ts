@@ -66,6 +66,9 @@ type DexScreenerPair = {
   priceUsd?: string
   priceNative?: string
   liquidity?: { usd?: number }
+  priceChange?: { m5?: number; h1?: number }
+  volume?: { m5?: number }
+  txns?: { m5?: { buys?: number; sells?: number } }
 }
 
 type SubgraphPool = {
@@ -167,6 +170,7 @@ class DexScreenerDataSource implements DataSource {
   type: DataSourceType = 'DEXSCREENER'
 
   async fetchPools(_: FetchContext): Promise<RawPool[]> {
+    log('market', 'Using DexScreener temporal data')
     const pairAddresses = TARGET_POOLS.map((pool) => pool.address.toLowerCase()).join(',')
     const url = `${DEXSCREENER_API_BASE}/${pairAddresses}`
     console.log('[DEXSCREENER] full API URL', url)
@@ -204,6 +208,11 @@ class DexScreenerDataSource implements DataSource {
         token1: toToken(pair.quoteToken, fallbackPool.token1),
         priceUsd: price,
         liquidityUsd: typeof liquidity === 'number' ? liquidity : 0,
+        priceChangeM5: pair.priceChange?.m5 ?? 0,
+        priceChangeH1: pair.priceChange?.h1 ?? 0,
+        volumeM5: pair.volume?.m5 ?? 0,
+        buysM5: pair.txns?.m5?.buys ?? 0,
+        sellsM5: pair.txns?.m5?.sells ?? 0,
       })
     }
 

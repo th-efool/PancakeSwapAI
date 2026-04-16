@@ -70,23 +70,23 @@ function legacyMeanReversion(state: MarketState): Opportunity | null {
 }
 
 export function meanReversionStrategy(state: MarketState, signals: any): Opportunity | null {
-  if (!signals || !Number.isFinite(signals.priceDelta)) return legacyMeanReversion(state)
-
-  log('strategy', `Temporal signal: ${JSON.stringify(signals)}`)
-
   const amountIn = config.maxTradeSize
   const gasCost = estimateGasCost()
   const slippageCost = config.slippageTolerance * amountIn
 
-  let direction = 0
-  if (signals.priceDelta < -0.01) direction = 1
-  if (signals.priceDelta > 0.01) direction = -1
-  if (!direction) return legacyMeanReversion(state)
-
-  const pool = state.pools[0]
+  const pool = state.pools
+    .filter((p) => Number.isFinite(p.priceChangeH1))
+    .sort((a, b) => Math.abs((b.priceChangeH1 ?? 0)) - Math.abs((a.priceChangeH1 ?? 0)))[0]
   if (!pool) return legacyMeanReversion(state)
 
-  const grossProfit = amountIn * Math.abs(signals.priceDelta)
+  const priceChangeH1 = pool.priceChangeH1 ?? 0
+  let direction = 0
+  if (priceChangeH1 < -1) direction = 1
+  if (priceChangeH1 > 1) direction = -1
+  if (!direction) return legacyMeanReversion(state)
+  log('strategy', `Using DexScreener temporal data h1=${priceChangeH1}`)
+
+  const grossProfit = amountIn * (Math.abs(priceChangeH1) / 100)
   const expectedProfit = grossProfit - gasCost - slippageCost
   if (!Number.isFinite(expectedProfit) || expectedProfit <= 0) return legacyMeanReversion(state)
 
