@@ -75,11 +75,11 @@ export function meanReversionStrategy(state: MarketState, signals: any): Opportu
   const slippageCost = config.slippageTolerance * amountIn
 
   const pool = state.pools
-    .filter((p) => Number.isFinite(p.priceChangeH1))
-    .sort((a, b) => Math.abs((b.priceChangeH1 ?? 0)) - Math.abs((a.priceChangeH1 ?? 0)))[0]
+    .filter((p) => Number.isFinite(p.priceChange.h1))
+    .sort((a, b) => Math.abs(b.priceChange.h1) - Math.abs(a.priceChange.h1))[0]
   if (!pool) return legacyMeanReversion(state)
 
-  const priceChangeH1 = pool.priceChangeH1 ?? 0
+  const priceChangeH1 = pool.priceChange.h1
   let direction = 0
   if (priceChangeH1 < -1) direction = 1
   if (priceChangeH1 > 1) direction = -1
@@ -99,6 +99,8 @@ export function meanReversionStrategy(state: MarketState, signals: any): Opportu
     slippage: config.slippageTolerance,
     strategy: 'meanReversion',
     confidence: 0.65,
+    signalStrength: signals?.aggregate?.signalStrength ?? 0,
+    reason: 'H1 deviation suggests reversion',
   }
 }
 

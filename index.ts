@@ -4,13 +4,14 @@ import strategyAgent from './agents/strategy.agent'
 import arbitrageStrategy from './strategies/arbitrage.strategy'
 import meanReversionStrategy from './strategies/meanReversion.strategy'
 import liquidityImbalanceStrategy from './strategies/liquidityImbalance.strategy'
+import momentumStrategy from './strategies/momentum.strategy'
 import riskAgent from './agents/risk.agent'
 import executionAgent from './agents/execution.agent'
 
 const pipeline = {
   market: marketAgent,
   strategy: (state: Parameters<typeof strategyAgent>[0], signals: any, regime: Parameters<typeof strategyAgent>[3]) =>
-    strategyAgent(state, [arbitrageStrategy, meanReversionStrategy, liquidityImbalanceStrategy], signals, regime),
+    strategyAgent(state, [arbitrageStrategy, meanReversionStrategy, liquidityImbalanceStrategy, momentumStrategy], signals, regime),
   risk: riskAgent,
   execute: executionAgent,
 }

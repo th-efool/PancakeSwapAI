@@ -29,10 +29,11 @@ export function normalizePoolsDetailed(rawPools: RawPool[]): { pools: Pool[]; de
     let price: number | undefined
     let liquidity: number | undefined
     let priceChangeM5 = 0
+    let priceChangeH1 = 0
     let volumeM5 = 0
+    let volumeH1 = 0
     let buysM5 = 0
     let sellsM5 = 0
-    let priceChangeH1 = 0
 
     if (raw.source === 'ON_CHAIN') {
       price = raw.reserve0 > 0 ? raw.reserve1 / raw.reserve0 : undefined
@@ -41,10 +42,11 @@ export function normalizePoolsDetailed(rawPools: RawPool[]): { pools: Pool[]; de
       price = raw.priceUsd
       liquidity = raw.liquidityUsd
       priceChangeM5 = raw.priceChangeM5
+      priceChangeH1 = raw.priceChangeH1
       volumeM5 = raw.volumeM5
+      volumeH1 = raw.volumeH1
       buysM5 = raw.buysM5
       sellsM5 = raw.sellsM5
-      priceChangeH1 = raw.priceChangeH1
     } else {
       price = raw.token0Price > 0 ? raw.token1Price / raw.token0Price : undefined
       liquidity = raw.totalValueLockedUSD
@@ -101,11 +103,21 @@ export function normalizePoolsDetailed(rawPools: RawPool[]): { pools: Pool[]; de
       token1: raw.token1,
       price: normalizedPrice,
       liquidity: normalizedLiquidity,
-      priceChangeM5,
-      volumeM5,
-      buysM5,
-      sellsM5,
-      priceChangeH1,
+      priceChange: {
+        m5: priceChangeM5,
+        h1: priceChangeH1,
+      },
+      volume: {
+        m5: volumeM5,
+        h1: volumeH1,
+      },
+      txns: {
+        m5: {
+          buys: buysM5,
+          sells: sellsM5,
+          total: buysM5 + sellsM5,
+        },
+      },
     })
   }
 

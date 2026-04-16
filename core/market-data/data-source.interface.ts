@@ -26,6 +26,7 @@ export type DexScreenerRawPool = RawPoolBase & {
   priceChangeM5: number
   priceChangeH1: number
   volumeM5: number
+  volumeH1: number
   buysM5: number
   sellsM5: number
 }

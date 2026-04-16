@@ -5,20 +5,25 @@ import { getLogs, log } from './logger'
 import { detectRegime } from './regime'
 import { exportState } from './exportState'
 import { pushMarketState } from './history'
-import { computeSignals, pushState } from './temporal'
-import type { MarketRegime, MarketState, Opportunity, TradeResult } from './types'
+import { extractSignals } from './signals'
+import type { MarketRegime, MarketState, Opportunity, TradeResult, RegimeAssessment, SignalSet } from './types'
 import { latestState } from './state'
 
 export type Pipeline = {
   market: () => Promise<MarketState>
-  strategy: (state: MarketState, signals: any, regime: MarketRegime) => Opportunity | null
+  strategy: (state: MarketState, signals: SignalSet | null, regime: MarketRegime) => Opportunity | null
   risk: (opportunity: Opportunity) => boolean
   execute: (opportunity: Opportunity) => Promise<TradeResult>
 }
 
 let cycleId = 0
 
-const buildState = (state: MarketState | null, selectedOpportunity: Opportunity | null, signals: any, regime: MarketRegime) => {
+const buildState = (
+  state: MarketState | null,
+  selectedOpportunity: Opportunity | null,
+  signals: SignalSet | null,
+  regimeAssessment: RegimeAssessment,
+) => {
   const pools = state?.pools ?? []
   const prices = pools.map((p) => p.price)
   const performance = getPerformance()
@@ -40,13 +45,18 @@ const buildState = (state: MarketState | null, selectedOpportunity: Opportunity 
             name: selectedOpportunity.strategy,
             expectedProfit: selectedOpportunity.expectedProfit,
             confidence: selectedOpportunity.confidence,
-            score: selectedOpportunity.score ?? selectedOpportunity.expectedProfit * selectedOpportunity.confidence,
+            signalStrength: selectedOpportunity.signalStrength ?? signals?.aggregate.signalStrength ?? 0,
+            reason: selectedOpportunity.reason ?? regimeAssessment.reason,
+            score: selectedOpportunity.score ?? 0,
           },
         ]
       : [],
     selectedOpportunity,
-    temporalSignals: signals,
-    regime,
+    signals,
+    temporalSignals: signals?.aggregate ?? null,
+    regime: regimeAssessment.regime,
+    regimeConfidence: regimeAssessment.confidence,
+    regimeReason: regimeAssessment.reason,
     risk: getLastRiskDecision(),
     execution: getLastExecution(),
     performance,
@@ -56,10 +66,17 @@ const buildState = (state: MarketState | null, selectedOpportunity: Opportunity 
   }
 }
 
-const flushState = (state: MarketState | null, opportunity: Opportunity | null, signals: any, regime: MarketRegime) => {
+const flushState = (
+  state: MarketState | null,
+  opportunity: Opportunity | null,
+  signals: SignalSet | null,
+  regimeAssessment: RegimeAssessment,
+) => {
   latestState.temporalSignals = signals
-  latestState.regime = regime
-  exportState(buildState(state, opportunity, signals, regime))
+  latestState.regime = regimeAssessment.regime
+  latestState.regimeConfidence = regimeAssessment.confidence
+  latestState.regimeReason = regimeAssessment.reason
+  exportState(buildState(state, opportunity, signals, regimeAssessment))
 }
 
 export async function runPipeline(pipeline: Pipeline): Promise<void> {
@@ -69,32 +86,41 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
 
     const state = await pipeline.market()
     pushMarketState(state)
-    pushState(state)
-    const signals = computeSignals()
-    const regime = detectRegime(signals)
-    console.log('Market regime:', regime)
-    log('pipeline', `Market regime: ${regime}`)
+    const signals = extractSignals(state)
+    const regimeAssessment = detectRegime(signals)
+    console.log('Market regime:', regimeAssessment.regime)
+    log(
+      'pipeline',
+      `Market regime=${regimeAssessment.regime} confidence=${regimeAssessment.confidence.toFixed(3)} reason=${regimeAssessment.reason}`,
+    )
+    log('pipeline', `Signal aggregate=${JSON.stringify(signals?.aggregate ?? null)}`)
 
     latestState.temporalSignals = signals
-    latestState.regime = regime
-    log('pipeline', `Temporal signal: ${JSON.stringify(signals)}`)
+    latestState.regime = regimeAssessment.regime
+    latestState.regimeConfidence = regimeAssessment.confidence
+    latestState.regimeReason = regimeAssessment.reason
 
     if (!state || !state.pools.length) {
       log('pipeline', 'No market data')
-      flushState(state, null, signals, regime)
+      flushState(state, null, signals, regimeAssessment)
       return
     }
 
-    const opportunity: Opportunity | null = pipeline.strategy(state, signals, regime)
+    const opportunity: Opportunity | null = pipeline.strategy(state, signals, regimeAssessment.regime)
     if (!opportunity) {
-      log('pipeline', 'No opportunity')
-      flushState(state, null, signals, regime)
+      log('pipeline', `No opportunity | regime=${regimeAssessment.regime} reason=${regimeAssessment.reason}`)
+      flushState(state, null, signals, regimeAssessment)
       return
     }
+
+    log(
+      'pipeline',
+      `Opportunity strategy=${opportunity.strategy} signalStrength=${(opportunity.signalStrength ?? 0).toFixed(3)} reason=${opportunity.reason ?? 'n/a'}`,
+    )
 
     if (!pipeline.risk(opportunity)) {
       log('pipeline', 'Risk rejected')
-      flushState(state, opportunity, signals, regime)
+      flushState(state, opportunity, signals, regimeAssessment)
       return
     }
 
@@ -102,7 +128,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
     recordTrade(result, opportunity)
     logPerformance()
 
-    exportState(buildState(state, opportunity, signals, regime))
+    exportState(buildState(state, opportunity, signals, regimeAssessment))
 
     if (!result.success) {
       log('pipeline', `Trade failed${result.error ? `: ${result.error}` : ''}`)
