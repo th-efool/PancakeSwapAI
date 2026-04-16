@@ -65,6 +65,9 @@ export async function executionAgent(opp: Opportunity): Promise<TradeResult> {
   console.log(`amountOutMin: ${prep.amountOutMin}`);
   console.log(`router type: ${prep.routerType}`);
   console.log(`gas estimate: ${gasEstimate.toString()}`);
+  console.log(`strategy: ${opp.strategy}`);
+  console.log(`confidence: ${opp.confidence}`);
+  if (typeof opp.score === 'number') console.log(`score: ${opp.score}`);
   console.log('Prepared swap via router');
 
   if (DRY_RUN) {

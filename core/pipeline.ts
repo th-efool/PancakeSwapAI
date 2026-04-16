@@ -1,3 +1,4 @@
+import { logPerformance, recordTrade } from '../agents/portfolio.agent';
 import type { MarketState, Opportunity, TradeResult } from './types';
 
 export type Pipeline = {
@@ -35,6 +36,9 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
 
     console.log('Step 4: execute');
     const result = await pipeline.execute(opportunity);
+    recordTrade(result, opportunity);
+    logPerformance();
+
     if (!result.success) {
       console.log(`Trade failed${result.error ? `: ${result.error}` : ''}`);
       return;

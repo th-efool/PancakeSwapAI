@@ -15,25 +15,18 @@ const DEFAULT_ROUTER_TYPE: AppConfig['routerType'] = 'smart';
 const DEFAULT_POLL_INTERVAL_MS = 5000;
 
 export const config: AppConfig = {
-  // Chain
   rpcUrl: BSC_RPC_URL,
   chainId: BSC_CHAIN_ID,
-
-  // Wallet
   privateKey: process.env.PRIVATE_KEY || '',
-
-  // Execution
   gasLimit: DEFAULT_GAS_LIMIT,
   slippageTolerance: DEFAULT_SLIPPAGE_TOLERANCE,
-
-  // Trading
   maxTradeSize: DEFAULT_MAX_TRADE_SIZE,
-
-  // Router
   routerType: DEFAULT_ROUTER_TYPE,
-
-  // Timing
   pollIntervalMs: DEFAULT_POLL_INTERVAL_MS,
 };
+
+export function estimateGasCost(): number {
+  return config.gasLimit * 1e-9;
+}
 
 export default config;
