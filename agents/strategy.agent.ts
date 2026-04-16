@@ -64,7 +64,8 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
   for (const opp of opportunities) {
     const baseScore = safe(scoreOpportunity(opp, signals))
     const performanceScore = safe(computePerformanceScore(opp.strategy))
-    const finalScore = safe(baseScore * 0.7 + performanceScore * 0.3)
+    const scoreMultiplier = clamp(1 + performanceScore, 0, 2)
+    const finalScore = safe(baseScore * scoreMultiplier)
     const stats = getStrategyStats(opp.strategy)
     const winRate = stats.wins / Math.max(stats.totalTrades, 1)
     const recentMomentum = stats.last5Profits.length
