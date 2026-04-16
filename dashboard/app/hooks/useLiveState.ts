@@ -54,6 +54,9 @@ export type LiveState = {
     totalProfit?: number
   }
   logs?: Array<{ agent: string; message: string; time: number }>
+
+  configuredSource?: 'ON_CHAIN' | 'DEXSCREENER' | 'SUBGRAPH'
+  usedSource?: 'ON_CHAIN' | 'DEXSCREENER' | 'SUBGRAPH' | null
 }
 
 export type TimelineItem = {
