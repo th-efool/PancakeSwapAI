@@ -1,0 +1,100 @@
+description: 'Swap Planner Skill Evaluation'
+
+prompts:
+  - |
+    You are an AI assistant. The user has loaded the following skill:
+
+    <skill>
+    {{skill_content}}
+    </skill>
+
+    Now answer the following user request:
+
+    <user_request>
+    {{case_content}}
+    </user_request>
+
+providers:
+  - id: anthropic:claude-sonnet-4-5-20250929
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+defaultTest:
+  options:
+    timeout: 180000
+  vars:
+    skill_content: file://../../../packages/plugins/pancakeswap-driver/skills/swap-planner/SKILL.md
+
+tests:
+  # Test 1: Basic BSC swap planning
+  - vars:
+      case_content: file://cases/basic-bsc-swap.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/swap-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains
+        value: 'pancakeswap.finance/swap'
+      - type: contains
+        value: 'bsc'
+      - type: contains-any
+        value:
+          - 'BNB'
+          - 'inputCurrency'
+
+  # Test 2: Token discovery
+  - vars:
+      case_content: file://cases/token-discovery.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/swap-correctness.txt
+        threshold: 0.8
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'dexscreener'
+          - 'DexScreener'
+          - 'verify'
+          - 'contract'
+          - 'BSCScan'
+
+  # Test 3: Cross-chain swap planning — 100 USDT → ETH on Ethereum
+  - vars:
+      case_content: file://cases/cross-chain.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/swap-correctness.txt
+        threshold: 0.8
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains
+        value: 'pancakeswap.finance/swap'
+      # The chain key for Ethereum in PancakeSwap deep links is "eth" (not "ethereum")
+      - type: contains
+        value: 'chain=eth'
+      # USDT on Ethereum = 0xdAC17... (6 decimals)
+      - type: contains-any
+        value:
+          - '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+          - 'outputCurrency=ETH'
+          - 'inputCurrency=0xdAC17'
+
+  # Test 4: Cross-chain bridge swap — 1 ETH on Base → USDC on Arbitrum
+  - vars:
+      case_content: file://cases/cross-chain-bridge.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/swap-correctness.txt
+        threshold: 0.8
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains
+        value: 'pancakeswap.finance/swap'
+      - type: contains
+        value: 'chainOut=arb'
+      - type: contains
+        value: 'chain=base'
+      - type: contains-any
+        value:
+          - 'inputCurrency=ETH'
+          - 'outputCurrency=0xaf88'

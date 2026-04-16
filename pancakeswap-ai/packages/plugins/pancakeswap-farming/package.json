@@ -1,0 +1,15 @@
+{
+  "name": "@pancakeswap/pancakeswap-farming",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered assistance for discovering PancakeSwap farms, staking CAKE, and managing yield farming positions",
+  "author": "PancakeSwap <chef.sanji@pancakeswap.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancakeswap-ai.git",
+    "directory": "packages/plugins/pancakeswap-farming"
+  },
+  "keywords": ["claude-code", "plugin", "pancakeswap", "farming", "yield", "cake", "staking", "syrup-pools", "defi"],
+  "files": [".claude-plugin", "skills", "README.md"]
+}

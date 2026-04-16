@@ -1,0 +1,49 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "plugins": [
+    {
+      "plugin": "@nx/js/typescript",
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
+      }
+    },
+    "@nx/eslint/plugin",
+    "@nx/jest/plugin"
+  ],
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "cache": true
+    },
+    "test": {
+      "dependsOn": ["^build"]
+    },
+    "eval": {
+      "cache": true,
+      "inputs": [
+        "{projectRoot}/**/*.md",
+        "{projectRoot}/**/*.yaml",
+        "{projectRoot}/cases/**/*",
+        "{projectRoot}/rubrics/**/*"
+      ]
+    }
+  },
+  "parallel": 5,
+  "cacheDirectory": "node_modules/.cache/nx",
+  "release": {
+    "projects": ["packages/plugins/*"],
+    "version": {
+      "conventionalCommits": true
+    },
+    "changelog": {
+      "workspaceChangelog": {
+        "createRelease": "github"
+      }
+    }
+  }
+}
