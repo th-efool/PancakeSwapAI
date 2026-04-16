@@ -1,0 +1,196 @@
+description: 'Farming Planner Skill Evaluation'
+
+prompts:
+  - |
+    You are an AI assistant. The user has loaded the following skill:
+
+    <skill>
+    {{skill_content}}
+    </skill>
+
+    Now answer the following user request:
+
+    <user_request>
+    {{case_content}}
+    </user_request>
+
+providers:
+  - id: anthropic:claude-sonnet-4-5-20250929
+    config:
+      temperature: 0
+      max_tokens: 4096
+
+defaultTest:
+  options:
+    timeout: 180000
+  vars:
+    skill_content: file://../../../packages/plugins/pancakeswap-farming/skills/farming-planner/SKILL.md
+
+tests:
+  # Test 1: Basic CAKE staking
+  - vars:
+      case_content: file://cases/basic-cake-staking.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/farming-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'pancakeswap.finance/cake-staking'
+          - 'pancakeswap.finance/pools'
+      - type: contains-any
+        value:
+          - '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
+          - 'CAKE'
+
+  # Test 2: LP farming plan
+  - vars:
+      case_content: file://cases/lp-farming.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/farming-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'pancakeswap.finance/liquidity/pools'
+          - 'pancakeswap.finance/liquidity'
+      - type: contains-any
+        value:
+          - 'impermanent loss'
+          - 'IL'
+          - 'risk'
+
+  # Test 3: Farm discovery (find best farms)
+  - vars:
+      case_content: file://cases/farm-discovery.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/farm-discovery-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'explorer.pancakeswap.com'
+          - 'pcs_farms.py'
+          - 'pancakeswap.finance/liquidity/pools'
+      - type: contains-any
+        value:
+          - 'APR'
+          - 'APY'
+          - 'apr'
+      - type: contains
+        value: 'pancakeswap.finance'
+
+  # Test 4: Unstaking LP tokens
+  - vars:
+      case_content: file://cases/unstake-lp.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/farming-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'pancakeswap.finance/liquidity/pools'
+          - 'withdraw'
+          - 'unstake'
+      - type: contains-any
+        value:
+          - '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652'
+          - 'MasterChef'
+          - 'pancakeswap.finance/liquidity/pools'
+
+  # Test 5: Harvest rewards (V2, V3, Infinity)
+  - vars:
+      case_content: file://cases/harvest-rewards.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/farming-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'pendingCake'
+          - 'harvest'
+          - 'pancakeswap.finance/liquidity/pools'
+      - type: contains-any
+        value:
+          - '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652'
+          - '0x556B9306565093C855AEA9AE92A594704c2Cd59e'
+          - '0xEA8620aAb2F07a0ae710442590D649ADE8440877'
+          - 'MasterChef'
+          - 'Distributor'
+
+  # Test 6: Multi-chain farming on Base
+  - vars:
+      case_content: file://cases/multichain-base-farming.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/farming-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'chain=base'
+          - 'Base'
+          - 'base'
+      - type: contains-any
+        value:
+          - '0x4200000000000000000000000000000000000006'
+          - '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+          - 'WETH'
+          - 'USDC'
+      - type: contains
+        value: 'pancakeswap.finance'
+
+  # Test 7: Stablecoin farming (low risk)
+  - vars:
+      case_content: file://cases/stablecoin-farming.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/farming-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'StableSwap'
+          - 'stable'
+          - 'USDT'
+          - 'USDC'
+      - type: contains-any
+        value:
+          - 'pancakeswap.finance/stable/add'
+          - 'pancakeswap.finance/liquidity/pools'
+          - 'pancakeswap.finance/add'
+      - type: contains-any
+        value:
+          - 'impermanent loss'
+          - 'minimal risk'
+          - 'low risk'
+          - 'stablecoin'
+
+  # Test 8: Infinity farms
+  - vars:
+      case_content: file://cases/infinity-farms.md
+    assert:
+      - type: llm-rubric
+        value: file://rubrics/farming-correctness.txt
+        threshold: 0.85
+        provider: anthropic:claude-sonnet-4-5-20250929
+      - type: contains-any
+        value:
+          - 'Infinity'
+          - 'infinity'
+      - type: contains-any
+        value:
+          - 'epoch'
+          - '8 hour'
+          - 'Merkle'
+          - 'CampaignManager'
+      - type: contains-any
+        value:
+          - 'pancakeswap.finance/liquidity/add'
+          - 'pancakeswap.finance/liquidity/pools'
+          - '0x26Bde0AC5b77b65A402778448eCac2aCaa9c9115'

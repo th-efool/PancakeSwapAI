@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(yarn:*)",
+      "Bash(curl:*)",
+      "Bash(node:*)",
+      "Bash(cast:*)"
+    ],
+    "deny": []
+  }
+}

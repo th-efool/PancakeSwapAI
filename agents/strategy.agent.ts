@@ -20,5 +20,3 @@ export function strategyAgent(
   console.log('Strategy result: opportunity found');
   return opportunity;
 }
-
-export default strategyAgent;

@@ -1,0 +1,32 @@
+Evaluate whether the response correctly plans a PancakeSwap farming or staking strategy:
+
+1. Strategy Recommendation
+   - Does the response identify the right farming/staking option for the user's situation?
+   - Does it explain the differences between options (V2 farms, V3 farms, Infinity farms, Syrup Pools)?
+   - Does it recommend an appropriate strategy based on the user's holdings and goals?
+
+2. Deep Link Generation
+   - Does the response generate valid pancakeswap.finance URLs?
+   - Are the links pointed to the correct page (farms, pools, cake-staking, liquidity)?
+   - Does it include the correct chain parameter where applicable?
+
+3. Yield Information
+   - Does it reference APR/APY data or explain how to check current yields?
+   - Does it mention DefiLlama, PancakeSwap UI, or on-chain queries for yield data?
+   - Does it avoid hardcoding specific APR numbers (since they change)?
+
+4. Risk Warnings
+   - Does it warn about impermanent loss for LP farming?
+   - Does it caution about CAKE price risk for reward valuation?
+   - Does it advise against using private keys in scripts for mainnet?
+
+5. Contract Accuracy
+   - Are contract addresses correct (CAKE, MasterChef, CampaignManager)?
+   - Is the chain context correct (V2 farms BSC-only, etc.)?
+
+6. Infinity Farming Flow
+   - Does it correctly explain that Infinity farms are single-step (add liquidity = auto-staked)?
+   - Does it NOT tell the user to separately stake after adding Infinity liquidity?
+   - Does it contrast this with V2/V3 farms which require a separate staking step?
+
+Score 1.0 if all 6 areas fully addressed, 0.85 if mostly correct with minor gaps, 0.7 if partial.

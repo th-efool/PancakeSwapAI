@@ -1,0 +1,12 @@
+# Root promptfoo config for pancakeswap-ai evals
+description: 'PancakeSwap AI Evals'
+
+providers:
+  - id: anthropic:claude-sonnet-4-5-20250929
+    config:
+      temperature: 0
+      max_tokens: 8192
+
+defaultTest:
+  options:
+    timeout: 120000

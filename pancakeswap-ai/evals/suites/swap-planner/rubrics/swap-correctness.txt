@@ -1,0 +1,24 @@
+Evaluate whether the response correctly plans a PancakeSwap swap:
+
+1. Deep Link Generation
+   - Does the response generate a pancakeswap.finance/swap URL?
+   - Does it include the correct chain parameter?
+   - Does it include inputCurrency and outputCurrency parameters?
+   - Is the exactAmount and exactField included?
+
+2. Token Resolution
+   - Are token addresses correctly identified for the given chain?
+   - Is the native token (BNB, ETH) handled correctly (without address)?
+   - Are well-known tokens (CAKE, USDT) using the correct addresses?
+
+3. Safety Checks
+   - Does the response mention verifying the token contract?
+   - Does it warn about slippage for volatile tokens?
+   - Does it check or mention liquidity?
+
+4. User Guidance
+   - Is the output clearly presented?
+   - Does it explain what the link will do?
+   - Does it provide slippage recommendations?
+
+Score 1.0 if all 4 areas fully addressed with a valid deep link, 0.85 if mostly correct, 0.7 if partial.

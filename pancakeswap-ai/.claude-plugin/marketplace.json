@@ -1,0 +1,29 @@
+{
+  "name": "pancakeswap-ai",
+  "version": "1.0.0",
+  "owner": {
+    "name": "PancakeSwap",
+    "email": "chef.sanji@pancakeswap.com"
+  },
+  "metadata": {
+    "description": "PancakeSwap-specific AI tools (skills, plugins, agents) for developers and AI agents integrating the PancakeSwap ecosystem.",
+    "repository": "https://github.com/pancakeswap/pancakeswap-ai"
+  },
+  "plugins": [
+    {
+      "name": "pancakeswap-driver",
+      "source": "./packages/plugins/pancakeswap-driver",
+      "description": "AI-powered assistance for discovering tokens, planning swaps, and planning liquidity positions with deep links"
+    },
+    {
+      "name": "pancakeswap-farming",
+      "source": "./packages/plugins/pancakeswap-farming",
+      "description": "Plan yield farming, CAKE staking, and reward harvesting with deep links to the PancakeSwap farming UI"
+    },
+    {
+      "name": "pancakeswap-hub",
+      "source": "./packages/plugins/pancakeswap-hub",
+      "description": "Integrate and plan swaps through PanckaeSwap Hub"
+    }
+  ]
+}
