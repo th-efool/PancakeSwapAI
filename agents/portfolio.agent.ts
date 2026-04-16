@@ -1,3 +1,4 @@
+import { updateStrategyStats } from '../core/memory/strategyMemory'
 import { log } from '../core/logger'
 import type { Opportunity, TradeResult } from '../core/types'
 
@@ -21,13 +22,15 @@ let portfolio: PortfolioState = {
   strategyStats: {},
 }
 
+const safe = (v: number) => (Number.isFinite(v) ? v : 0)
+
 export function recordTrade(result: TradeResult, opportunity: Opportunity): void {
   portfolio.totalTrades += 1
   if (result.success) portfolio.successfulTrades += 1
 
-  const profit = result.actualProfit ?? opportunity.expectedProfit
-  const gasCost = opportunity.gasCost
-  const netProfit = opportunity.expectedProfit
+  const profit = safe(result.actualProfit ?? 0)
+  const gasCost = safe(opportunity.gasCost)
+  const netProfit = safe(opportunity.expectedProfit)
 
   portfolio.totalProfit += profit
   portfolio.totalGasSpent += gasCost
@@ -40,6 +43,8 @@ export function recordTrade(result: TradeResult, opportunity: Opportunity): void
 
   portfolio.strategyStats[strategy].trades += 1
   portfolio.strategyStats[strategy].profit += profit
+
+  updateStrategyStats(strategy, profit)
 }
 
 export function getPerformance() {

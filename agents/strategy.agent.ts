@@ -1,3 +1,4 @@
+import { computePerformanceScore, getStrategyStats } from '../core/memory/strategyMemory'
 import { log } from '../core/logger'
 import type { MarketRegime, MarketState, Opportunity, SignalSet } from '../core/types'
 
@@ -5,6 +6,7 @@ export type StrategyFn = (state: MarketState, signals: SignalSet | null, regime:
 export type StrategyInput = StrategyFn | StrategyFn[]
 
 const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v))
+const safe = (v: number) => (Number.isFinite(v) ? v : 0)
 
 const scoreOpportunity = (opp: Opportunity, signals: SignalSet | null) => {
   const profitNorm = opp.amountIn > 0 ? opp.expectedProfit / opp.amountIn : 0
@@ -48,23 +50,37 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
   log('strategy', `Found ${opportunities.length} opportunities`)
   if (!opportunities.length) return null
 
-  let best = opportunities[0]
-  let bestScore = scoreOpportunity(best, signals)
+  let best: Opportunity | null = null
+  let bestBaseScore = 0
+  let bestPerfScore = 0
+  let bestFinalScore = -Infinity
 
   for (const opp of opportunities) {
-    const score = scoreOpportunity(opp, signals)
-    log(
-      'strategy',
-      `strategy=${opp.strategy} expectedProfit=${opp.expectedProfit.toFixed(6)} confidence=${opp.confidence.toFixed(4)} signalStrength=${(opp.signalStrength ?? 0).toFixed(4)} score=${score.toFixed(4)} reason=${opp.reason ?? 'n/a'}`,
-    )
-    if (score > bestScore) {
+    const baseScore = safe(scoreOpportunity(opp, signals))
+    const performanceScore = safe(computePerformanceScore(opp.strategy))
+    const finalScore = safe(baseScore * 0.7 + performanceScore * 0.3)
+    const stats = getStrategyStats(opp.strategy)
+    const winRate = stats.wins / Math.max(stats.totalTrades, 1)
+    const recentMomentum = stats.last5Profits.length
+      ? stats.last5Profits.reduce((sum, p) => sum + (Number.isFinite(p) ? p : 0), 0) / stats.last5Profits.length
+      : 0
+
+    log('memory', JSON.stringify({ strategy: opp.strategy, winRate, avgProfit: stats.avgProfit, recentMomentum, performanceScore }))
+
+    opp.score = finalScore
+    if (finalScore > bestFinalScore) {
       best = opp
-      bestScore = score
+      bestBaseScore = baseScore
+      bestPerfScore = performanceScore
+      bestFinalScore = finalScore
     }
   }
 
+  if (!best) return null
+
+  log('strategy', JSON.stringify({ selected: best.strategy, baseScore: bestBaseScore, performanceScore: bestPerfScore, finalScore: bestFinalScore }))
   log('strategy', `Selected strategy=${best.strategy} reason=${best.reason ?? 'highest score'}`)
-  return { ...best, score: bestScore }
+  return best
 }
 
 export default strategyAgent
