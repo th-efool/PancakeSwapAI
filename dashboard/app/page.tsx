@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import Card from '@/components/Card';
-import MetricBox from '@/components/MetricBox';
+import Card from '../components/Card';
+import MetricBox from '../components/MetricBox';
 
 type Strategy = {
   name: string;

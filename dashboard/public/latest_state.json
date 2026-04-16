@@ -1,0 +1,32 @@
+{
+  "opportunity": {
+    "tokenIn": "0x1111111111111111111111111111111111111111",
+    "tokenOut": "0x2222222222222222222222222222222222222222",
+    "amountIn": 0.05,
+    "expectedProfit": 0.0034500000000000034,
+    "gasCost": 0.00030000000000000003,
+    "slippage": 0.005,
+    "strategy": "arbitrage",
+    "confidence": 0.9,
+    "score": 0.003105000000000003
+  },
+  "performance": {
+    "totalTrades": 1,
+    "successfulTrades": 1,
+    "winRate": 1,
+    "totalProfit": 0.0034500000000000034,
+    "totalGasSpent": 0.00030000000000000003,
+    "netProfit": 0.0034500000000000034,
+    "gasEfficiency": 11.50000000000001,
+    "avgProfitPerTrade": 0.0034500000000000034,
+    "avgProfit": 0.0034500000000000034,
+    "stdDev": 0,
+    "sharpe": 3450.0000000000036,
+    "strategyBreakdown": {
+      "arbitrage": {
+        "trades": 1,
+        "profit": 0.0034500000000000034
+      }
+    }
+  }
+}
