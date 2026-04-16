@@ -16,8 +16,8 @@ type DashboardData = {
     strategy?: string;
     confidence?: number;
     expectedProfit?: number;
-    tokenIn?: { symbol?: string };
-    tokenOut?: { symbol?: string };
+    tokenIn?: string;
+    tokenOut?: string;
     amountIn?: number;
     score?: number;
   } | null;
@@ -27,7 +27,7 @@ type DashboardData = {
     totalProfit?: number;
     netProfit?: number;
     gasEfficiency?: number;
-    sharpeRatio?: number;
+    sharpe?: number;
   } | null;
   strategies?: Strategy[];
   timestamp?: number;
@@ -90,6 +90,8 @@ export default function Page() {
     );
   }
 
+  if (!data?.opportunity) return 'Waiting...';
+
   return (
       <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 text-slate-100">
         <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-1 gap-6 lg:grid-cols-12">
@@ -104,15 +106,37 @@ export default function Page() {
 
           <Card title="Current Trade" className="lg:col-span-5">
             <div className="grid grid-cols-2 gap-4">
-              <MetricBox label="Strategy" value={opp?.strategy ?? '—'} tone="good" />
-              <MetricBox label="Confidence" value={`${n(opp?.confidence, 1)}%`} />
-              <MetricBox label="Expected Profit" value={`${n(opp?.expectedProfit)} BNB`} tone="good" />
+              <MetricBox label="Strategy" value={data.opportunity.strategy ?? '—'} tone="good" />
               <MetricBox
-                  label="Pair"
-                  value={`${opp?.tokenIn?.symbol ?? '—'} → ${opp?.tokenOut?.symbol ?? '—'}`}
+                  label="Confidence"
+                  value={
+                    typeof data.opportunity.confidence === 'number'
+                        ? `${(data.opportunity.confidence * 100).toFixed(1)}%`
+                        : '—'
+                  }
               />
-              <MetricBox label="Amount In" value={`${n(opp?.amountIn)} ${opp?.tokenIn?.symbol ?? ''}`.trim()} />
-              <MetricBox label="Score" value={n(opp?.score)} />
+              <MetricBox
+                  label="Expected Profit"
+                  value={
+                    typeof data.opportunity.expectedProfit === 'number'
+                        ? `${data.opportunity.expectedProfit.toFixed(4)} BNB`
+                        : '—'
+                  }
+                  tone="good"
+              />
+              <MetricBox
+                  label="Token Pair"
+                  value={
+                    data.opportunity.tokenIn && data.opportunity.tokenOut
+                        ? `${data.opportunity.tokenIn.slice(0, 6)} → ${data.opportunity.tokenOut.slice(0, 6)}`
+                        : '—'
+                  }
+              />
+              <MetricBox label="Amount In" value={data.opportunity.amountIn ?? '—'} />
+              <MetricBox
+                  label="Score"
+                  value={typeof data.opportunity.score === 'number' ? data.opportunity.score.toFixed(4) : '—'}
+              />
             </div>
           </Card>
 
@@ -139,7 +163,7 @@ export default function Page() {
               <MetricBox label="Total Profit" value={`${n(perf?.totalProfit)} BNB`} tone="good" />
               <MetricBox label="Net Profit" value={`${n(perf?.netProfit)} BNB`} tone="good" />
               <MetricBox label="Gas Efficiency" value={`${n(perf?.gasEfficiency, 1)}%`} />
-              <MetricBox label="Sharpe Ratio" value={n(perf?.sharpeRatio)} />
+              <MetricBox label="Sharpe Ratio" value={n(perf?.sharpe)} />
             </div>
           </Card>
 
