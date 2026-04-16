@@ -1,0 +1,50 @@
+import type { MarketState, Opportunity, TradeResult } from './types';
+
+export type Pipeline = {
+  market: () => Promise<MarketState>;
+  strategy: (state: MarketState) => Opportunity | null;
+  risk: (opportunity: Opportunity) => boolean;
+  execute: (opportunity: Opportunity) => Promise<TradeResult>;
+};
+
+export async function runPipeline(pipeline: Pipeline): Promise<void> {
+  try {
+    console.log('Pipeline start');
+
+    console.log('Step 1: market');
+    const state = await pipeline.market();
+    if (!state || !state.pools.length) {
+      console.log('No market data');
+      return;
+    }
+
+    console.log('Step 2: strategy');
+    const opportunity = pipeline.strategy(state);
+    if (!opportunity) {
+      console.log('No opportunity');
+      return;
+    }
+
+    console.log('Step 3: risk');
+    if (!pipeline.risk(opportunity)) {
+      console.log('Risk rejected');
+      return;
+    }
+
+    console.log('Step 4: execute');
+    const result = await pipeline.execute(opportunity);
+    if (!result.success) {
+      console.log(`Trade failed${result.error ? `: ${result.error}` : ''}`);
+      return;
+    }
+
+    console.log(
+      `Trade success${typeof result.actualProfit === 'number' ? ` | profit: ${result.actualProfit}` : ''}${
+        result.txHash ? ` | tx: ${result.txHash}` : ''
+      }`,
+    );
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`Pipeline error: ${message}`);
+  }
+}
