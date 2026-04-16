@@ -24,10 +24,8 @@ function buildOpportunity(pool: Pool): Opportunity | null {
 
   console.log('Imbalance detected');
   return {
-    buyPool: pool,
-    sellPool: pool,
-    tokenIn: isSell ? pool.token0 : pool.token1,
-    tokenOut: isSell ? pool.token1 : pool.token0,
+    tokenIn: isSell ? pool.token0.address : pool.token1.address,
+    tokenOut: isSell ? pool.token1.address : pool.token0.address,
     amountIn,
     expectedProfit,
     gasCost,

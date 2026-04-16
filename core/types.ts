@@ -17,10 +17,8 @@ export type MarketState = {
 };
 
 export type Opportunity = {
-  buyPool: Pool;
-  sellPool: Pool;
-  tokenIn: Token;
-  tokenOut: Token;
+  tokenIn: string;
+  tokenOut: string;
   amountIn: number;
   expectedProfit: number;
   gasCost: number;
@@ -33,8 +31,29 @@ export type Opportunity = {
 export type TradeResult = {
   success: boolean;
   txHash?: string;
-  actualProfit?: number;
   error?: string;
+  actualProfit?: number;
+};
+
+export type Performance = {
+  totalTrades: number;
+  successfulTrades: number;
+  winRate: number;
+  totalProfit: number;
+  totalGasSpent: number;
+  netProfit: number;
+  gasEfficiency: number;
+  avgProfitPerTrade: number;
+  avgProfit: number;
+  stdDev: number;
+  sharpe: number;
+  strategyBreakdown: Record<
+    string,
+    {
+      trades: number;
+      profit: number;
+    }
+  >;
 };
 
 export type Config = {

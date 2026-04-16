@@ -52,10 +52,8 @@ export function meanReversionStrategy(state: MarketState): Opportunity | null {
     if (expectedProfit <= 0) continue;
 
     const opp: Opportunity = {
-      buyPool: low,
-      sellPool: high,
-      tokenIn: low.token0,
-      tokenOut: low.token1,
+      tokenIn: low.token0.address,
+      tokenOut: low.token1.address,
       amountIn,
       expectedProfit,
       gasCost,
