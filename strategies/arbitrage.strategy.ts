@@ -27,8 +27,8 @@ export function arbitrageStrategy(state: MarketState): Opportunity | null {
 
   console.log('Grouping pools by token pair');
   const groups = groupByPair(state.pools);
+  const amountIn = config.maxTradeSize;
   const gasCost = config.gasLimit * GAS_PRICE_GWEI * GWEI_TO_BNB;
-  const slippageCost = config.slippageTolerance * config.maxTradeSize;
 
   let best: Opportunity | null = null;
 
@@ -37,19 +37,25 @@ export function arbitrageStrategy(state: MarketState): Opportunity | null {
 
     let low = pools[0];
     let high = pools[0];
-
     for (const pool of pools) {
       if (pool.price < low.price) low = pool;
       if (pool.price > high.price) high = pool;
     }
 
-    const spread = high.price - low.price;
-    const expectedProfit = spread - gasCost - slippageCost;
+    if (low.price <= 0 || high.price <= 0) continue;
+
+    const buyAmount = amountIn;
+    const sellAmount = amountIn * (high.price / low.price);
+    const slippageCost = sellAmount * config.slippageTolerance;
+    const expectedProfit = sellAmount - buyAmount - gasCost - slippageCost;
     if (expectedProfit <= 0) continue;
 
     const opportunity: Opportunity = {
       buyPool: low,
       sellPool: high,
+      tokenIn: low.token0,
+      tokenOut: low.token1,
+      amountIn,
       expectedProfit,
       gasCost,
       slippage: slippageCost,

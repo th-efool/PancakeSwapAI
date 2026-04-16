@@ -4,72 +4,79 @@ import config from '../config';
 
 const DRY_RUN = true;
 
-type SwapRequest = {
-  to: string;
-  data: string;
-  value: bigint;
-  gasLimit?: bigint;
+type SwapPrep = {
+  routerType: 'smart' | 'universal';
+  tokenIn: string;
+  tokenOut: string;
+  amountIn: number;
+  amountOutQuote: number;
+  amountOutMin: number;
 };
 
-function applySlippage(amount: number): number {
-  return amount * (1 - config.slippageTolerance);
+function selectRouter(): 'smart' | 'universal' {
+  return config.routerType === 'universal' ? 'universal' : 'smart';
 }
 
-function buildSwapRequest(opp: Opportunity): SwapRequest {
-  const minOut = applySlippage(opp.expectedProfit);
-  const route = config.routerType === 'smart' ? 'SMART' : 'UNIVERSAL';
-  const payload = `route=${route};buy=${opp.buyPool.address};sell=${opp.sellPool.address};minOut=${minOut}`;
+function quoteAmountOut(opp: Opportunity): number {
+  return opp.amountIn * (opp.sellPool.price / opp.buyPool.price);
+}
+
+function minAmountOut(amountOutQuote: number): number {
+  return amountOutQuote * (1 - config.slippageTolerance);
+}
+
+function buildSwapPrep(opp: Opportunity): SwapPrep {
+  const amountOutQuote = quoteAmountOut(opp);
   return {
-    to: config.routerType === 'smart' ? opp.buyPool.address : opp.sellPool.address,
-    data: ethers.hexlify(ethers.toUtf8Bytes(payload)),
-    value: 0n,
+    routerType: selectRouter(),
+    tokenIn: opp.tokenIn.address,
+    tokenOut: opp.tokenOut.address,
+    amountIn: opp.amountIn,
+    amountOutQuote,
+    amountOutMin: minAmountOut(amountOutQuote),
   };
 }
 
-async function estimateGas(provider: ethers.JsonRpcProvider, req: SwapRequest): Promise<bigint> {
-  try {
-    return await provider.estimateGas({ to: req.to, data: req.data, value: req.value });
-  } catch {
-    return BigInt(config.gasLimit);
+async function estimateGas(): Promise<bigint> {
+  return BigInt(config.gasLimit);
+}
+
+function validateOpportunity(opp: Opportunity): string | null {
+  if (!opp.tokenIn || !opp.tokenOut) return 'Missing tokens';
+  if (!ethers.isAddress(opp.tokenIn.address) || !ethers.isAddress(opp.tokenOut.address)) {
+    return 'Invalid token address';
   }
+  if (opp.amountIn <= 0) return 'Invalid amountIn';
+  if (opp.buyPool.price <= 0 || opp.sellPool.price <= 0) return 'Invalid pool price';
+  return null;
 }
 
 export async function executionAgent(opp: Opportunity): Promise<TradeResult> {
-  if (!opp.buyPool || !opp.sellPool) return { success: false, error: 'Invalid opportunity pools' };
-  if (opp.expectedProfit <= 0) return { success: false, error: 'Non-profitable opportunity' };
+  const validationError = validateOpportunity(opp);
+  if (validationError) return { success: false, error: validationError };
 
-  const provider = new ethers.JsonRpcProvider(config.rpcUrl);
-  const req = buildSwapRequest(opp);
+  const prep = buildSwapPrep(opp);
+  const gasEstimate = await estimateGas();
 
-  console.log(`Router selected: ${config.routerType}`);
-  req.gasLimit = await estimateGas(provider, req);
-  console.log(`Estimated gas: ${req.gasLimit.toString()}`);
+  console.log(`tokenIn: ${prep.tokenIn}`);
+  console.log(`tokenOut: ${prep.tokenOut}`);
+  console.log(`amountIn: ${prep.amountIn}`);
+  console.log(`amountOutQuote: ${prep.amountOutQuote}`);
+  console.log(`amountOutMin: ${prep.amountOutMin}`);
+  console.log(`router type: ${prep.routerType}`);
+  console.log(`gas estimate: ${gasEstimate.toString()}`);
+  console.log('Prepared swap via router');
 
   if (DRY_RUN) {
     console.log('Execution mode: DRY_RUN');
-    console.log(`Swap request -> to: ${req.to}`);
-    return { success: true, txHash: 'dry-run', actualProfit: opp.expectedProfit };
+    return {
+      success: true,
+      txHash: 'dry-run',
+      actualProfit: opp.expectedProfit,
+    };
   }
 
-  if (!config.privateKey) return { success: false, error: 'Missing PRIVATE_KEY for live execution' };
-
-  try {
-    console.log('Execution mode: LIVE');
-    const wallet = new ethers.Wallet(config.privateKey, provider);
-    const tx = await wallet.sendTransaction({
-      to: req.to,
-      data: req.data,
-      value: req.value,
-      gasLimit: req.gasLimit,
-    });
-    const receipt = await tx.wait();
-    if (!receipt) return { success: false, error: 'No transaction receipt' };
-    return { success: true, txHash: tx.hash };
-  } catch (error) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.error(`Execution error: ${msg}`);
-    return { success: false, error: msg };
-  }
+  return { success: false, error: 'Live execution disabled' };
 }
 
 export default executionAgent;

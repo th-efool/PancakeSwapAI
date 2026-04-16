@@ -23,6 +23,9 @@ export type MarketState = {
 export type Opportunity = {
   buyPool: Pool;
   sellPool: Pool;
+  tokenIn: Token;
+  tokenOut: Token;
+  amountIn: number;
   expectedProfit: number;
   gasCost: number;
   slippage: number;

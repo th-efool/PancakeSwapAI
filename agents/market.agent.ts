@@ -62,3 +62,5 @@ export async function marketAgent(): Promise<MarketState> {
     timestamp: Date.now(),
   };
 }
+
+export default marketAgent;
