@@ -1,3 +1,5 @@
+export type MarketRegime = 'TRENDING' | 'MEAN_REVERTING' | 'VOLATILE' | 'UNKNOWN'
+
 export type Token = {
   address: string;
   symbol: string;
