@@ -21,7 +21,7 @@ export default function MetricBox({ label, value, tone = 'default', icon }: Prop
           {icon && <span className="h-4 w-4">{icon}</span>}
           <p className="text-[10px] font-semibold uppercase tracking-widest">{label}</p>
         </div>
-        <p className={`text-3xl font-black tracking-tight ${toneMap[tone]}`}>{value}</p>
+        <p className={`break-words text-2xl leading-tight font-black tracking-tight md:text-[1.7rem] ${toneMap[tone]}`}>{value}</p>
       </div>
   );
 }
