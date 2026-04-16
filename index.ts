@@ -4,7 +4,6 @@ import strategyAgent from './agents/strategy.agent';
 import arbitrageStrategy from './strategies/arbitrage.strategy';
 import riskAgent from './agents/risk.agent';
 import executionAgent from './agents/execution.agent';
-import config from './config';
 
 const pipeline = {
   market: marketAgent,
@@ -15,11 +14,7 @@ const pipeline = {
 
 async function main() {
   console.log('Starting trading bot...');
-
-  while (true) {
-    await runPipeline(pipeline);
-    await new Promise((resolve) => setTimeout(resolve, config.pollIntervalMs));
-  }
+  await runPipeline(pipeline);
 }
 
 main().catch((err) => {

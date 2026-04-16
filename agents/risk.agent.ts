@@ -5,8 +5,8 @@ function checkProfitability(opp: Opportunity): boolean {
   return opp.expectedProfit > opp.gasCost * 1.5;
 }
 
-function checkTradeSize(): boolean {
-  return config.maxTradeSize <= 0.1;
+function checkTradeSize(opp: Opportunity): boolean {
+  return opp.amountIn <= config.maxTradeSize;
 }
 
 function checkSlippage(opp: Opportunity): boolean {
@@ -19,7 +19,7 @@ export function riskAgent(opp: Opportunity): boolean {
     return false;
   }
 
-  if (!checkTradeSize()) {
+  if (!checkTradeSize(opp)) {
     console.log('Risk failed: trade size');
     return false;
   }
