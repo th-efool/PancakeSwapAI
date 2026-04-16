@@ -18,6 +18,7 @@ type AppConfig = Config & {
 const BSC_RPC_URL = 'https://bsc-dataseed.binance.org/'
 const BSC_CHAIN_ID = 56
 const DEFAULT_GAS_LIMIT = 300000
+const DEFAULT_GAS_PRICE_GWEI = 1
 const DEFAULT_SLIPPAGE_TOLERANCE = 0.005
 const DEFAULT_MAX_TRADE_SIZE = 0.05
 const DEFAULT_TRADE_SCALE_K = 0.01
@@ -33,6 +34,7 @@ export const config: AppConfig = {
   chainId: BSC_CHAIN_ID,
   privateKey: process.env.PRIVATE_KEY || '',
   gasLimit: DEFAULT_GAS_LIMIT,
+  gasPriceGwei: DEFAULT_GAS_PRICE_GWEI,
   slippageTolerance: DEFAULT_SLIPPAGE_TOLERANCE,
   maxTradeSize: DEFAULT_MAX_TRADE_SIZE,
   tradeScaleK: DEFAULT_TRADE_SCALE_K,
@@ -79,7 +81,7 @@ export function syncMarketDataConfigFromDisk() {
 }
 
 export function estimateGasCost(): number {
-  return config.gasLimit * 1e-9
+  return config.gasLimit * config.gasPriceGwei * 1e-9
 }
 
 export default config

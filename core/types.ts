@@ -109,6 +109,7 @@ export type Config = {
   rpcUrl: string;
   privateKey: string;
   gasLimit: number;
+  gasPriceGwei: number;
   slippageTolerance: number;
   maxTradeSize: number;
   tradeScaleK: number;
