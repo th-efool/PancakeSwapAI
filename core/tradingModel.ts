@@ -1,6 +1,6 @@
 import type { Config } from './types.js'
 
-type TradingConfig = Pick<Config, 'gasLimit' | 'slippageTolerance' | 'maxTradeSize' | 'tradeScaleK' | 'minTradeSize' | 'volatilityEpsilon'>
+type TradingConfig = Pick<Config, 'gasLimit' | 'gasPriceGwei' | 'slippageTolerance' | 'maxTradeSize' | 'tradeScaleK' | 'minTradeSize' | 'volatilityEpsilon'>
 
 export function computeAmountIn(volatility: number, config: TradingConfig): number {
   const v = Math.max(0, volatility)
@@ -9,8 +9,8 @@ export function computeAmountIn(volatility: number, config: TradingConfig): numb
   return Math.max(config.minTradeSize, Math.min(config.maxTradeSize, size))
 }
 
-export function computeGasCost(config: Pick<Config, 'gasLimit'>): number {
-  return config.gasLimit * 1e-9
+export function computeGasCost(config: Pick<Config, 'gasLimit' | 'gasPriceGwei'>): number {
+  return config.gasLimit * config.gasPriceGwei * 1e-9
 }
 
 export function computeExpectedProfit(
