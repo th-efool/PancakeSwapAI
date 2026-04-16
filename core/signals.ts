@@ -1,6 +1,16 @@
 import type { MarketSignal, MarketState, Pool, SignalSet } from './types.js'
+import config from '../config.js'
+import { createRng, gaussianNoise } from './random.js'
 
 const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v))
+const NOISE_SIGMA_MAX = 0.25
+
+const scaledSigma = (baseSigma: number, volatility: number) => {
+  const sigma = Math.max(0, baseSigma || 0)
+  const vol = Math.max(0, volatility || 0)
+  const volFactor = clamp(vol / (1 + vol), 0, 1)
+  return clamp(sigma * volFactor, 0, NOISE_SIGMA_MAX)
+}
 
 function poolSignal(pool: Pool, totalLiquidity: number): MarketSignal {
   const m = pool.priceChange.m5
@@ -63,10 +73,15 @@ function computeTemporalSignals(history: MarketState[], current: MarketState) {
   const velocity = deltas.reduce((a, b) => a + b, 0) / deltas.length
   const variance = deltas.reduce((a, b) => a + (b - velocity) ** 2, 0) / deltas.length
   const volatility = Math.sqrt(variance)
+  const rng = createRng(config.noiseSeed !== undefined ? `${config.noiseSeed}:${current.timestamp}` : undefined)
+  const sigmaPrice = config.noiseEnabled ? scaledSigma(config.noiseSigmaPrice, volatility) : 0
+  const sigmaVelocity = config.noiseEnabled ? scaledSigma(config.noiseSigmaVelocity, volatility) : 0
+  const noisyPriceDelta = priceDelta + gaussianNoise(rng) * sigmaPrice
+  const noisyVelocity = velocity + gaussianNoise(rng) * sigmaVelocity
 
   return {
-    priceDelta: Number.isFinite(priceDelta) ? priceDelta : 0,
-    velocity: Number.isFinite(velocity) ? velocity : 0,
+    priceDelta: Number.isFinite(noisyPriceDelta) ? noisyPriceDelta : 0,
+    velocity: Number.isFinite(noisyVelocity) ? noisyVelocity : 0,
     volatility: Number.isFinite(volatility) ? volatility : 0,
     length: history.length + 1,
   }

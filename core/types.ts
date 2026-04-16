@@ -116,4 +116,8 @@ export type Config = {
   tradeScaleK: number;
   minTradeSize: number;
   volatilityEpsilon: number;
+  noiseEnabled: boolean;
+  noiseSigmaPrice: number;
+  noiseSigmaVelocity: number;
+  noiseSeed?: number;
 };
