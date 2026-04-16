@@ -42,6 +42,14 @@ export type MarketSignal = {
 export type SignalSet = {
   perPool: Array<{ poolAddress: string; signal: MarketSignal }>
   aggregate: MarketSignal
+  temporal: {
+    priceDelta: number
+    velocity: number
+    volatility: number
+  }
+  source: 'cross_pool' | 'temporal' | 'hybrid' | 'none'
+  poolCount: number
+  historyLength: number
 }
 
 export type RegimeAssessment = {

@@ -38,7 +38,7 @@ export const config: AppConfig = {
   marketData: {
     fallbackOrder: ['ON_CHAIN', 'DEXSCREENER', 'SUBGRAPH'],
     timeoutMs: 8000,
-    minPools: 0,
+    minPools: 3,
   },
 }
 

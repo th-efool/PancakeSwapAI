@@ -4,7 +4,7 @@ import { getLastRiskDecision } from '../agents/risk.agent.js'
 import { getLogs, log } from './logger.js'
 import { detectRegime } from './regime.js'
 import { exportState } from './exportState.js'
-import { pushMarketState } from './history.js'
+import { getMarketHistory, pushMarketState } from './history.js'
 import { extractSignals } from './signals.js'
 import type { MarketRegime, MarketState, Opportunity, TradeResult, RegimeAssessment, SignalSet } from './types.js'
 import { latestState } from './state.js'
@@ -53,7 +53,7 @@ const buildState = (
       : [],
     selectedOpportunity,
     signals,
-    temporalSignals: signals?.aggregate ?? null,
+    temporalSignals: signals?.temporal ?? null,
     regime: regimeAssessment.regime,
     regimeConfidence: regimeAssessment.confidence,
     regimeReason: regimeAssessment.reason,
@@ -86,14 +86,18 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
 
     const state = await pipeline.market()
     pushMarketState(state)
-    const signals = extractSignals(state)
+    const history = getMarketHistory().slice(0, -1)
+    const signals = extractSignals(state, history)
     const regimeAssessment = detectRegime(signals)
     console.log('Market regime:', regimeAssessment.regime)
     log(
       'pipeline',
       `Market regime=${regimeAssessment.regime} confidence=${regimeAssessment.confidence.toFixed(3)} reason=${regimeAssessment.reason}`,
     )
-    log('pipeline', `Signal aggregate=${JSON.stringify(signals?.aggregate ?? null)}`)
+    log(
+      'pipeline',
+      `Signal aggregate=${JSON.stringify(signals?.aggregate ?? null)} poolCount=${signals?.poolCount ?? 0} historyLength=${signals?.historyLength ?? 0} source=${signals?.source ?? 'none'}`,
+    )
 
     latestState.temporalSignals = signals
     latestState.regime = regimeAssessment.regime

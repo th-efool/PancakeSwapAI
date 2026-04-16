@@ -57,6 +57,11 @@ const TARGET_POOLS: Array<{ address: string; token0: Token; token1: Token }> = [
     token0: CAKE,
     token1: WBNB,
   },
+  {
+    address: getAddress('0x7efaef62fddcca950418312c6c91aef321375a00'),
+    token0: USDT,
+    token1: BUSD,
+  },
 ]
 
 type DexScreenerPair = {
@@ -116,7 +121,7 @@ class OnChainDataSource implements DataSource {
     if (!provider) return []
 
     const pools: OnChainRawPool[] = []
-    const poolsToCheck = TARGET_POOLS.slice(0, 1)
+    const poolsToCheck = TARGET_POOLS
 
     for (const p of poolsToCheck) {
       if (invalidPools.has(p.address)) continue

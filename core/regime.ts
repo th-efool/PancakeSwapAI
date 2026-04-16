@@ -4,12 +4,19 @@ const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v))
 
 export function detectRegime(signals: SignalSet | null): RegimeAssessment {
   if (!signals) return { regime: 'UNKNOWN', confidence: 0, reason: 'No signals' }
+  if (signals.poolCount < 2 && signals.historyLength < 3) {
+    return {
+      regime: 'INSUFFICIENT_DATA',
+      confidence: 1,
+      reason: `Need >=2 pools or >=3 history points (pools=${signals.poolCount}, history=${signals.historyLength})`,
+    }
+  }
 
   const s = signals.aggregate
   const momentum = Math.abs(s.momentum)
   const volSpike = s.volumeSpike
   const pressure = Math.abs(s.orderImbalance)
-  const vol = momentum
+  const vol = Math.max(momentum, Math.abs(signals.temporal.volatility))
 
   if (momentum < 0.08 && volSpike < 0.6) {
     return {
