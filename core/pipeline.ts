@@ -1,5 +1,6 @@
 import { getPerformance, logPerformance, recordTrade } from '../agents/portfolio.agent';
 import { exportState } from './exportState';
+import { pushMarketState } from './history';
 import { latestState } from './state';
 import type { MarketState, Opportunity, TradeResult } from './types';
 
@@ -13,9 +14,11 @@ export type Pipeline = {
 export async function runPipeline(pipeline: Pipeline): Promise<void> {
   try {
     console.log('Pipeline start');
+    console.log(`Timestamp: ${new Date().toISOString()}`);
 
     console.log('Step 1: market');
     const state = await pipeline.market();
+    pushMarketState(state);
     if (!state || !state.pools.length) {
       console.log('No market data');
       return;

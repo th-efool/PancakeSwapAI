@@ -1,6 +1,7 @@
+import { getPreviousState } from '../core/history';
 import type { MarketState, Opportunity } from '../core/types';
 
-export type StrategyFn = (state: MarketState) => Opportunity | null;
+export type StrategyFn = (current: MarketState, previous: MarketState | null) => Opportunity | null;
 export type StrategyInput = StrategyFn | StrategyFn[];
 
 type OpportunityScorer = (opportunity: Opportunity) => number;
@@ -17,10 +18,11 @@ export function strategyAgent(
   }
 
   const strategies = Array.isArray(strategyImpl) ? strategyImpl : [strategyImpl];
+  const prevState = getPreviousState();
   console.log(`Running ${strategies.length} strategies`);
 
   const opportunities = strategies
-    .map((strategy) => strategy(state))
+    .map((strategy) => strategy(state, prevState))
     .filter((opportunity): opportunity is Opportunity => opportunity !== null);
 
   console.log(`Found ${opportunities.length} opportunities`);
