@@ -1,0 +1,15 @@
+{
+  "name": "pancakeswap-driver",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "packages/plugins/pancakeswap-driver",
+  "tags": ["type:plugin"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["packages/plugins/pancakeswap-driver/**/*.md"]
+      }
+    }
+  }
+}

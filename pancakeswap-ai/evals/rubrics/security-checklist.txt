@@ -1,0 +1,31 @@
+Evaluate whether the response follows secure PancakeSwap integration practices:
+
+1. Token Approval Safety
+   - Does the response address token approvals before swapping?
+   - Does it mention checking allowance before sending an approve transaction?
+   - Does it discuss either Permit2 OR direct ERC-20 approve to the router?
+   - (Permit2 is preferred but not required — either approach is acceptable)
+
+2. Slippage Protection
+   - Does the response set a non-zero slippage tolerance?
+   - Is the slippage appropriate for the token type (lower for stablecoins, higher for volatile)?
+   - Does it warn about the risks of setting slippage too high (e.g., sandwich attacks)?
+
+3. Transaction Deadline
+   - Does the response include a transaction deadline?
+   - Is the deadline a future timestamp (not zero or past)?
+   - Is the suggested window reasonable (10–30 minutes is typical)?
+
+4. Input Validation and Safety
+   - Does the response validate or mention checking token addresses?
+   - Does it check or set a minimum output amount to protect against price movement?
+   - Does it warn about high price impact?
+
+5. Error Handling
+   - Does the response handle or mention INSUFFICIENT_OUTPUT_AMOUNT reverts?
+   - Does it handle expired transactions (EXPIRED error)?
+   - Does it mention MEV / sandwich attack risks on BSC?
+   - Does it provide retry guidance or error recovery?
+
+Score 1.0 if all 5 areas are addressed, 0.8 if 4 areas addressed, 0.6 if 3 areas, 0.4 if 2 areas, lower if fewer.
+The response does not need to be production-ready code — guidance and explanation count toward the score.

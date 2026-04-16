@@ -1,0 +1,59 @@
+{
+  "name": "pancakeswap-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PancakeSwap-specific AI tools (skills, plugins, agents) for developers and AI agents integrating the PancakeSwap ecosystem.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.x",
+    "npm": ">=11.7.0"
+  },
+  "workspaces": [
+    "packages/plugins/*"
+  ],
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "format": "npx nx format:write",
+    "format:check": "npx nx format:check",
+    "lint": "npx nx run-many --target=lint --all",
+    "typecheck": "npx nx run-many --target=typecheck --all",
+    "test": "node tests/helpers.test.mjs",
+    "test:unit": "node tests/helpers.test.mjs",
+    "test:testnet": "node tests/testnet-swap.mjs",
+    "test:evals": "npx promptfoo eval --config evals/suites/swap-planner/promptfoo.yaml && npx promptfoo eval --config evals/suites/liquidity-planner/promptfoo.yaml && npx promptfoo eval --config evals/suites/farming-planner/promptfoo.yaml",
+    "test:evals:swap-planner": "npx promptfoo eval --config evals/suites/swap-planner/promptfoo.yaml",
+    "test:evals:liquidity-planner": "npx promptfoo eval --config evals/suites/liquidity-planner/promptfoo.yaml",
+    "test:evals:farming-planner": "npx promptfoo eval --config evals/suites/farming-planner/promptfoo.yaml",
+    "test:evals:view": "npx promptfoo view",
+    "validate:plugins": "node scripts/validate-plugin.cjs",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "docs:lint": "vale docs/",
+    "prepare": "node scripts/prepare.cjs"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.72.1",
+    "@nx/eslint": "^22.0.2",
+    "@nx/jest": "^22.0.2",
+    "@nx/js": "^22.0.2",
+    "eslint": "^9.33.0",
+    "markdownlint-cli2": "^0.17.2",
+    "nx": "^22.0.2",
+    "prettier": "^2.6.2",
+    "promptfoo": "^0.120.22",
+    "typescript": "^5.9.3",
+    "vitepress": "^1.6.4"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4",
+    "@pancakeswap/infinity-sdk": "^1.0.8",
+    "@pancakeswap/solana-core-sdk": "^0.2.1",
+    "@pancakeswap/v3-sdk": "^3.10.0",
+    "@solana/spl-token": "^0.4.0",
+    "@vercel/firewall": "^1.1.2",
+    "@vercel/node": "^3.0.0",
+    "viem": "^2.46.3"
+  }
+}
