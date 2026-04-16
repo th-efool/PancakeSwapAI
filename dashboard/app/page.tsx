@@ -7,11 +7,12 @@ import MetricBox from '../components/MetricBox'
 import SimulationCard from '../components/SimulationCard'
 import TemporalMetric from '../components/TemporalMetric'
 import { type TimelineItem, useLiveState } from './hooks/useLiveState'
+import { type MarketRegime, normalizeMarketRegime } from '../lib/market'
 
 const n = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '--')
 const signed = (v: number, d = 3) => `${v >= 0 ? '+' : ''}${v.toFixed(d)}`
 
-const regimeMap = {
+const regimeMap: Record<MarketRegime, { badge: string; glow: string; note: string }> = {
   TRENDING: {
     badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40',
     glow: 'shadow-[0_0_32px_rgba(16,185,129,0.25)]',
@@ -27,12 +28,24 @@ const regimeMap = {
     glow: 'shadow-[0_0_32px_rgba(245,158,11,0.28)]',
     note: 'Instability elevated. Confidence dampened and risk posture tightened.',
   },
+  CHAOTIC: {
+    badge: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-400/40',
+    glow: 'shadow-[0_0_28px_rgba(217,70,239,0.24)]',
+    note: 'High movement without volume confirmation. Signals conflict and quality is unstable.',
+  },
+  IDLE: {
+    badge: 'bg-teal-500/20 text-teal-200 border-teal-400/40',
+    glow: 'shadow-[0_0_18px_rgba(45,212,191,0.18)]',
+    note: 'Participation is muted and momentum is flat. System stays selective and conservative.',
+  },
   UNKNOWN: {
     badge: 'bg-slate-500/20 text-slate-300 border-slate-400/40',
     glow: 'shadow-[0_0_20px_rgba(148,163,184,0.18)]',
     note: 'Signal history still building. System observing before stronger adaptation.',
   },
 } as const
+
+const getRegimeUi = (regime: unknown) => regimeMap[normalizeMarketRegime(regime)] ?? regimeMap.UNKNOWN
 
 function statusTag(t: TimelineItem[], strategy?: string, connected?: boolean) {
   if (!connected) return 'waiting'
@@ -62,8 +75,8 @@ export default function Page() {
   const velTone = vel > 0 ? 'text-emerald-300' : vel < 0 ? 'text-rose-300' : 'text-slate-300'
   const volTone = vol > 0.015 ? 'text-amber-300' : 'text-sky-300'
 
-  const regime = data.regime ?? 'UNKNOWN'
-  const regimeUi = regimeMap[regime]
+  const regime = normalizeMarketRegime(data.regime)
+  const regimeUi = getRegimeUi(regime)
 
   const story = (() => {
     if (!hasSignals) return 'System is warming up. Building enough signal depth for confident adaptation.'
@@ -71,6 +84,8 @@ export default function Page() {
     if (regime === 'TRENDING') return `TRENDING regime detected, ${opp.strategy} selected for stronger directional follow-through.`
     if (regime === 'MEAN_REVERTING') return `MEAN_REVERTING regime favored ${opp.strategy} as prices compressed toward equilibrium.`
     if (regime === 'VOLATILE') return `VOLATILE regime reduced confidence globally, but ${opp.strategy} remained highest-ranked.`
+    if (regime === 'CHAOTIC') return `CHAOTIC regime detected and signal agreement is weak, so ${opp.strategy} survived only after stricter filtering.`
+    if (regime === 'IDLE') return `IDLE regime detected. System remains patient while ${opp.strategy} has limited edge.`
     return `${opp.strategy} selected while market state remains UNKNOWN.`
   })()
 
@@ -135,7 +150,7 @@ export default function Page() {
                 <div key={item.cycleId} className={`rounded-xl border p-3 text-sm transition-all ${active ? 'border-cyan-300/50 bg-cyan-500/10 shadow-[0_0_20px_rgba(34,211,238,0.2)]' : 'border-white/10 bg-slate-900/50 hover:-translate-y-0.5 hover:shadow-lg'}`}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <p className="font-semibold text-slate-100">Cycle #{item.cycleId} {switched ? '↺' : '→'} {item.strategy}</p>
-                    <span className={`rounded-full border px-2 py-0.5 text-[10px] ${regimeMap[item.regime].badge}`}>{item.regime}</span>
+                    <span className={`rounded-full border px-2 py-0.5 text-[10px] ${getRegimeUi(item.regime).badge}`}>{item.regime}</span>
                   </div>
                   <p className="mt-1 text-xs text-slate-300">profit {n(item.expectedProfit, 4)} | conf {n(item.confidence, 2)} | score {n(item.score, 4)}</p>
                   <div className="mt-1 flex gap-2 text-[10px]">
