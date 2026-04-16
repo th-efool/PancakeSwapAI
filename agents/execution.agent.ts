@@ -21,6 +21,7 @@ type ExecutionSnapshot = {
   amountOutMin: number | null
   gasEstimate: string | null
   mode: 'DRY_RUN' | 'LIVE'
+  executionReason: 'standard' | 'bootstrap'
 }
 
 let lastExecution: ExecutionSnapshot = {
@@ -31,6 +32,7 @@ let lastExecution: ExecutionSnapshot = {
   amountOutMin: null,
   gasEstimate: null,
   mode: DRY_RUN ? 'DRY_RUN' : 'LIVE',
+  executionReason: 'standard',
 }
 
 function selectRouter(): 'smart' | 'universal' {
@@ -88,9 +90,10 @@ export async function executionAgent(opp: Opportunity): Promise<TradeResult> {
     amountOutMin: prep.amountOutMin,
     gasEstimate: gasEstimate.toString(),
     mode: DRY_RUN ? 'DRY_RUN' : 'LIVE',
+    executionReason: opp.executionReason ?? 'standard',
   }
 
-  log('execution', `Prepared swap via ${prep.routerType} router`)
+  log('execution', `Prepared swap via ${prep.routerType} router executionReason=${lastExecution.executionReason}`)
 
   if (DRY_RUN) {
     log('execution', 'Execution mode: DRY_RUN')
