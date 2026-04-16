@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-16T14:38:41.591Z",
-  "cycleId": 19,
+  "timestamp": "2026-04-16T19:16:02.271Z",
+  "cycleId": 214,
   "market": {
     "pools": [
       {
@@ -13,8 +13,23 @@
           "address": "0x55d398326f99059fF775485246999027B3197955",
           "symbol": "USDT"
         },
-        "price": 617.21,
-        "liquidity": 34703460.73
+        "price": 635.037,
+        "liquidity": 35205700.21,
+        "priceChange": {
+          "m5": -0.02,
+          "h1": 1.36
+        },
+        "volume": {
+          "m5": 3219.89,
+          "h1": 179493.04
+        },
+        "txns": {
+          "m5": {
+            "buys": 41,
+            "sells": 19,
+            "total": 60
+          }
+        }
       },
       {
         "address": "0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
@@ -26,8 +41,23 @@
           "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
           "symbol": "WBNB"
         },
-        "price": 1.002,
-        "liquidity": 8495380.25
+        "price": 1.0017,
+        "liquidity": 8610491.79,
+        "priceChange": {
+          "m5": -0.08,
+          "h1": 0.01
+        },
+        "volume": {
+          "m5": 0.26,
+          "h1": 72714.59
+        },
+        "txns": {
+          "m5": {
+            "buys": 1,
+            "sells": 0,
+            "total": 1
+          }
+        }
       },
       {
         "address": "0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
@@ -39,951 +69,1181 @@
           "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
           "symbol": "WBNB"
         },
-        "price": 1.57,
-        "liquidity": 15352293.11
+        "price": 1.62,
+        "liquidity": 15821195.77,
+        "priceChange": {
+          "m5": 0.05,
+          "h1": 1.93
+        },
+        "volume": {
+          "m5": 0.03,
+          "h1": 28604.79
+        },
+        "txns": {
+          "m5": {
+            "buys": 3,
+            "sells": 0,
+            "total": 3
+          }
+        }
+      },
+      {
+        "address": "0x7EFaEf62fDdCCa950418312c6C91Aef321375A00",
+        "token0": {
+          "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
+          "symbol": "BUSD"
+        },
+        "token1": {
+          "address": "0x55d398326f99059fF775485246999027B3197955",
+          "symbol": "USDT"
+        },
+        "price": 1.002,
+        "liquidity": 3260901.74,
+        "priceChange": {
+          "m5": 0,
+          "h1": 0.01
+        },
+        "volume": {
+          "m5": 4,
+          "h1": 378.07
+        },
+        "txns": {
+          "m5": {
+            "buys": 1,
+            "sells": 0,
+            "total": 1
+          }
+        }
       }
     ],
     "summary": {
-      "poolCount": 3,
-      "avgPrice": 206.59400000000002,
-      "totalLiquidity": 58551134.089999996
+      "poolCount": 4,
+      "avgPrice": 159.665175,
+      "totalLiquidity": 62898289.51
     }
   },
-  "strategies": [],
-  "selectedOpportunity": null,
+  "strategies": [
+    {
+      "name": "meanReversion",
+      "expectedProfit": 0.0004149999999999999,
+      "confidence": 0.45499999999999996,
+      "signalStrength": 0.13342999193473312,
+      "reason": "H1 deviation suggests reversion",
+      "score": 0.11713519887086261
+    }
+  ],
+  "selectedOpportunity": {
+    "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+    "tokenOut": "0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82",
+    "amountIn": 0.05,
+    "expectedProfit": 0.0004149999999999999,
+    "gasCost": 0.00030000000000000003,
+    "slippage": 0.005,
+    "strategy": "meanReversion",
+    "confidence": 0.45499999999999996,
+    "signalStrength": 0.13342999193473312,
+    "reason": "H1 deviation suggests reversion",
+    "score": 0.11713519887086261
+  },
+  "signals": {
+    "perPool": [
+      {
+        "poolAddress": "0x16b9a82891338f9bA80E2D6970FddA79D1eb0daE",
+        "signal": {
+          "momentum": -0.02,
+          "higherTFMomentum": 1.36,
+          "volumeSpike": 0.21526561698436886,
+          "orderImbalance": 0.36666666666666664,
+          "liquidityWeight": 0.5597242863719332,
+          "signalStrength": 0.1333381496389312
+        }
+      },
+      {
+        "poolAddress": "0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
+        "signal": {
+          "momentum": -0.08,
+          "higherTFMomentum": 0.01,
+          "volumeSpike": 0.00004290748252860946,
+          "orderImbalance": 1,
+          "liquidityWeight": 0.1368954840756209,
+          "signalStrength": 0.2660075088094425
+        }
+      },
+      {
+        "poolAddress": "0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
+        "signal": {
+          "momentum": 0.05,
+          "higherTFMomentum": 1.93,
+          "volumeSpike": 0.000012585304768886608,
+          "orderImbalance": 1,
+          "liquidityWeight": 0.25153618473972394,
+          "signalStrength": 0.26000220242833455
+        }
+      },
+      {
+        "poolAddress": "0x7EFaEf62fDdCCa950418312c6C91Aef321375A00",
+        "signal": {
+          "momentum": 0,
+          "higherTFMomentum": 0.01,
+          "volumeSpike": 0.12696061575898643,
+          "orderImbalance": 1,
+          "liquidityWeight": 0.05184404481272197,
+          "signalStrength": 0.2722181077578226
+        }
+      }
+    ],
+    "aggregate": {
+      "momentum": -0.006686678546288171,
+      "higherTFMomentum": 0.8740040829116658,
+      "volumeSpike": 0.127080585199986,
+      "orderImbalance": 0.6455079519644423,
+      "liquidityWeight": 1,
+      "signalStrength": 0.13342999193473312
+    },
+    "temporal": {
+      "priceDelta": 0,
+      "velocity": 0.000039473684211088766,
+      "volatility": 0.00025343895110833725
+    },
+    "source": "hybrid",
+    "poolCount": 4,
+    "historyLength": 20
+  },
   "temporalSignals": {
     "priceDelta": 0,
-    "priceVelocity": 0,
-    "volatility": 0.05599999999999454
+    "velocity": 0.000039473684211088766,
+    "volatility": 0.00025343895110833725
   },
-  "regime": "VOLATILE",
+  "regime": "IDLE",
+  "regimeConfidence": 0.5509835547211452,
+  "regimeReason": "Low momentum and low participation",
   "risk": {
-    "approved": true,
-    "reason": "All checks passed"
+    "approved": false,
+    "reason": "Profitability check failed"
   },
   "execution": {
-    "tokenIn": "0x55d398326f99059fF775485246999027B3197955",
-    "tokenOut": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
-    "amountIn": 0.05,
-    "amountOutQuote": 0.05674999999999932,
-    "amountOutMin": 0.05646624999999932,
-    "gasEstimate": "300000",
+    "tokenIn": null,
+    "tokenOut": null,
+    "amountIn": null,
+    "amountOutQuote": null,
+    "amountOutMin": null,
+    "gasEstimate": null,
     "mode": "DRY_RUN"
   },
   "performance": {
-    "totalTrades": 1,
-    "successfulTrades": 1,
-    "winRate": 1,
-    "totalProfit": 0.006449999999999318,
-    "totalGasSpent": 0.00030000000000000003,
-    "netProfit": 0.006449999999999318,
-    "gasEfficiency": 21.499999999997726,
-    "avgProfitPerTrade": 0.006449999999999318,
-    "avgProfit": 0.006449999999999318,
+    "totalTrades": 0,
+    "successfulTrades": 0,
+    "winRate": 0,
+    "totalProfit": 0,
+    "totalGasSpent": 0,
+    "netProfit": 0,
+    "gasEfficiency": 0,
+    "avgProfitPerTrade": 0,
+    "avgProfit": 0,
     "stdDev": 0,
-    "sharpe": 6449.999999999319,
-    "strategyBreakdown": {
-      "meanReversion": {
-        "trades": 1,
-        "profit": 0.006449999999999318
-      }
-    }
+    "sharpe": 0,
+    "strategyBreakdown": {}
   },
   "logs": [
     {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675574560745489,\"performanceScore\":0,\"finalScore\":0.11729021925218422}",
+      "time": 1776366923177
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366923177
+    },
+    {
       "agent": "pipeline",
-      "message": "Cycle 1 start",
-      "time": 1776350267395
+      "message": "Opportunity strategy=meanReversion signalStrength=0.135 reason=H1 deviation suggests reversion",
+      "time": 1776366923177
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366923177
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366923177
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 202 start",
+      "time": 1776366926162
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350267826
+      "message": "Using DexScreener temporal data",
+      "time": 1776366926163
     },
     {
       "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350267826
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: UNKNOWN",
-      "time": 1776350267826
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: null",
-      "time": 1776350267826
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=UNKNOWN",
-      "time": 1776350267826
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350267828
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350267828
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 2 start",
-      "time": 1776350270397
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366926185
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350270422
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350270422
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366926185
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350270422
+      "message": "Market regime=IDLE confidence=0.552 reason=Low momentum and low participation",
+      "time": 1776366926185
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350270422
+      "message": "Signal aggregate={\"momentum\":-0.006662989107339387,\"higherTFMomentum\":0.8740040270605663,\"volumeSpike\":0.1253319064179487,\"orderImbalance\":0.6525851213858813,\"liquidityWeight\":1,\"signalStrength\":0.13453728037274457} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366926185
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350270422
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366926185
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350270422
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350270423
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350270423
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 3 start",
-      "time": 1776350273411
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350273439
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350273439
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350273439
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350273439
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350273439
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350273439
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350273439
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350273439
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 4 start",
-      "time": 1776350276420
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350276440
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350276440
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350276440
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350276440
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350276440
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350276440
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350276440
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350276440
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 5 start",
-      "time": 1776350279426
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350279453
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350279453
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350279453
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350279453
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350279453
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350279453
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350279454
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350279454
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 6 start",
-      "time": 1776350282442
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350282469
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350282469
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350282469
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350282469
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350282469
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350282469
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350282469
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350282469
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 7 start",
-      "time": 1776350285452
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350285477
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350285477
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350285478
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350285478
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350285478
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350285478
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350285478
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350285478
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 8 start",
-      "time": 1776350288461
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350288486
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350288486
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350288487
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350288487
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350288487
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350288487
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350288487
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350288487
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 9 start",
-      "time": 1776350291467
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350291489
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350291489
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350291490
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350291490
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350291490
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0}",
-      "time": 1776350291490
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350291490
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350291490
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 10 start",
-      "time": 1776350294479
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350294506
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350294506
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350294506
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":1.1368683772161603e-13}",
-      "time": 1776350294506
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350294506
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":1.1368683772161603e-13}",
-      "time": 1776350294506
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350294507
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350294507
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 11 start",
-      "time": 1776350297489
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350297515
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350297515
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776350297515
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":1.1368683772161603e-13}",
-      "time": 1776350297515
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776350297515
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":1.1368683772161603e-13}",
-      "time": 1776350297516
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350297516
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350297516
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 12 start",
-      "time": 1776350300495
-    },
-    {
-      "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350300848
-    },
-    {
-      "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350300848
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: VOLATILE",
-      "time": 1776350300848
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0.13999999999998636,\"priceVelocity\":0.13999999999998636,\"volatility\":0.0419999999999959}",
-      "time": 1776350300848
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=VOLATILE",
-      "time": 1776350300848
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0.13999999999998636,\"priceVelocity\":0.13999999999998636,\"volatility\":0.0419999999999959}",
-      "time": 1776350300849
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366926185
     },
     {
       "agent": "strategy",
       "message": "Found 1 opportunities",
-      "time": 1776350300849
+      "time": 1776366926185
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366926185
     },
     {
       "agent": "strategy",
-      "message": "strategy=meanReversion expectedProfit=0.006449999999999318 confidence=0.45499999999999996 score=0.0029347499999996893",
-      "time": 1776350300849
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675574560745489,\"performanceScore\":0,\"finalScore\":0.11729021925218422}",
+      "time": 1776366926186
     },
     {
       "agent": "strategy",
-      "message": "Opportunity found",
-      "time": 1776350300849
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366926186
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.135 reason=H1 deviation suggests reversion",
+      "time": 1776366926186
     },
     {
       "agent": "risk",
-      "message": "Risk approved",
-      "time": 1776350300850
-    },
-    {
-      "agent": "execution",
-      "message": "Prepared swap via smart router",
-      "time": 1776350300850
-    },
-    {
-      "agent": "execution",
-      "message": "Execution mode: DRY_RUN",
-      "time": 1776350300850
-    },
-    {
-      "agent": "portfolio",
-      "message": "Total trades: 1",
-      "time": 1776350300850
-    },
-    {
-      "agent": "portfolio",
-      "message": "Win rate: 1.0000",
-      "time": 1776350300850
-    },
-    {
-      "agent": "portfolio",
-      "message": "Total profit: 0.006450",
-      "time": 1776350300850
-    },
-    {
-      "agent": "portfolio",
-      "message": "Net profit: 0.006450",
-      "time": 1776350300850
+      "message": "Risk rejected: profitability",
+      "time": 1776366926186
     },
     {
       "agent": "pipeline",
-      "message": "Trade success | profit: 0.006449999999999318",
-      "time": 1776350300855
+      "message": "Risk rejected",
+      "time": 1776366926186
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 13 start",
-      "time": 1776350303507
+      "message": "Cycle 203 start",
+      "time": 1776366929168
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350303529
+      "message": "Using DexScreener temporal data",
+      "time": 1776366929169
     },
     {
       "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350303529
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: VOLATILE",
-      "time": 1776350303530
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.05599999999999454}",
-      "time": 1776350303530
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=VOLATILE",
-      "time": 1776350303530
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.05599999999999454}",
-      "time": 1776350303530
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350303530
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350303530
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 14 start",
-      "time": 1776350306528
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366929189
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350306555
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366929189
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.552 reason=Low momentum and low participation",
+      "time": 1776366929189
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006662989107339387,\"higherTFMomentum\":0.8740040270605663,\"volumeSpike\":0.1253319064179487,\"orderImbalance\":0.6525851213858813,\"liquidityWeight\":1,\"signalStrength\":0.13453728037274457} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366929189
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366929189
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366929189
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366929189
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366929189
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675574560745489,\"performanceScore\":0,\"finalScore\":0.11729021925218422}",
+      "time": 1776366929189
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366929189
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.135 reason=H1 deviation suggests reversion",
+      "time": 1776366929189
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366929189
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366929189
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 204 start",
+      "time": 1776366932170
     },
     {
       "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350306555
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: VOLATILE",
-      "time": 1776350306555
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.06415605972937552}",
-      "time": 1776350306555
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=VOLATILE",
-      "time": 1776350306555
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.06415605972937552}",
-      "time": 1776350306556
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350306556
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350306556
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 15 start",
-      "time": 1776350309531
+      "message": "Using DexScreener temporal data",
+      "time": 1776366932170
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350309606
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366932193
     },
     {
       "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350309606
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366932193
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: VOLATILE",
-      "time": 1776350309607
+      "message": "Market regime=IDLE confidence=0.552 reason=Low momentum and low participation",
+      "time": 1776366932194
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0685857127979223}",
-      "time": 1776350309607
+      "message": "Signal aggregate={\"momentum\":-0.006662989107339387,\"higherTFMomentum\":0.8740040270605663,\"volumeSpike\":0.1253319064179487,\"orderImbalance\":0.6525851213858813,\"liquidityWeight\":1,\"signalStrength\":0.13453728037274457} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366932194
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=VOLATILE",
-      "time": 1776350309607
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366932194
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0685857127979223}",
-      "time": 1776350309607
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366932194
     },
     {
       "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350309607
+      "message": "Found 1 opportunities",
+      "time": 1776366932194
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366932194
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675574560745489,\"performanceScore\":0,\"finalScore\":0.11729021925218422}",
+      "time": 1776366932194
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366932194
     },
     {
       "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350309607
+      "message": "Opportunity strategy=meanReversion signalStrength=0.135 reason=H1 deviation suggests reversion",
+      "time": 1776366932194
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366932194
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 16 start",
-      "time": 1776350312540
+      "message": "Risk rejected",
+      "time": 1776366932194
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 205 start",
+      "time": 1776366935184
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350312564
+      "message": "Using DexScreener temporal data",
+      "time": 1776366935184
     },
     {
       "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350312564
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: VOLATILE",
-      "time": 1776350312564
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.06999999999999316}",
-      "time": 1776350312564
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=VOLATILE",
-      "time": 1776350312564
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.06999999999999316}",
-      "time": 1776350312565
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350312565
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350312565
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 17 start",
-      "time": 1776350315554
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366935206
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350315579
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366935206
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.552 reason=Low momentum and low participation",
+      "time": 1776366935206
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006662989107339387,\"higherTFMomentum\":0.8740040270605663,\"volumeSpike\":0.1253319064179487,\"orderImbalance\":0.6525851213858813,\"liquidityWeight\":1,\"signalStrength\":0.13453728037274457} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366935206
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366935206
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366935206
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366935206
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366935206
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675574560745489,\"performanceScore\":0,\"finalScore\":0.11729021925218422}",
+      "time": 1776366935206
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366935206
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.135 reason=H1 deviation suggests reversion",
+      "time": 1776366935206
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366935206
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366935206
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 206 start",
+      "time": 1776366938191
     },
     {
       "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350315579
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: VOLATILE",
-      "time": 1776350315579
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0685857127979223}",
-      "time": 1776350315579
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=VOLATILE",
-      "time": 1776350315579
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0685857127979223}",
-      "time": 1776350315579
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350315580
-    },
-    {
-      "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350315580
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 18 start",
-      "time": 1776350318561
+      "message": "Using DexScreener temporal data",
+      "time": 1776366938192
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350318594
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366938215
     },
     {
       "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350318594
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366938215
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: VOLATILE",
-      "time": 1776350318595
+      "message": "Market regime=IDLE confidence=0.552 reason=Low momentum and low participation",
+      "time": 1776366938215
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0641560597293755}",
-      "time": 1776350318595
+      "message": "Signal aggregate={\"momentum\":-0.006662989107339387,\"higherTFMomentum\":0.8740040270605663,\"volumeSpike\":0.1253319064179487,\"orderImbalance\":0.6525851213858813,\"liquidityWeight\":1,\"signalStrength\":0.13453728037274457} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366938215
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=VOLATILE",
-      "time": 1776350318595
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366938215
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0641560597293755}",
-      "time": 1776350318595
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366938215
     },
     {
       "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350318595
+      "message": "Found 1 opportunities",
+      "time": 1776366938215
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366938215
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675574560745489,\"performanceScore\":0,\"finalScore\":0.11729021925218422}",
+      "time": 1776366938215
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366938215
     },
     {
       "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350318595
+      "message": "Opportunity strategy=meanReversion signalStrength=0.135 reason=H1 deviation suggests reversion",
+      "time": 1776366938215
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366938215
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 19 start",
-      "time": 1776350321569
+      "message": "Risk rejected",
+      "time": 1776366938215
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 207 start",
+      "time": 1776366941193
     },
     {
       "agent": "market",
-      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=3 normalized=3 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
-      "time": 1776350321591
+      "message": "Using DexScreener temporal data",
+      "time": 1776366941194
     },
     {
       "agent": "market",
-      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=3",
-      "time": 1776350321591
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366941217
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366941217
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: VOLATILE",
-      "time": 1776350321591
+      "message": "Market regime=IDLE confidence=0.552 reason=Low momentum and low participation",
+      "time": 1776366941217
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.05599999999999454}",
-      "time": 1776350321591
+      "message": "Signal aggregate={\"momentum\":-0.006690620686286551,\"higherTFMomentum\":0.8740040270605663,\"volumeSpike\":0.1253319064179487,\"orderImbalance\":0.6525851213858813,\"liquidityWeight\":1,\"signalStrength\":0.13444885198413073} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366941217
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=VOLATILE",
-      "time": 1776350321591
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366941217
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.05599999999999454}",
-      "time": 1776350321591
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366941219
     },
     {
       "agent": "strategy",
-      "message": "Found 0 opportunities",
-      "time": 1776350321591
+      "message": "Found 1 opportunities",
+      "time": 1776366941219
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366941219
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675397703968261,\"performanceScore\":0,\"finalScore\":0.11727783927777827}",
+      "time": 1776366941219
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366941219
     },
     {
       "agent": "pipeline",
-      "message": "No opportunity",
-      "time": 1776350321591
+      "message": "Opportunity strategy=meanReversion signalStrength=0.134 reason=H1 deviation suggests reversion",
+      "time": 1776366941219
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366941219
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366941219
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 208 start",
+      "time": 1776366944198
+    },
+    {
+      "agent": "market",
+      "message": "Using DexScreener temporal data",
+      "time": 1776366944199
+    },
+    {
+      "agent": "market",
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366944219
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366944219
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.552 reason=Low momentum and low participation",
+      "time": 1776366944219
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006690620686286551,\"higherTFMomentum\":0.8740040270605663,\"volumeSpike\":0.1253319064179487,\"orderImbalance\":0.6525851213858813,\"liquidityWeight\":1,\"signalStrength\":0.13444885198413073} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366944219
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366944219
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366944219
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366944219
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366944219
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675397703968261,\"performanceScore\":0,\"finalScore\":0.11727783927777827}",
+      "time": 1776366944219
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366944219
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.134 reason=H1 deviation suggests reversion",
+      "time": 1776366944219
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366944219
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366944219
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 209 start",
+      "time": 1776366947208
+    },
+    {
+      "agent": "market",
+      "message": "Using DexScreener temporal data",
+      "time": 1776366947208
+    },
+    {
+      "agent": "market",
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366947231
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366947231
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.552 reason=Low momentum and low participation",
+      "time": 1776366947231
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006690620686286551,\"higherTFMomentum\":0.8740040270605663,\"volumeSpike\":0.1253319064179487,\"orderImbalance\":0.6525851213858813,\"liquidityWeight\":1,\"signalStrength\":0.13444885198413073} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366947231
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366947231
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366947231
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366947231
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366947231
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1675397703968261,\"performanceScore\":0,\"finalScore\":0.11727783927777827}",
+      "time": 1776366947231
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366947231
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.134 reason=H1 deviation suggests reversion",
+      "time": 1776366947231
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366947231
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366947231
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 210 start",
+      "time": 1776366950213
+    },
+    {
+      "agent": "market",
+      "message": "Using DexScreener temporal data",
+      "time": 1776366950214
+    },
+    {
+      "agent": "market",
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366950537
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366950537
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.551 reason=Low momentum and low participation",
+      "time": 1776366950537
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006686678546288171,\"higherTFMomentum\":0.8740040829116658,\"volumeSpike\":0.127080585199986,\"orderImbalance\":0.6455079519644423,\"liquidityWeight\":1,\"signalStrength\":0.13342999193473312} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366950537
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366950537
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366950537
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366950537
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366950537
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1673359983869466,\"performanceScore\":0,\"finalScore\":0.11713519887086261}",
+      "time": 1776366950537
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366950537
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.133 reason=H1 deviation suggests reversion",
+      "time": 1776366950537
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366950537
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366950537
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 211 start",
+      "time": 1776366953222
+    },
+    {
+      "agent": "market",
+      "message": "Using DexScreener temporal data",
+      "time": 1776366953222
+    },
+    {
+      "agent": "market",
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366953266
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366953266
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.551 reason=Low momentum and low participation",
+      "time": 1776366953266
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006686678546288171,\"higherTFMomentum\":0.8740040829116658,\"volumeSpike\":0.127080585199986,\"orderImbalance\":0.6455079519644423,\"liquidityWeight\":1,\"signalStrength\":0.13342999193473312} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366953266
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366953266
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366953266
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366953274
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366953274
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1673359983869466,\"performanceScore\":0,\"finalScore\":0.11713519887086261}",
+      "time": 1776366953274
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366953274
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.133 reason=H1 deviation suggests reversion",
+      "time": 1776366953274
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366953274
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366953274
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 212 start",
+      "time": 1776366956223
+    },
+    {
+      "agent": "market",
+      "message": "Using DexScreener temporal data",
+      "time": 1776366956223
+    },
+    {
+      "agent": "market",
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366956241
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366956241
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.551 reason=Low momentum and low participation",
+      "time": 1776366956241
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006686678546288171,\"higherTFMomentum\":0.8740040829116658,\"volumeSpike\":0.127080585199986,\"orderImbalance\":0.6455079519644423,\"liquidityWeight\":1,\"signalStrength\":0.13342999193473312} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366956241
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366956241
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366956241
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366956241
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366956241
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1673359983869466,\"performanceScore\":0,\"finalScore\":0.11713519887086261}",
+      "time": 1776366956241
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366956241
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.133 reason=H1 deviation suggests reversion",
+      "time": 1776366956241
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366956241
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366956241
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 213 start",
+      "time": 1776366959239
+    },
+    {
+      "agent": "market",
+      "message": "Using DexScreener temporal data",
+      "time": 1776366959240
+    },
+    {
+      "agent": "market",
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366959256
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366959256
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.551 reason=Low momentum and low participation",
+      "time": 1776366959256
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006686678546288171,\"higherTFMomentum\":0.8740040829116658,\"volumeSpike\":0.127080585199986,\"orderImbalance\":0.6455079519644423,\"liquidityWeight\":1,\"signalStrength\":0.13342999193473312} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366959256
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366959256
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366959256
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366959256
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366959256
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1673359983869466,\"performanceScore\":0,\"finalScore\":0.11713519887086261}",
+      "time": 1776366959256
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366959256
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.133 reason=H1 deviation suggests reversion",
+      "time": 1776366959256
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366959256
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366959256
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 214 start",
+      "time": 1776366962253
+    },
+    {
+      "agent": "market",
+      "message": "Using DexScreener temporal data",
+      "time": 1776366962254
+    },
+    {
+      "agent": "market",
+      "message": "DEBUG SUMMARY: source=DEXSCREENER raw=4 normalized=4 rejected=0 reasons={\"missing price\":0,\"NaN\":0,\"zero liquidity\":0}",
+      "time": 1776366962271
+    },
+    {
+      "agent": "market",
+      "message": "Pool summary: selected=DEXSCREENER used=DEXSCREENER attempted=DEXSCREENER valid=4",
+      "time": 1776366962271
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime=IDLE confidence=0.551 reason=Low momentum and low participation",
+      "time": 1776366962271
+    },
+    {
+      "agent": "pipeline",
+      "message": "Signal aggregate={\"momentum\":-0.006686678546288171,\"higherTFMomentum\":0.8740040829116658,\"volumeSpike\":0.127080585199986,\"orderImbalance\":0.6455079519644423,\"liquidityWeight\":1,\"signalStrength\":0.13342999193473312} poolCount=4 historyLength=20 source=hybrid",
+      "time": 1776366962271
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 2 strategies | regime=IDLE | allowed=meanReversion,liquidityImbalance",
+      "time": 1776366962271
+    },
+    {
+      "agent": "strategy",
+      "message": "Using DexScreener temporal data h1=1.93",
+      "time": 1776366962271
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776366962271
+    },
+    {
+      "agent": "memory",
+      "message": "{\"strategy\":\"meanReversion\",\"winRate\":0,\"avgProfit\":0,\"recentMomentum\":0,\"performanceScore\":0}",
+      "time": 1776366962271
+    },
+    {
+      "agent": "strategy",
+      "message": "{\"selected\":\"meanReversion\",\"baseScore\":0.1673359983869466,\"performanceScore\":0,\"finalScore\":0.11713519887086261}",
+      "time": 1776366962271
+    },
+    {
+      "agent": "strategy",
+      "message": "Selected strategy=meanReversion reason=H1 deviation suggests reversion",
+      "time": 1776366962271
+    },
+    {
+      "agent": "pipeline",
+      "message": "Opportunity strategy=meanReversion signalStrength=0.133 reason=H1 deviation suggests reversion",
+      "time": 1776366962271
+    },
+    {
+      "agent": "risk",
+      "message": "Risk rejected: profitability",
+      "time": 1776366962271
+    },
+    {
+      "agent": "pipeline",
+      "message": "Risk rejected",
+      "time": 1776366962271
     }
   ],
   "configuredSource": "DEXSCREENER",
