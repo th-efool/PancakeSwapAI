@@ -1,4 +1,3 @@
-import { ethers } from 'ethers';
 import type { Opportunity, TradeResult } from '../core/types';
 import config from '../config';
 
@@ -42,8 +41,9 @@ async function estimateGas(): Promise<bigint> {
 }
 
 function validateOpportunity(opp: Opportunity): string | null {
+  const isAddress = (value: string) => /^0x[a-fA-F0-9]{40}$/.test(value);
   if (!opp.tokenIn || !opp.tokenOut) return 'Missing tokens';
-  if (!ethers.isAddress(opp.tokenIn.address) || !ethers.isAddress(opp.tokenOut.address)) {
+  if (!isAddress(opp.tokenIn.address) || !isAddress(opp.tokenOut.address)) {
     return 'Invalid token address';
   }
   if (opp.amountIn <= 0) return 'Invalid amountIn';

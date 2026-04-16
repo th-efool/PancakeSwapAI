@@ -17,6 +17,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
       console.log('No market data');
       return;
     }
+    console.log('Market data loaded');
 
     console.log('Step 2: strategy');
     const opportunity = pipeline.strategy(state);
@@ -24,6 +25,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
       console.log('No opportunity');
       return;
     }
+    console.log('Opportunity found');
 
     console.log('Step 3: risk');
     if (!pipeline.risk(opportunity)) {

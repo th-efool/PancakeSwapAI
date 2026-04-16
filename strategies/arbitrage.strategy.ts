@@ -46,8 +46,9 @@ export function arbitrageStrategy(state: MarketState): Opportunity | null {
 
     const buyAmount = amountIn;
     const sellAmount = amountIn * (high.price / low.price);
+    const gross = sellAmount - buyAmount;
     const slippageCost = sellAmount * config.slippageTolerance;
-    const expectedProfit = sellAmount - buyAmount - gasCost - slippageCost;
+    const expectedProfit = gross - gasCost - slippageCost;
     if (expectedProfit <= 0) continue;
 
     const opportunity: Opportunity = {
@@ -58,7 +59,7 @@ export function arbitrageStrategy(state: MarketState): Opportunity | null {
       amountIn,
       expectedProfit,
       gasCost,
-      slippage: slippageCost,
+      slippage: config.slippageTolerance,
     };
 
     if (!best || opportunity.expectedProfit > best.expectedProfit) best = opportunity;
