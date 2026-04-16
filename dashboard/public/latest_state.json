@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-16T07:37:01.342Z",
-  "cycleId": 116,
+  "timestamp": "2026-04-16T07:54:39.434Z",
+  "cycleId": 59,
   "market": {
     "pools": [
       {
@@ -13,8 +13,8 @@
           "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
           "symbol": "BUSD"
         },
-        "price": 624.1347096420453,
-        "liquidity": 4272333.007289259
+        "price": 623.6041507385204,
+        "liquidity": 4270526.518977798
       },
       {
         "address": "0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
@@ -26,39 +26,39 @@
           "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
           "symbol": "WBNB"
         },
-        "price": 0.002580627311728263,
-        "liquidity": 4855170.647366776
+        "price": 0.0025806586068406806,
+        "liquidity": 4855152.616085506
       }
     ],
     "summary": {
       "poolCount": 2,
-      "avgPrice": 312.06864513467855,
-      "totalLiquidity": 9127503.654656034
+      "avgPrice": 311.8033656985636,
+      "totalLiquidity": 9125679.135063304
     }
   },
   "strategies": [
     {
       "name": "liquidityImbalance",
-      "expectedProfit": 31.156185482102266,
+      "expectedProfit": 31.12965753692602,
       "confidence": 0.5249999999999999,
-      "score": 16.35699737810369
+      "score": 16.343070206886157
     }
   ],
   "selectedOpportunity": {
     "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
     "tokenOut": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
     "amountIn": 0.05,
-    "expectedProfit": 31.156185482102266,
+    "expectedProfit": 31.12965753692602,
     "gasCost": 0.00030000000000000003,
     "slippage": 0.005,
     "strategy": "liquidityImbalance",
     "confidence": 0.5249999999999999,
-    "score": 16.35699737810369
+    "score": 16.343070206886157
   },
   "temporalSignals": {
     "priceDelta": 0,
     "priceVelocity": 0,
-    "volatility": 0.0058946081884187155
+    "volatility": 0.009462478066974717
   },
   "regime": "MEAN_REVERTING",
   "risk": {
@@ -69,1030 +69,1030 @@
     "tokenIn": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
     "tokenOut": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
     "amountIn": 0.05,
-    "amountOutQuote": 31.206485482102266,
-    "amountOutMin": 31.050453054691754,
+    "amountOutQuote": 31.17995753692602,
+    "amountOutMin": 31.024057749241386,
     "gasEstimate": "300000",
     "mode": "DRY_RUN"
   },
   "performance": {
-    "totalTrades": 116,
-    "successfulTrades": 116,
+    "totalTrades": 59,
+    "successfulTrades": 59,
     "winRate": 1,
-    "totalProfit": 3614.2050955248783,
-    "totalGasSpent": 0.0348000000000001,
-    "netProfit": 3614.2050955248783,
-    "gasEfficiency": 103856.46826220884,
-    "avgProfitPerTrade": 31.156940478662744,
-    "avgProfit": 31.156940478662744,
-    "stdDev": 0.0001028261458199597,
-    "sharpe": 300087.6150472792,
+    "totalProfit": 1837.5116087318631,
+    "totalGasSpent": 0.017700000000000007,
+    "netProfit": 1837.5116087318631,
+    "gasEfficiency": 103814.2151825911,
+    "avgProfitPerTrade": 31.14426455477734,
+    "avgProfit": 31.14426455477734,
+    "stdDev": 0.006750531308737131,
+    "sharpe": 4612.918629951943,
     "strategyBreakdown": {
       "liquidityImbalance": {
-        "trades": 116,
-        "profit": 3614.2050955248783
+        "trades": 59,
+        "profit": 1837.5116087318631
       }
     }
   },
   "logs": [
     {
       "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776324991136
+      "message": "strategy=liquidityImbalance expectedProfit=31.13059797743532 confidence=0.5249999999999999 score=16.34356393815354",
+      "time": 1776326049207
     },
     {
       "agent": "strategy",
       "message": "Opportunity found",
-      "time": 1776324991136
+      "time": 1776326049207
     },
     {
       "agent": "risk",
       "message": "Risk approved",
-      "time": 1776324991136
+      "time": 1776326049207
     },
     {
       "agent": "execution",
       "message": "Prepared swap via smart router",
-      "time": 1776324991136
+      "time": 1776326049208
     },
     {
       "agent": "execution",
       "message": "Execution mode: DRY_RUN",
-      "time": 1776324991136
+      "time": 1776326049208
     },
     {
       "agent": "portfolio",
-      "message": "Total trades: 106",
-      "time": 1776324991136
+      "message": "Total trades: 49",
+      "time": 1776326049208
     },
     {
       "agent": "portfolio",
       "message": "Win rate: 1.0000",
-      "time": 1776324991136
+      "time": 1776326049208
     },
     {
       "agent": "portfolio",
-      "message": "Total profit: 3302.637346",
-      "time": 1776324991136
+      "message": "Total profit: 1526.210341",
+      "time": 1776326049208
     },
     {
       "agent": "portfolio",
-      "message": "Net profit: 3302.637346",
-      "time": 1776324991136
+      "message": "Net profit: 1526.210341",
+      "time": 1776326049208
     },
     {
       "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776324991142
+      "message": "Trade success | profit: 31.13059797743532",
+      "time": 1776326049216
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 107 start",
-      "time": 1776324993273
+      "message": "Cycle 50 start",
+      "time": 1776326051370
     },
     {
       "agent": "market",
       "message": "Fetching pools",
-      "time": 1776324993273
+      "time": 1776326051370
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776324993899
+      "time": 1776326052022
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776324994101
+      "time": 1776326052241
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776324994102
+      "message": "Market regime: VOLATILE",
+      "time": 1776326052241
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0000384674212000391}",
-      "time": 1776324994102
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.13541935815724174}",
+      "time": 1776326052241
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776324994102
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776326052241
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0000384674212000391}",
-      "time": 1776324994102
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.13541935815724174}",
+      "time": 1776326052242
     },
     {
       "agent": "strategy",
       "message": "Found 1 opportunities",
-      "time": 1776324994103
+      "time": 1776326052242
     },
     {
       "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776324994103
+      "message": "strategy=liquidityImbalance expectedProfit=31.13059797743532 confidence=0.5249999999999999 score=16.34356393815354",
+      "time": 1776326052242
     },
     {
       "agent": "strategy",
       "message": "Opportunity found",
-      "time": 1776324994103
+      "time": 1776326052242
     },
     {
       "agent": "risk",
       "message": "Risk approved",
-      "time": 1776324994103
+      "time": 1776326052242
     },
     {
       "agent": "execution",
       "message": "Prepared swap via smart router",
-      "time": 1776324994103
+      "time": 1776326052242
     },
     {
       "agent": "execution",
       "message": "Execution mode: DRY_RUN",
-      "time": 1776324994103
+      "time": 1776326052242
     },
     {
       "agent": "portfolio",
-      "message": "Total trades: 107",
-      "time": 1776324994103
+      "message": "Total trades: 50",
+      "time": 1776326052242
     },
     {
       "agent": "portfolio",
       "message": "Win rate: 1.0000",
-      "time": 1776324994103
+      "time": 1776326052242
     },
     {
       "agent": "portfolio",
-      "message": "Total profit: 3333.794268",
-      "time": 1776324994103
+      "message": "Total profit: 1557.340939",
+      "time": 1776326052242
     },
     {
       "agent": "portfolio",
-      "message": "Net profit: 3333.794268",
-      "time": 1776324994103
+      "message": "Net profit: 1557.340939",
+      "time": 1776326052242
     },
     {
       "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776324994108
+      "message": "Trade success | profit: 31.13059797743532",
+      "time": 1776326052246
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 108 start",
-      "time": 1776324996289
+      "message": "Cycle 51 start",
+      "time": 1776326054388
     },
     {
       "agent": "market",
       "message": "Fetching pools",
-      "time": 1776324996289
+      "time": 1776326054388
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776324996916
+      "time": 1776326055006
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776324997118
+      "time": 1776326055225
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776324997118
+      "message": "Market regime: VOLATILE",
+      "time": 1776326055226
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.000044069967359732046}",
-      "time": 1776324997118
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.15514236482947397}",
+      "time": 1776326055226
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776324997118
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776326055226
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.000044069967359732046}",
-      "time": 1776324997118
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.15514236482947397}",
+      "time": 1776326055226
     },
     {
       "agent": "strategy",
       "message": "Found 1 opportunities",
-      "time": 1776324997119
+      "time": 1776326055227
     },
     {
       "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776324997119
+      "message": "strategy=liquidityImbalance expectedProfit=31.13059797743532 confidence=0.5249999999999999 score=16.34356393815354",
+      "time": 1776326055227
     },
     {
       "agent": "strategy",
       "message": "Opportunity found",
-      "time": 1776324997119
+      "time": 1776326055227
     },
     {
       "agent": "risk",
       "message": "Risk approved",
-      "time": 1776324997119
+      "time": 1776326055227
     },
     {
       "agent": "execution",
       "message": "Prepared swap via smart router",
-      "time": 1776324997119
+      "time": 1776326055227
     },
     {
       "agent": "execution",
       "message": "Execution mode: DRY_RUN",
-      "time": 1776324997119
+      "time": 1776326055227
     },
     {
       "agent": "portfolio",
-      "message": "Total trades: 108",
-      "time": 1776324997119
+      "message": "Total trades: 51",
+      "time": 1776326055227
     },
     {
       "agent": "portfolio",
       "message": "Win rate: 1.0000",
-      "time": 1776324997119
+      "time": 1776326055227
     },
     {
       "agent": "portfolio",
-      "message": "Total profit: 3364.951191",
-      "time": 1776324997119
+      "message": "Total profit: 1588.471537",
+      "time": 1776326055227
     },
     {
       "agent": "portfolio",
-      "message": "Net profit: 3364.951191",
-      "time": 1776324997119
+      "message": "Net profit: 1588.471537",
+      "time": 1776326055227
     },
     {
       "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776324997123
+      "message": "Trade success | profit: 31.13059797743532",
+      "time": 1776326055231
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 109 start",
-      "time": 1776324999290
+      "message": "Cycle 52 start",
+      "time": 1776326057399
     },
     {
       "agent": "market",
       "message": "Fetching pools",
-      "time": 1776324999290
+      "time": 1776326057399
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776325000478
+      "time": 1776326058024
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776325000686
+      "time": 1776326058227
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776325000686
+      "message": "Market regime: VOLATILE",
+      "time": 1776326058228
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.00004711277683040797}",
-      "time": 1776325000686
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.16585416439022257}",
+      "time": 1776326058228
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776325000686
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776326058228
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.00004711277683040797}",
-      "time": 1776325000687
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.16585416439022257}",
+      "time": 1776326058228
     },
     {
       "agent": "strategy",
       "message": "Found 1 opportunities",
-      "time": 1776325000688
+      "time": 1776326058228
     },
     {
       "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776325000688
+      "message": "strategy=liquidityImbalance expectedProfit=31.13059797743532 confidence=0.5249999999999999 score=16.34356393815354",
+      "time": 1776326058228
     },
     {
       "agent": "strategy",
       "message": "Opportunity found",
-      "time": 1776325000688
+      "time": 1776326058228
     },
     {
       "agent": "risk",
       "message": "Risk approved",
-      "time": 1776325000688
+      "time": 1776326058228
     },
     {
       "agent": "execution",
       "message": "Prepared swap via smart router",
-      "time": 1776325000688
+      "time": 1776326058228
     },
     {
       "agent": "execution",
       "message": "Execution mode: DRY_RUN",
-      "time": 1776325000688
+      "time": 1776326058228
     },
     {
       "agent": "portfolio",
-      "message": "Total trades: 109",
-      "time": 1776325000688
+      "message": "Total trades: 52",
+      "time": 1776326058228
     },
     {
       "agent": "portfolio",
       "message": "Win rate: 1.0000",
-      "time": 1776325000688
+      "time": 1776326058228
     },
     {
       "agent": "portfolio",
-      "message": "Total profit: 3396.108113",
-      "time": 1776325000688
+      "message": "Total profit: 1619.602135",
+      "time": 1776326058228
     },
     {
       "agent": "portfolio",
-      "message": "Net profit: 3396.108113",
-      "time": 1776325000688
+      "message": "Net profit: 1619.602135",
+      "time": 1776326058228
     },
     {
       "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776325000693
+      "message": "Trade success | profit: 31.13059797743532",
+      "time": 1776326058233
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 110 start",
-      "time": 1776325002306
+      "message": "Cycle 53 start",
+      "time": 1776326060404
     },
     {
       "agent": "market",
       "message": "Fetching pools",
-      "time": 1776325002306
+      "time": 1776326060404
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776325002934
+      "time": 1776326061035
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776325003134
+      "time": 1776326061253
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776325003134
+      "message": "Market regime: VOLATILE",
+      "time": 1776326061254
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.00004808427650004887}",
-      "time": 1776325003134
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.1692741976965522}",
+      "time": 1776326061254
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776325003134
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776326061254
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.00004808427650004887}",
-      "time": 1776325003135
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.1692741976965522}",
+      "time": 1776326061254
     },
     {
       "agent": "strategy",
       "message": "Found 1 opportunities",
-      "time": 1776325003135
+      "time": 1776326061254
     },
     {
       "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776325003135
+      "message": "strategy=liquidityImbalance expectedProfit=31.13059797743532 confidence=0.5249999999999999 score=16.34356393815354",
+      "time": 1776326061254
     },
     {
       "agent": "strategy",
       "message": "Opportunity found",
-      "time": 1776325003135
+      "time": 1776326061254
     },
     {
       "agent": "risk",
       "message": "Risk approved",
-      "time": 1776325003135
+      "time": 1776326061254
     },
     {
       "agent": "execution",
       "message": "Prepared swap via smart router",
-      "time": 1776325003135
+      "time": 1776326061254
     },
     {
       "agent": "execution",
       "message": "Execution mode: DRY_RUN",
-      "time": 1776325003135
+      "time": 1776326061254
     },
     {
       "agent": "portfolio",
-      "message": "Total trades: 110",
-      "time": 1776325003135
+      "message": "Total trades: 53",
+      "time": 1776326061254
     },
     {
       "agent": "portfolio",
       "message": "Win rate: 1.0000",
-      "time": 1776325003135
+      "time": 1776326061254
     },
     {
       "agent": "portfolio",
-      "message": "Total profit: 3427.265035",
-      "time": 1776325003135
+      "message": "Total profit: 1650.732733",
+      "time": 1776326061254
     },
     {
       "agent": "portfolio",
-      "message": "Net profit: 3427.265035",
-      "time": 1776325003135
+      "message": "Net profit: 1650.732733",
+      "time": 1776326061254
     },
     {
       "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776325003140
+      "message": "Trade success | profit: 31.13059797743532",
+      "time": 1776326061257
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 111 start",
-      "time": 1776325005320
+      "message": "Cycle 54 start",
+      "time": 1776326063420
     },
     {
       "agent": "market",
       "message": "Fetching pools",
-      "time": 1776325005320
+      "time": 1776326063420
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776325005932
+      "time": 1776326064054
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776325006151
+      "time": 1776326064263
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776325006151
+      "message": "Market regime: VOLATILE",
+      "time": 1776326064263
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.00004711277683040797}",
-      "time": 1776325006151
+      "message": "Temporal signal: {\"priceDelta\":0.00019227593224968587,\"priceVelocity\":0.00019227593224968587,\"volatility\":0.1658384744147605}",
+      "time": 1776326064263
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776325006151
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776326064263
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.00004711277683040797}",
-      "time": 1776325006152
+      "message": "Temporal signal: {\"priceDelta\":0.00019227593224968587,\"priceVelocity\":0.00019227593224968587,\"volatility\":0.1658384744147605}",
+      "time": 1776326064263
     },
     {
       "agent": "strategy",
       "message": "Found 1 opportunities",
-      "time": 1776325006153
+      "time": 1776326064263
     },
     {
       "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776325006153
-    },
-    {
-      "agent": "strategy",
-      "message": "Opportunity found",
-      "time": 1776325006153
-    },
-    {
-      "agent": "risk",
-      "message": "Risk approved",
-      "time": 1776325006153
-    },
-    {
-      "agent": "execution",
-      "message": "Prepared swap via smart router",
-      "time": 1776325006153
-    },
-    {
-      "agent": "execution",
-      "message": "Execution mode: DRY_RUN",
-      "time": 1776325006153
-    },
-    {
-      "agent": "portfolio",
-      "message": "Total trades: 111",
-      "time": 1776325006153
-    },
-    {
-      "agent": "portfolio",
-      "message": "Win rate: 1.0000",
-      "time": 1776325006154
-    },
-    {
-      "agent": "portfolio",
-      "message": "Total profit: 3458.421958",
-      "time": 1776325006154
-    },
-    {
-      "agent": "portfolio",
-      "message": "Net profit: 3458.421958",
-      "time": 1776325006154
-    },
-    {
-      "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776325006158
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 112 start",
-      "time": 1776325008322
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776325008322
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776325008931
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776325009133
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776325009134
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.00004406996735973204}",
-      "time": 1776325009134
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776325009134
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.00004406996735973204}",
-      "time": 1776325009134
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 1 opportunities",
-      "time": 1776325009135
-    },
-    {
-      "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776325009135
+      "message": "strategy=liquidityImbalance expectedProfit=31.130607591231932 confidence=0.5249999999999999 score=16.34356898539676",
+      "time": 1776326064263
     },
     {
       "agent": "strategy",
       "message": "Opportunity found",
-      "time": 1776325009135
+      "time": 1776326064263
     },
     {
       "agent": "risk",
       "message": "Risk approved",
-      "time": 1776325009135
+      "time": 1776326064263
     },
     {
       "agent": "execution",
       "message": "Prepared swap via smart router",
-      "time": 1776325009135
+      "time": 1776326064263
     },
     {
       "agent": "execution",
       "message": "Execution mode: DRY_RUN",
-      "time": 1776325009135
+      "time": 1776326064263
     },
     {
       "agent": "portfolio",
-      "message": "Total trades: 112",
-      "time": 1776325009135
-    },
-    {
-      "agent": "portfolio",
-      "message": "Win rate: 1.0000",
-      "time": 1776325009135
-    },
-    {
-      "agent": "portfolio",
-      "message": "Total profit: 3489.578880",
-      "time": 1776325009135
-    },
-    {
-      "agent": "portfolio",
-      "message": "Net profit: 3489.578880",
-      "time": 1776325009135
-    },
-    {
-      "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776325009138
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 113 start",
-      "time": 1776325011336
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776325011336
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776325011947
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776325012150
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776325012151
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0000384674212000391}",
-      "time": 1776325012151
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776325012151
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0000384674212000391}",
-      "time": 1776325012151
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 1 opportunities",
-      "time": 1776325012152
-    },
-    {
-      "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776325012152
-    },
-    {
-      "agent": "strategy",
-      "message": "Opportunity found",
-      "time": 1776325012152
-    },
-    {
-      "agent": "risk",
-      "message": "Risk approved",
-      "time": 1776325012152
-    },
-    {
-      "agent": "execution",
-      "message": "Prepared swap via smart router",
-      "time": 1776325012152
-    },
-    {
-      "agent": "execution",
-      "message": "Execution mode: DRY_RUN",
-      "time": 1776325012152
-    },
-    {
-      "agent": "portfolio",
-      "message": "Total trades: 113",
-      "time": 1776325012152
+      "message": "Total trades: 54",
+      "time": 1776326064263
     },
     {
       "agent": "portfolio",
       "message": "Win rate: 1.0000",
-      "time": 1776325012152
+      "time": 1776326064263
     },
     {
       "agent": "portfolio",
-      "message": "Total profit: 3520.735802",
-      "time": 1776325012152
+      "message": "Total profit: 1681.863340",
+      "time": 1776326064263
     },
     {
       "agent": "portfolio",
-      "message": "Net profit: 3520.735802",
-      "time": 1776325012152
+      "message": "Net profit: 1681.863340",
+      "time": 1776326064263
     },
     {
       "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776325012156
+      "message": "Trade success | profit: 31.130607591231932",
+      "time": 1776326064266
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 114 start",
-      "time": 1776325014353
+      "message": "Cycle 55 start",
+      "time": 1776326066425
     },
     {
       "agent": "market",
       "message": "Fetching pools",
-      "time": 1776325014353
+      "time": 1776326066425
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776325014977
+      "time": 1776326067063
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776325015180
+      "time": 1776326067269
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776325015180
+      "message": "Market regime: VOLATILE",
+      "time": 1776326067270
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.000028850565900029334}",
-      "time": 1776325015180
+      "message": "Temporal signal: {\"priceDelta\":-0.019193359505720764,\"priceVelocity\":-0.019193359505720764,\"volatility\":0.1564729528254144}",
+      "time": 1776326067270
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776325015180
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776326067270
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.000028850565900029334}",
-      "time": 1776325015181
-    },
-    {
-      "agent": "strategy",
-      "message": "Found 1 opportunities",
-      "time": 1776325015181
-    },
-    {
-      "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156922308125818 confidence=0.5249999999999999 score=16.357384211766053",
-      "time": 1776325015181
-    },
-    {
-      "agent": "strategy",
-      "message": "Opportunity found",
-      "time": 1776325015181
-    },
-    {
-      "agent": "risk",
-      "message": "Risk approved",
-      "time": 1776325015181
-    },
-    {
-      "agent": "execution",
-      "message": "Prepared swap via smart router",
-      "time": 1776325015181
-    },
-    {
-      "agent": "execution",
-      "message": "Execution mode: DRY_RUN",
-      "time": 1776325015181
-    },
-    {
-      "agent": "portfolio",
-      "message": "Total trades: 114",
-      "time": 1776325015181
-    },
-    {
-      "agent": "portfolio",
-      "message": "Win rate: 1.0000",
-      "time": 1776325015181
-    },
-    {
-      "agent": "portfolio",
-      "message": "Total profit: 3551.892725",
-      "time": 1776325015181
-    },
-    {
-      "agent": "portfolio",
-      "message": "Net profit: 3551.892725",
-      "time": 1776325015181
-    },
-    {
-      "agent": "pipeline",
-      "message": "Trade success | profit: 31.156922308125818",
-      "time": 1776325015186
-    },
-    {
-      "agent": "pipeline",
-      "message": "Cycle 115 start",
-      "time": 1776325017365
-    },
-    {
-      "agent": "market",
-      "message": "Fetching pools",
-      "time": 1776325017365
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776325017975
-    },
-    {
-      "agent": "market",
-      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776325018176
-    },
-    {
-      "agent": "pipeline",
-      "message": "Market regime: TRENDING",
-      "time": 1776325018176
-    },
-    {
-      "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":-0.014736520471046788,\"priceVelocity\":-0.014736520471046788,\"volatility\":0.004420956141314036}",
-      "time": 1776325018176
-    },
-    {
-      "agent": "strategy",
-      "message": "Running 3 strategies | regime=TRENDING",
-      "time": 1776325018176
-    },
-    {
-      "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":-0.014736520471046788,\"priceVelocity\":-0.014736520471046788,\"volatility\":0.004420956141314036}",
-      "time": 1776325018176
+      "message": "Temporal signal: {\"priceDelta\":-0.019193359505720764,\"priceVelocity\":-0.019193359505720764,\"volatility\":0.1564729528254144}",
+      "time": 1776326067271
     },
     {
       "agent": "strategy",
       "message": "Found 2 opportunities",
-      "time": 1776325018177
+      "time": 1776326067271
     },
     {
       "agent": "strategy",
-      "message": "strategy=meanReversion expectedProfit=0.0001868260235523394 confidence=0.325 score=0.00006071845765451031",
-      "time": 1776325018177
+      "message": "strategy=meanReversion expectedProfit=0.0004096679752860382 confidence=0.45499999999999996 score=0.00018639892875514736",
+      "time": 1776326067271
     },
     {
       "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156185482102266 confidence=0.8999999999999999 score=28.040566933892038",
-      "time": 1776325018177
+      "message": "strategy=liquidityImbalance expectedProfit=31.129647923256645 confidence=0.5249999999999999 score=16.343065159709735",
+      "time": 1776326067271
     },
     {
       "agent": "strategy",
       "message": "Opportunity found",
-      "time": 1776325018177
+      "time": 1776326067271
     },
     {
       "agent": "risk",
       "message": "Risk approved",
-      "time": 1776325018177
+      "time": 1776326067271
     },
     {
       "agent": "execution",
       "message": "Prepared swap via smart router",
-      "time": 1776325018177
+      "time": 1776326067271
     },
     {
       "agent": "execution",
       "message": "Execution mode: DRY_RUN",
-      "time": 1776325018177
+      "time": 1776326067271
     },
     {
       "agent": "portfolio",
-      "message": "Total trades: 115",
-      "time": 1776325018177
+      "message": "Total trades: 55",
+      "time": 1776326067271
     },
     {
       "agent": "portfolio",
       "message": "Win rate: 1.0000",
-      "time": 1776325018177
+      "time": 1776326067271
     },
     {
       "agent": "portfolio",
-      "message": "Total profit: 3583.048910",
-      "time": 1776325018177
+      "message": "Total profit: 1712.992988",
+      "time": 1776326067271
     },
     {
       "agent": "portfolio",
-      "message": "Net profit: 3583.048910",
-      "time": 1776325018177
+      "message": "Net profit: 1712.992988",
+      "time": 1776326067271
     },
     {
       "agent": "pipeline",
-      "message": "Trade success | profit: 31.156185482102266",
-      "time": 1776325018182
+      "message": "Trade success | profit: 31.129647923256645",
+      "time": 1776326067275
     },
     {
       "agent": "pipeline",
-      "message": "Cycle 116 start",
-      "time": 1776325020374
+      "message": "Cycle 56 start",
+      "time": 1776326069429
     },
     {
       "agent": "market",
       "message": "Fetching pools",
-      "time": 1776325020374
+      "time": 1776326069429
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
-      "time": 1776325021141
+      "time": 1776326070065
     },
     {
       "agent": "market",
       "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
-      "time": 1776325021341
+      "time": 1776326070276
     },
     {
       "agent": "pipeline",
-      "message": "Market regime: MEAN_REVERTING",
-      "time": 1776325021342
+      "message": "Market regime: VOLATILE",
+      "time": 1776326070276
     },
     {
       "agent": "pipeline",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0058946081884187155}",
-      "time": 1776325021342
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.13750759156282297}",
+      "time": 1776326070276
     },
     {
       "agent": "strategy",
-      "message": "Running 3 strategies | regime=MEAN_REVERTING",
-      "time": 1776325021342
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776326070276
     },
     {
       "agent": "strategy",
-      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.0058946081884187155}",
-      "time": 1776325021342
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.13750759156282297}",
+      "time": 1776326070276
     },
     {
       "agent": "strategy",
       "message": "Found 1 opportunities",
-      "time": 1776325021342
+      "time": 1776326070277
     },
     {
       "agent": "strategy",
-      "message": "strategy=liquidityImbalance expectedProfit=31.156185482102266 confidence=0.5249999999999999 score=16.35699737810369",
-      "time": 1776325021342
+      "message": "strategy=liquidityImbalance expectedProfit=31.129647923256645 confidence=0.5249999999999999 score=16.343065159709735",
+      "time": 1776326070277
     },
     {
       "agent": "strategy",
       "message": "Opportunity found",
-      "time": 1776325021342
+      "time": 1776326070277
     },
     {
       "agent": "risk",
       "message": "Risk approved",
-      "time": 1776325021342
+      "time": 1776326070277
     },
     {
       "agent": "execution",
       "message": "Prepared swap via smart router",
-      "time": 1776325021342
+      "time": 1776326070277
     },
     {
       "agent": "execution",
       "message": "Execution mode: DRY_RUN",
-      "time": 1776325021342
+      "time": 1776326070277
     },
     {
       "agent": "portfolio",
-      "message": "Total trades: 116",
-      "time": 1776325021342
+      "message": "Total trades: 56",
+      "time": 1776326070277
     },
     {
       "agent": "portfolio",
       "message": "Win rate: 1.0000",
-      "time": 1776325021342
+      "time": 1776326070277
     },
     {
       "agent": "portfolio",
-      "message": "Total profit: 3614.205096",
-      "time": 1776325021342
+      "message": "Total profit: 1744.122636",
+      "time": 1776326070277
     },
     {
       "agent": "portfolio",
-      "message": "Net profit: 3614.205096",
-      "time": 1776325021342
+      "message": "Net profit: 1744.122636",
+      "time": 1776326070277
+    },
+    {
+      "agent": "pipeline",
+      "message": "Trade success | profit: 31.129647923256645",
+      "time": 1776326070281
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 57 start",
+      "time": 1776326072441
+    },
+    {
+      "agent": "market",
+      "message": "Fetching pools",
+      "time": 1776326072441
+    },
+    {
+      "agent": "market",
+      "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
+      "time": 1776326073222
+    },
+    {
+      "agent": "market",
+      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
+      "time": 1776326073449
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: VOLATILE",
+      "time": 1776326073449
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: {\"priceDelta\":0.0001922733874835103,\"priceVelocity\":0.0001922733874835103,\"volatility\":0.10379907102299048}",
+      "time": 1776326073449
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=VOLATILE",
+      "time": 1776326073449
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0.0001922733874835103,\"priceVelocity\":0.0001922733874835103,\"volatility\":0.10379907102299048}",
+      "time": 1776326073449
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776326073450
+    },
+    {
+      "agent": "strategy",
+      "message": "strategy=liquidityImbalance expectedProfit=31.12965753692602 confidence=0.5249999999999999 score=16.343070206886157",
+      "time": 1776326073450
+    },
+    {
+      "agent": "strategy",
+      "message": "Opportunity found",
+      "time": 1776326073450
+    },
+    {
+      "agent": "risk",
+      "message": "Risk approved",
+      "time": 1776326073450
+    },
+    {
+      "agent": "execution",
+      "message": "Prepared swap via smart router",
+      "time": 1776326073450
+    },
+    {
+      "agent": "execution",
+      "message": "Execution mode: DRY_RUN",
+      "time": 1776326073450
+    },
+    {
+      "agent": "portfolio",
+      "message": "Total trades: 57",
+      "time": 1776326073450
+    },
+    {
+      "agent": "portfolio",
+      "message": "Win rate: 1.0000",
+      "time": 1776326073450
+    },
+    {
+      "agent": "portfolio",
+      "message": "Total profit: 1775.252294",
+      "time": 1776326073450
+    },
+    {
+      "agent": "portfolio",
+      "message": "Net profit: 1775.252294",
+      "time": 1776326073450
+    },
+    {
+      "agent": "pipeline",
+      "message": "Trade success | profit: 31.12965753692602",
+      "time": 1776326073463
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 58 start",
+      "time": 1776326075451
+    },
+    {
+      "agent": "market",
+      "message": "Fetching pools",
+      "time": 1776326075451
+    },
+    {
+      "agent": "market",
+      "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
+      "time": 1776326076569
+    },
+    {
+      "agent": "market",
+      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
+      "time": 1776326076798
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: MEAN_REVERTING",
+      "time": 1776326076798
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.009277559241392744}",
+      "time": 1776326076798
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776326076798
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.009277559241392744}",
+      "time": 1776326076799
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776326076800
+    },
+    {
+      "agent": "strategy",
+      "message": "strategy=liquidityImbalance expectedProfit=31.12965753692602 confidence=0.5249999999999999 score=16.343070206886157",
+      "time": 1776326076800
+    },
+    {
+      "agent": "strategy",
+      "message": "Opportunity found",
+      "time": 1776326076800
+    },
+    {
+      "agent": "risk",
+      "message": "Risk approved",
+      "time": 1776326076800
+    },
+    {
+      "agent": "execution",
+      "message": "Prepared swap via smart router",
+      "time": 1776326076800
+    },
+    {
+      "agent": "execution",
+      "message": "Execution mode: DRY_RUN",
+      "time": 1776326076800
+    },
+    {
+      "agent": "portfolio",
+      "message": "Total trades: 58",
+      "time": 1776326076800
+    },
+    {
+      "agent": "portfolio",
+      "message": "Win rate: 1.0000",
+      "time": 1776326076800
+    },
+    {
+      "agent": "portfolio",
+      "message": "Total profit: 1806.381951",
+      "time": 1776326076800
+    },
+    {
+      "agent": "portfolio",
+      "message": "Net profit: 1806.381951",
+      "time": 1776326076800
+    },
+    {
+      "agent": "pipeline",
+      "message": "Trade success | profit: 31.12965753692602",
+      "time": 1776326076805
+    },
+    {
+      "agent": "pipeline",
+      "message": "Cycle 59 start",
+      "time": 1776326078467
+    },
+    {
+      "agent": "market",
+      "message": "Fetching pools",
+      "time": 1776326078467
+    },
+    {
+      "agent": "market",
+      "message": "Fetched pool 0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16",
+      "time": 1776326079204
+    },
+    {
+      "agent": "market",
+      "message": "Fetched pool 0x0eD7e52944161450477ee417DE9Cd3a859b14fD0",
+      "time": 1776326079432
+    },
+    {
+      "agent": "pipeline",
+      "message": "Market regime: MEAN_REVERTING",
+      "time": 1776326079432
+    },
+    {
+      "agent": "pipeline",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.009462478066974717}",
+      "time": 1776326079432
+    },
+    {
+      "agent": "strategy",
+      "message": "Running 3 strategies | regime=MEAN_REVERTING",
+      "time": 1776326079433
+    },
+    {
+      "agent": "strategy",
+      "message": "Temporal signal: {\"priceDelta\":0,\"priceVelocity\":0,\"volatility\":0.009462478066974717}",
+      "time": 1776326079433
+    },
+    {
+      "agent": "strategy",
+      "message": "Found 1 opportunities",
+      "time": 1776326079434
+    },
+    {
+      "agent": "strategy",
+      "message": "strategy=liquidityImbalance expectedProfit=31.12965753692602 confidence=0.5249999999999999 score=16.343070206886157",
+      "time": 1776326079434
+    },
+    {
+      "agent": "strategy",
+      "message": "Opportunity found",
+      "time": 1776326079434
+    },
+    {
+      "agent": "risk",
+      "message": "Risk approved",
+      "time": 1776326079434
+    },
+    {
+      "agent": "execution",
+      "message": "Prepared swap via smart router",
+      "time": 1776326079434
+    },
+    {
+      "agent": "execution",
+      "message": "Execution mode: DRY_RUN",
+      "time": 1776326079434
+    },
+    {
+      "agent": "portfolio",
+      "message": "Total trades: 59",
+      "time": 1776326079434
+    },
+    {
+      "agent": "portfolio",
+      "message": "Win rate: 1.0000",
+      "time": 1776326079434
+    },
+    {
+      "agent": "portfolio",
+      "message": "Total profit: 1837.511609",
+      "time": 1776326079434
+    },
+    {
+      "agent": "portfolio",
+      "message": "Net profit: 1837.511609",
+      "time": 1776326079434
     }
   ]
 }
