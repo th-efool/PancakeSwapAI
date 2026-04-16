@@ -2,7 +2,7 @@ import type { Opportunity } from '../core/types';
 import config from '../config';
 
 function checkProfitability(opp: Opportunity): boolean {
-  return opp.expectedProfit > opp.gasCost * 1.5;
+  return opp.expectedProfit >= opp.gasCost * 2;
 }
 
 function checkTradeSize(opp: Opportunity): boolean {

@@ -10,19 +10,18 @@ function pairKey(pool: Pool): string {
 }
 
 function groupByPair(pools: Pool[]): PairGroup {
-  const groups: PairGroup = {};
+  const out: PairGroup = {};
   for (const pool of pools) {
     const key = pairKey(pool);
-    if (!groups[key]) groups[key] = [];
-    groups[key].push(pool);
+    if (!out[key]) out[key] = [];
+    out[key].push(pool);
   }
-  return groups;
+  return out;
 }
 
-export function arbitrageStrategy(state: MarketState): Opportunity | null {
+export function meanReversionStrategy(state: MarketState): Opportunity | null {
   if (state.pools.length < 2) return null;
 
-  console.log('Grouping pools by token pair');
   const groups = groupByPair(state.pools);
   const amountIn = config.maxTradeSize;
   const gasCost = estimateGasCost();
@@ -32,6 +31,9 @@ export function arbitrageStrategy(state: MarketState): Opportunity | null {
   for (const pools of Object.values(groups)) {
     if (pools.length < 2) continue;
 
+    const avg = pools.reduce((sum, pool) => sum + pool.price, 0) / pools.length;
+    if (avg <= 0) continue;
+
     let low = pools[0];
     let high = pools[0];
     for (const pool of pools) {
@@ -39,16 +41,17 @@ export function arbitrageStrategy(state: MarketState): Opportunity | null {
       if (pool.price > high.price) high = pool;
     }
 
-    if (low.price <= 0 || high.price <= 0) continue;
+    const spread = (high.price - low.price) / avg;
+    if (spread < 0.01) continue;
 
     const buyAmount = amountIn;
-    const sellAmount = amountIn * (high.price / low.price);
+    const sellAmount = amountIn * (avg / low.price);
     const grossProfit = sellAmount - buyAmount;
     const slippageCost = config.slippageTolerance * amountIn;
     const expectedProfit = grossProfit - gasCost - slippageCost;
     if (expectedProfit <= 0) continue;
 
-    const opportunity: Opportunity = {
+    const opp: Opportunity = {
       buyPool: low,
       sellPool: high,
       tokenIn: low.token0,
@@ -57,20 +60,14 @@ export function arbitrageStrategy(state: MarketState): Opportunity | null {
       expectedProfit,
       gasCost,
       slippage: config.slippageTolerance,
-      strategy: 'arbitrage',
-      confidence: 0.9,
+      strategy: 'meanReversion',
+      confidence: 0.6,
     };
 
-    if (!best || opportunity.expectedProfit > best.expectedProfit) best = opportunity;
+    if (!best || opp.expectedProfit > best.expectedProfit) best = opp;
   }
 
-  if (!best) {
-    console.log('No opportunity exists');
-    return null;
-  }
-
-  console.log('Profitable opportunity found');
   return best;
 }
 
-export default arbitrageStrategy;
+export default meanReversionStrategy;
