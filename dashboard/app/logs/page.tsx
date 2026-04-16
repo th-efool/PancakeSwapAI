@@ -13,6 +13,15 @@ const c: Record<string, string> = {
   portfolio: 'text-fuchsia-400 border-fuchsia-400/20 bg-fuchsia-400/10',
   liquidity: 'text-blue-400 border-blue-400/20 bg-blue-400/10',
   pipeline: 'text-slate-300 border-slate-500/20 bg-slate-500/10',
+  memory: 'text-purple-300 border-purple-400/30 bg-purple-500/10',
+  simulation: 'text-orange-300 border-orange-400/30 bg-orange-500/10',
+  decision: 'text-cyan-300 border-cyan-400/30 bg-cyan-500/10',
+}
+
+const tagMap: Record<string, string> = {
+  memory: 'memory',
+  simulation: 'simulation',
+  decision: 'decision',
 }
 
 export default function LogsPage() {
@@ -39,7 +48,9 @@ export default function LogsPage() {
               backgroundSize: '100% 4px',
             }}
         >
-          {items.map((l, i) => (
+          {items.map((l, i) => {
+            const t = tagMap[l.agent]
+            return (
               <div
                   key={`${l.time}-${i}`}
                   className="flex flex-col md:flex-row md:items-start gap-2 md:gap-4 rounded hover:bg-white/[0.02] p-1.5 transition-colors"
@@ -51,12 +62,14 @@ export default function LogsPage() {
                   <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${c[l.agent] ?? 'text-slate-400 border-slate-700 bg-slate-800'}`}>
                 {l.agent}
               </span>
+                  {t ? <span className={`rounded px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider border ${c[t]}`}>[{t}]</span> : null}
                 </div>
                 <p className="text-slate-300 leading-relaxed break-words flex-1">
                   {l.message}
                 </p>
               </div>
-          ))}
+            )
+          })}
           {items.length === 0 && (
               <p className="text-slate-500 italic p-4 text-center">Awaiting log stream...</p>
           )}

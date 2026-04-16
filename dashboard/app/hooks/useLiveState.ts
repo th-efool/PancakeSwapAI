@@ -53,6 +53,29 @@ export type LiveState = {
     winRate?: number
     totalProfit?: number
   }
+
+  memory?: {
+    strategy?: string
+    winRate?: number
+    avgProfit?: number
+    recentMomentum?: number
+    performanceScore?: number
+  }
+  simulation?: {
+    bestProfit?: number
+    worstProfit?: number
+    avgProfit?: number
+    riskScore?: number
+    confidenceAdjusted?: number
+  }
+  decision?: {
+    selectedStrategy?: string
+    baseScore?: number
+    performanceScore?: number
+    finalScore?: number
+    regime?: string
+    reason?: string
+  }
   logs?: Array<{ agent: string; message: string; time: number }>
 
   configuredSource?: 'ON_CHAIN' | 'DEXSCREENER' | 'SUBGRAPH'
