@@ -20,6 +20,9 @@ const BSC_CHAIN_ID = 56
 const DEFAULT_GAS_LIMIT = 300000
 const DEFAULT_SLIPPAGE_TOLERANCE = 0.005
 const DEFAULT_MAX_TRADE_SIZE = 0.05
+const DEFAULT_TRADE_SCALE_K = 0.01
+const DEFAULT_MIN_TRADE_SIZE = 0.005
+const DEFAULT_VOLATILITY_EPSILON = 0.001
 const DEFAULT_ROUTER_TYPE: AppConfig['routerType'] = 'smart'
 const DEFAULT_POLL_INTERVAL_MS = 5000
 const DEFAULT_DATA_SOURCE: DataSourceType = 'ON_CHAIN'
@@ -32,6 +35,9 @@ export const config: AppConfig = {
   gasLimit: DEFAULT_GAS_LIMIT,
   slippageTolerance: DEFAULT_SLIPPAGE_TOLERANCE,
   maxTradeSize: DEFAULT_MAX_TRADE_SIZE,
+  tradeScaleK: DEFAULT_TRADE_SCALE_K,
+  minTradeSize: DEFAULT_MIN_TRADE_SIZE,
+  volatilityEpsilon: DEFAULT_VOLATILITY_EPSILON,
   routerType: DEFAULT_ROUTER_TYPE,
   pollIntervalMs: DEFAULT_POLL_INTERVAL_MS,
   dataSource: (process.env.MARKET_DATA_SOURCE as DataSourceType) || DEFAULT_DATA_SOURCE,

@@ -1,6 +1,7 @@
 import { log } from '../core/logger.js'
 import type { MarketState, Opportunity, Pool } from '../core/types.js'
-import config, { estimateGasCost } from '../config.js'
+import config from '../config.js'
+import { computeAmountIn, computeExpectedProfit, computeGasCost } from '../core/tradingModel.js'
 
 type PairGroup = Record<string, Pool[]>
 
@@ -24,8 +25,7 @@ function legacyMeanReversion(state: MarketState): Opportunity | null {
   if (state.pools.length < 2) return null
 
   const groups = groupByPair(state.pools)
-  const amountIn = config.maxTradeSize
-  const gasCost = estimateGasCost()
+  const gasCost = computeGasCost(config)
 
   let best: Opportunity | null = null
 
@@ -45,11 +45,9 @@ function legacyMeanReversion(state: MarketState): Opportunity | null {
     const spread = (high.price - low.price) / avg
     if (!Number.isFinite(spread) || spread < 0.01) continue
 
-    const buyAmount = amountIn
-    const sellAmount = amountIn * (avg / low.price)
-    const grossProfit = sellAmount - buyAmount
-    const slippageCost = config.slippageTolerance * amountIn
-    const expectedProfit = grossProfit - gasCost - slippageCost
+    const edgeRate = avg / low.price - 1
+    const amountIn = computeAmountIn(spread, config)
+    const expectedProfit = computeExpectedProfit(edgeRate, amountIn, gasCost, config.slippageTolerance)
     if (!Number.isFinite(expectedProfit) || expectedProfit <= 0) continue
 
     const opp: Opportunity = {
@@ -70,9 +68,7 @@ function legacyMeanReversion(state: MarketState): Opportunity | null {
 }
 
 export function meanReversionStrategy(state: MarketState, signals: any): Opportunity | null {
-  const amountIn = config.maxTradeSize
-  const gasCost = estimateGasCost()
-  const slippageCost = config.slippageTolerance * amountIn
+  const gasCost = computeGasCost(config)
 
   const pool = state.pools
     .filter((p) => Number.isFinite(p.priceChange.h1))
@@ -86,8 +82,10 @@ export function meanReversionStrategy(state: MarketState, signals: any): Opportu
   if (!direction) return legacyMeanReversion(state)
   log('strategy', `Using DexScreener temporal data h1=${priceChangeH1}`)
 
-  const grossProfit = amountIn * (Math.abs(priceChangeH1) / 100)
-  const expectedProfit = grossProfit - gasCost - slippageCost
+  const volatility = Math.abs(priceChangeH1) / 100
+  const amountIn = computeAmountIn(volatility, config)
+  const edgeRate = Math.abs(priceChangeH1) / 100
+  const expectedProfit = computeExpectedProfit(edgeRate, amountIn, gasCost, config.slippageTolerance)
   if (!Number.isFinite(expectedProfit) || expectedProfit <= 0) return legacyMeanReversion(state)
 
   return {

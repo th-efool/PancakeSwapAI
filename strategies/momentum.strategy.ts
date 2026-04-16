@@ -1,4 +1,5 @@
-import config, { estimateGasCost } from '../config.js'
+import config from '../config.js'
+import { computeAmountIn, computeExpectedProfit, computeGasCost } from '../core/tradingModel.js'
 import type { MarketState, Opportunity, SignalSet } from '../core/types.js'
 
 const MOMENTUM_MIN = 0.3
@@ -17,11 +18,11 @@ export function momentumStrategy(state: MarketState, signals: SignalSet | null):
   const pool = state.pools.find((p) => p.address === poolRow.poolAddress)
   if (!pool) return null
 
-  const amountIn = config.maxTradeSize
-  const gasCost = estimateGasCost()
-  const slippageCost = config.slippageTolerance * amountIn
-  const grossProfit = amountIn * (poolRow.signal.momentum / 100) * Math.min(poolRow.signal.volumeSpike, 3)
-  const expectedProfit = Math.min(grossProfit, amountIn * 0.04) - gasCost - slippageCost
+  const gasCost = computeGasCost(config)
+  const volatility = Math.abs(pool.priceChange.m5) / 100
+  const amountIn = computeAmountIn(volatility, config)
+  const edgeRate = (poolRow.signal.momentum / 100) * Math.min(poolRow.signal.volumeSpike, 3)
+  const expectedProfit = computeExpectedProfit(Math.min(edgeRate, 0.04), amountIn, gasCost, config.slippageTolerance)
   if (!Number.isFinite(expectedProfit) || expectedProfit <= 0) return null
 
   return {

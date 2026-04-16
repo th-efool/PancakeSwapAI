@@ -111,4 +111,7 @@ export type Config = {
   gasLimit: number;
   slippageTolerance: number;
   maxTradeSize: number;
+  tradeScaleK: number;
+  minTradeSize: number;
+  volatilityEpsilon: number;
 };
