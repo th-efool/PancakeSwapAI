@@ -10,9 +10,10 @@ type Props = {
 const nf = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '--')
 
 export default function SimulationCard({ simulation, blink }: Props) {
+  const risk = simulation?.riskScore
   const worstTone = typeof simulation?.worstProfit !== 'number' ? 'text-slate-200' : simulation.worstProfit >= 0 ? 'text-emerald-300' : 'text-rose-300'
-  const riskTone = !simulation ? 'text-slate-200' : simulation.riskScore < 0.33 ? 'text-emerald-300' : simulation.riskScore < 0.66 ? 'text-amber-300' : 'text-rose-300'
-  const riskText = !simulation ? '--' : simulation.riskScore < 0.33 ? 'Low' : simulation.riskScore < 0.66 ? 'Medium' : 'High'
+  const riskTone = typeof risk !== 'number' ? 'text-slate-200' : risk < 0.33 ? 'text-emerald-300' : risk < 0.66 ? 'text-amber-300' : 'text-rose-300'
+  const riskText = typeof risk !== 'number' ? '--' : risk < 0.33 ? 'Low' : risk < 0.66 ? 'Medium' : 'High'
 
   const bars = useMemo(() => {
     const base = simulation?.avgProfit ?? 0
