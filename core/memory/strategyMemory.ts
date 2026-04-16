@@ -51,8 +51,11 @@ export function computePerformanceScore(strategy: StrategyKey): number {
     stats.last5Profits.length > 0
       ? stats.last5Profits.reduce((sum, p) => sum + sanitize(p), 0) / stats.last5Profits.length
       : 0
-  const avgProfitNormalized = clamp(sanitize(stats.avgProfit) / 0.01, -1, 1)
 
-  const raw = winRate * 0.5 + avgProfitNormalized * 0.3 + recentMomentum * 0.2
-  return clamp(sanitize(raw), -1, 1)
+  const winRateNormalized = clamp(winRate - 0.5, -0.5, 0.5)
+  const avgProfitNormalized = clamp(sanitize(stats.avgProfit) / 0.02, -0.5, 0.5)
+  const momentumNormalized = clamp(sanitize(recentMomentum) / 0.02, -0.5, 0.5)
+
+  const raw = winRateNormalized * 0.5 + avgProfitNormalized * 0.3 + momentumNormalized * 0.2
+  return clamp(sanitize(raw), -0.5, 0.5)
 }
