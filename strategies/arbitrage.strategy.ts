@@ -19,7 +19,7 @@ function groupByPair(pools: Pool[]): PairGroup {
   return groups;
 }
 
-export function arbitrageStrategy(state: MarketState): Opportunity | null {
+export function arbitrageStrategy(state: MarketState, signals?: any): Opportunity | null {
   if (state.pools.length < 2) return null;
 
   console.log('Grouping pools by token pair');
@@ -68,7 +68,11 @@ export function arbitrageStrategy(state: MarketState): Opportunity | null {
   }
 
   console.log('Profitable opportunity found');
-  return best;
+  return {
+    ...best,
+    signalStrength: signals?.aggregate?.signalStrength ?? 0,
+    reason: 'Cross-pool price dislocation',
+  };
 }
 
 export default arbitrageStrategy;

@@ -1,4 +1,4 @@
-export type MarketRegime = 'TRENDING' | 'MEAN_REVERTING' | 'VOLATILE' | 'UNKNOWN'
+export type MarketRegime = 'TRENDING' | 'MEAN_REVERTING' | 'VOLATILE' | 'CHAOTIC' | 'IDLE' | 'UNKNOWN'
 
 export type Token = {
   address: string;
@@ -11,12 +11,42 @@ export type Pool = {
   token1: Token;
   price: number;
   liquidity: number;
-  priceChangeM5: number;
-  volumeM5: number;
-  buysM5: number;
-  sellsM5: number;
-  priceChangeH1?: number;
+  priceChange: {
+    m5: number;
+    h1: number;
+  };
+  volume: {
+    m5: number;
+    h1: number;
+  };
+  txns: {
+    m5: {
+      buys: number;
+      sells: number;
+      total: number;
+    };
+  };
 };
+
+export type MarketSignal = {
+  momentum: number
+  higherTFMomentum: number
+  volumeSpike: number
+  orderImbalance: number
+  liquidityWeight: number
+  signalStrength: number
+}
+
+export type SignalSet = {
+  perPool: Array<{ poolAddress: string; signal: MarketSignal }>
+  aggregate: MarketSignal
+}
+
+export type RegimeAssessment = {
+  regime: MarketRegime
+  confidence: number
+  reason: string
+}
 
 export type MarketState = {
   pools: Pool[];
@@ -32,6 +62,8 @@ export type Opportunity = {
   slippage: number;
   strategy: string;
   confidence: number;
+  signalStrength?: number;
+  reason?: string;
   score?: number;
 };
 

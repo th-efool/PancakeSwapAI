@@ -67,7 +67,7 @@ type DexScreenerPair = {
   priceNative?: string
   liquidity?: { usd?: number }
   priceChange?: { m5?: number; h1?: number }
-  volume?: { m5?: number }
+  volume?: { m5?: number; h1?: number }
   txns?: { m5?: { buys?: number; sells?: number } }
 }
 
@@ -211,6 +211,7 @@ class DexScreenerDataSource implements DataSource {
         priceChangeM5: pair.priceChange?.m5 ?? 0,
         priceChangeH1: pair.priceChange?.h1 ?? 0,
         volumeM5: pair.volume?.m5 ?? 0,
+        volumeH1: pair.volume?.h1 ?? 0,
         buysM5: pair.txns?.m5?.buys ?? 0,
         sellsM5: pair.txns?.m5?.sells ?? 0,
       })
