@@ -1,0 +1,26 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+
+# env
+.env
+
+# logs
+*.log
+
+# IDE
+.idea/
+.vscode/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# typescript cache
+*.tsbuildinfo
+
+# external repos / context
+pancakeswap-ai/
