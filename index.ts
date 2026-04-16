@@ -19,11 +19,29 @@ const pipeline = {
   execute: executionAgent,
 };
 
-async function main() {
-  console.log('Starting trading bot...');
-  await runPipeline(pipeline);
+async function startLoop() {
+  const INTERVAL_MS = 3000;
+
+  while (true) {
+    console.log('\n=== NEW CYCLE ===');
+
+    const start = Date.now();
+
+    try {
+      await runPipeline(pipeline);
+    } catch (err) {
+      console.error('Cycle failed:', err);
+    }
+
+    const elapsed = Date.now() - start;
+    const waitTime = INTERVAL_MS - elapsed;
+
+    console.log(`Cycle duration: ${elapsed}ms`);
+
+    if (waitTime > 0) {
+      await new Promise((resolve) => setTimeout(resolve, waitTime));
+    }
+  }
 }
 
-main().catch((err) => {
-  console.error('Fatal error:', err);
-});
+startLoop().catch(console.error);
