@@ -23,7 +23,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
     console.log('Market data loaded');
 
     console.log('Step 2: strategy');
-    const opportunity = pipeline.strategy(state);
+    const opportunity: Opportunity | null = pipeline.strategy(state);
     if (!opportunity) {
       console.log('No opportunity');
       return;
@@ -38,7 +38,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
     }
 
     console.log('Step 4: execute');
-    const result = await pipeline.execute(opportunity);
+    const result: TradeResult = await pipeline.execute(opportunity);
     recordTrade(result, opportunity);
     latestState.performance = getPerformance();
     logPerformance();

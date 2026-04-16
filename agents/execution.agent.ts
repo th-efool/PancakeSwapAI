@@ -17,7 +17,7 @@ function selectRouter(): 'smart' | 'universal' {
 }
 
 function quoteAmountOut(opp: Opportunity): number {
-  return opp.amountIn * (opp.sellPool.price / opp.buyPool.price);
+  return opp.amountIn + Math.max(opp.expectedProfit + opp.gasCost, 0);
 }
 
 function minAmountOut(amountOutQuote: number): number {
@@ -28,8 +28,8 @@ function buildSwapPrep(opp: Opportunity): SwapPrep {
   const amountOutQuote = quoteAmountOut(opp);
   return {
     routerType: selectRouter(),
-    tokenIn: opp.tokenIn.address,
-    tokenOut: opp.tokenOut.address,
+    tokenIn: opp.tokenIn,
+    tokenOut: opp.tokenOut,
     amountIn: opp.amountIn,
     amountOutQuote,
     amountOutMin: minAmountOut(amountOutQuote),
@@ -43,11 +43,10 @@ async function estimateGas(): Promise<bigint> {
 function validateOpportunity(opp: Opportunity): string | null {
   const isAddress = (value: string) => /^0x[a-fA-F0-9]{40}$/.test(value);
   if (!opp.tokenIn || !opp.tokenOut) return 'Missing tokens';
-  if (!isAddress(opp.tokenIn.address) || !isAddress(opp.tokenOut.address)) {
+  if (!isAddress(opp.tokenIn) || !isAddress(opp.tokenOut)) {
     return 'Invalid token address';
   }
   if (opp.amountIn <= 0) return 'Invalid amountIn';
-  if (opp.buyPool.price <= 0 || opp.sellPool.price <= 0) return 'Invalid pool price';
   return null;
 }
 
