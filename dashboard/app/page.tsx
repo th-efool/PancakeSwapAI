@@ -1,187 +1,156 @@
-'use client';
+'use client'
 
-import { useEffect, useMemo, useState } from 'react';
-import Card from '../components/Card';
-import MetricBox from '../components/MetricBox';
+import Card from '../components/Card'
+import MetricBox from '../components/MetricBox'
+import TemporalMetric from '../components/TemporalMetric'
+import { type TimelineItem, useLiveState } from './hooks/useLiveState'
 
-type Strategy = {
-  name: string;
-  profit: number;
-  confidence: number;
-  score: number;
-};
+const n = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '—')
+const signed = (v: number, d = 3) => `${v >= 0 ? '+' : ''}${v.toFixed(d)}`
 
-type DashboardData = {
-  opportunity?: {
-    strategy?: string;
-    confidence?: number;
-    expectedProfit?: number;
-    tokenIn?: string;
-    tokenOut?: string;
-    amountIn?: number;
-    score?: number;
-  } | null;
-  performance?: {
-    totalTrades?: number;
-    winRate?: number;
-    totalProfit?: number;
-    netProfit?: number;
-    gasEfficiency?: number;
-    sharpe?: number;
-  } | null;
-  strategies?: Strategy[];
-  timestamp?: number;
-};
+const regimeMap = {
+  TRENDING: {
+    badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40',
+    glow: 'shadow-[0_0_32px_rgba(16,185,129,0.25)]',
+    note: 'Directional strength detected. Momentum-friendly strategies favored.',
+  },
+  MEAN_REVERTING: {
+    badge: 'bg-sky-500/20 text-sky-300 border-sky-400/40',
+    glow: 'shadow-[0_0_32px_rgba(56,189,248,0.2)]',
+    note: 'Price is stabilizing around local fair value. Reversion favored.',
+  },
+  VOLATILE: {
+    badge: 'bg-amber-500/20 text-amber-300 border-amber-400/40',
+    glow: 'shadow-[0_0_32px_rgba(245,158,11,0.28)]',
+    note: 'Instability elevated. Confidence dampened and risk posture tightened.',
+  },
+  UNKNOWN: {
+    badge: 'bg-slate-500/20 text-slate-300 border-slate-400/40',
+    glow: 'shadow-[0_0_20px_rgba(148,163,184,0.18)]',
+    note: 'Signal history still building. System observing before stronger adaptation.',
+  },
+} as const
 
-const mock: Strategy[] = [
-  { name: 'Arbitrage', profit: 0, confidence: 0, score: 0 },
-  { name: 'Mean Reversion', profit: 0, confidence: 0, score: 0 },
-  { name: 'Liquidity Imbalance', profit: 0, confidence: 0, score: 0 },
-];
-
-const n = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '—');
+function statusTag(t: TimelineItem[], strategy?: string, connected?: boolean) {
+  if (!connected) return 'waiting'
+  if (!t.length) return 'observing'
+  if (!strategy || strategy === 'none') return 'observing'
+  if (t.length > 1 && (t[t.length - 1].regime !== t[t.length - 2].regime || t[t.length - 1].strategy !== t[t.length - 2].strategy)) return 'adapting'
+  return 'executing'
+}
 
 export default function Page() {
-  const [data, setData] = useState<DashboardData | null>(null);
+  const { data, blink, connected, timeline } = useLiveState()
+  if (!data?.timestamp) return <p className="text-lg text-slate-300">Waiting for first cycle...</p>
 
-  useEffect(() => {
-    let on = true;
+  const opp = data.selectedOpportunity
+  const best = data.strategies?.[0]
+  const net = data.performance?.netProfit
+  const netTone = typeof net === 'number' && net > 0 ? 'text-emerald-300' : 'text-rose-300'
 
-    const load = async () => {
-      try {
-        const r = await fetch('/latest_state.json', { cache: 'no-store' });
-        if (!r.ok) return;
-        const json = (await r.json()) as DashboardData;
-        if (on) setData(json);
-      } catch {}
-    };
+  const s = data.temporalSignals
+  const hasSignals = !!s && typeof s.priceDelta === 'number' && typeof s.priceVelocity === 'number' && typeof s.volatility === 'number'
 
-    load();
-    const id = setInterval(load, 2000);
-    return () => {
-      on = false;
-      clearInterval(id);
-    };
-  }, []);
+  const delta = s?.priceDelta ?? 0
+  const vel = s?.priceVelocity ?? 0
+  const vol = s?.volatility ?? 0
 
-  const opp = data?.opportunity;
-  const perf = data?.performance;
-  const strategies = useMemo(() => {
-    if (data?.strategies?.length) return data.strategies;
-    if (opp?.strategy) {
-      return [
-        {
-          name: opp.strategy,
-          profit: opp.expectedProfit ?? 0,
-          confidence: opp.confidence ?? 0,
-          score: opp.score ?? 0,
-        },
-        ...mock.filter((s) => s.name !== opp.strategy),
-      ];
-    }
-    return mock;
-  }, [data?.strategies, opp]);
+  const deltaTone = delta > 0 ? 'text-emerald-300' : delta < 0 ? 'text-rose-300' : 'text-slate-200'
+  const velTone = vel > 0 ? 'text-emerald-300' : vel < 0 ? 'text-rose-300' : 'text-slate-300'
+  const volTone = vol > 0.015 ? 'text-amber-300' : 'text-sky-300'
 
-  if (!data) {
-    return (
-        <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-slate-200">
-          <p className="text-xl font-semibold">Waiting for bot data...</p>
-        </main>
-    );
-  }
+  const regime = data.regime ?? 'UNKNOWN'
+  const regimeUi = regimeMap[regime]
 
-  if (!data?.opportunity) return 'Waiting...';
+  const story = (() => {
+    if (!hasSignals) return 'System is warming up. Building enough signal depth for confident adaptation.'
+    if (!opp?.strategy || opp.strategy === 'none') return `${regime} regime detected. No high-confidence trade passed the current filters.`
+    if (regime === 'TRENDING') return `TRENDING regime detected, ${opp.strategy} selected for stronger directional follow-through.`
+    if (regime === 'MEAN_REVERTING') return `MEAN_REVERTING regime favored ${opp.strategy} as prices compressed toward equilibrium.`
+    if (regime === 'VOLATILE') return `VOLATILE regime reduced confidence globally, but ${opp.strategy} remained highest-ranked.`
+    return `${opp.strategy} selected while market state remains UNKNOWN.`
+  })()
+
+  const hist = timeline.slice(-6)
+  const stateTag = statusTag(timeline, opp?.strategy, connected)
 
   return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-6 text-slate-100">
-        <div className="mx-auto grid h-full w-full max-w-7xl grid-cols-1 gap-6 lg:grid-cols-12">
-          <Card className="lg:col-span-12">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <h1 className="text-2xl font-bold md:text-3xl">AI Trading Agent Dashboard</h1>
-              <span className="rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-1 text-sm font-semibold text-emerald-300">
-              ACTIVE
-            </span>
-            </div>
-          </Card>
-
-          <Card title="Current Trade" className="lg:col-span-5">
-            <div className="grid grid-cols-2 gap-4">
-              <MetricBox label="Strategy" value={data.opportunity.strategy ?? '—'} tone="good" />
-              <MetricBox
-                  label="Confidence"
-                  value={
-                    typeof data.opportunity.confidence === 'number'
-                        ? `${(data.opportunity.confidence * 100).toFixed(1)}%`
-                        : '—'
-                  }
-              />
-              <MetricBox
-                  label="Expected Profit"
-                  value={
-                    typeof data.opportunity.expectedProfit === 'number'
-                        ? `${data.opportunity.expectedProfit.toFixed(4)} BNB`
-                        : '—'
-                  }
-                  tone="good"
-              />
-              <MetricBox
-                  label="Token Pair"
-                  value={
-                    data.opportunity.tokenIn && data.opportunity.tokenOut
-                        ? `${data.opportunity.tokenIn.slice(0, 6)} → ${data.opportunity.tokenOut.slice(0, 6)}`
-                        : '—'
-                  }
-              />
-              <MetricBox label="Amount In" value={data.opportunity.amountIn ?? '—'} />
-              <MetricBox
-                  label="Score"
-                  value={typeof data.opportunity.score === 'number' ? data.opportunity.score.toFixed(4) : '—'}
-              />
-            </div>
-          </Card>
-
-          <Card title="Strategy Comparison" className="lg:col-span-7">
-            <div className="space-y-3">
-              {strategies.map((s) => (
-                  <div
-                      key={s.name}
-                      className="grid grid-cols-4 items-center rounded-2xl border border-white/10 bg-slate-900/50 px-4 py-3 text-sm"
-                  >
-                    <p className="font-semibold text-slate-100">{s.name}</p>
-                    <p className="text-emerald-300">{n(s.profit)} BNB</p>
-                    <p className="text-cyan-300">{n(s.confidence, 1)}%</p>
-                    <p className="text-slate-300">{n(s.score)}</p>
-                  </div>
-              ))}
-            </div>
-          </Card>
-
-          <Card title="Performance Panel" className="lg:col-span-8">
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-              <MetricBox label="Total Trades" value={perf?.totalTrades ?? '—'} />
-              <MetricBox label="Win Rate" value={`${n(perf?.winRate, 1)}%`} tone="good" />
-              <MetricBox label="Total Profit" value={`${n(perf?.totalProfit)} BNB`} tone="good" />
-              <MetricBox label="Net Profit" value={`${n(perf?.netProfit)} BNB`} tone="good" />
-              <MetricBox label="Gas Efficiency" value={`${n(perf?.gasEfficiency, 1)}%`} />
-              <MetricBox label="Sharpe Ratio" value={n(perf?.sharpe)} />
-            </div>
-          </Card>
-
-          <Card title="System Status" className="lg:col-span-4">
-            <div className="space-y-4">
-              <div className="rounded-2xl border border-white/10 bg-slate-900/50 p-4">
-                <p className="text-xs uppercase tracking-wide text-slate-400">Last Update</p>
-                <p className="mt-2 text-lg font-semibold text-slate-100">
-                  {data?.timestamp ? new Date(data.timestamp).toLocaleString() : '—'}
-                </p>
-              </div>
-              <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-center">
-                <p className="text-xs uppercase tracking-wide text-amber-300">Mode</p>
-                <p className="mt-2 text-xl font-bold text-amber-200">DRY RUN MODE</p>
-              </div>
-            </div>
-          </Card>
+    <div className="grid gap-6">
+      <Card>
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold">Live Monitor</h2>
+          <span className={`h-3 w-3 rounded-full ${connected ? (blink ? 'animate-ping bg-emerald-300' : 'bg-emerald-400') : 'bg-rose-400'}`} />
         </div>
-      </main>
-  );
+        <p className="mt-2 text-sm text-slate-400">Last updated: {new Date(data.timestamp).toLocaleString()}</p>
+      </Card>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <MetricBox label="Current Opportunity" value={opp?.strategy ?? 'No opportunity'} />
+        <MetricBox label="Best Strategy" value={best?.name ?? '—'} />
+        <MetricBox label="Expected Profit" value={typeof opp?.expectedProfit === 'number' ? `${n(opp.expectedProfit, 4)} BNB` : '—'} />
+        <MetricBox label="System Status" value={stateTag.toUpperCase()} tone={stateTag === 'executing' ? 'good' : stateTag === 'adapting' ? 'warn' : 'default'} />
+      </div>
+
+      <Card title="Market Regime">
+        <div key={regime} className={`rounded-2xl border border-white/10 bg-slate-900/50 p-4 transition-all duration-500 ease-out ${blink ? 'opacity-100 translate-y-0 scale-[1.01]' : 'opacity-95 translate-y-[2px]'} ${regimeUi.glow}`}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${regimeUi.badge}`}>{regime}</span>
+            <p className="text-xs text-slate-400">{new Date(data.timestamp).toLocaleTimeString()}</p>
+          </div>
+          <p className="mt-3 text-sm text-slate-200">{regimeUi.note}</p>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <TemporalMetric label="Price Delta" value={signed(delta)} tone={deltaTone} pulse={blink} />
+            <TemporalMetric label="Volatility" value={n(vol, 4)} tone={volTone} pulse={blink} />
+            <TemporalMetric label="Velocity" value={signed(vel)} tone={velTone} subtle pulse={blink} />
+          </div>
+        </div>
+      </Card>
+
+      <Card title="Strategy Timeline">
+        <div className="space-y-2">
+          {hist.length === 0 ? (
+            <p className="text-sm text-slate-400">Waiting for cycle history...</p>
+          ) : (
+            hist.map((item, i) => {
+              const prev = i > 0 ? hist[i - 1] : null
+              const switched = !!prev && prev.strategy !== item.strategy
+              const regimeFlip = !!prev && prev.regime !== item.regime
+              const active = i === hist.length - 1
+              const jump = !!prev && Math.abs(item.expectedProfit - prev.expectedProfit) > 0.02
+
+              return (
+                <div key={item.cycleId} className={`rounded-xl border p-3 text-sm transition-all ${active ? 'border-cyan-300/50 bg-cyan-500/10 shadow-[0_0_20px_rgba(34,211,238,0.2)]' : 'border-white/10 bg-slate-900/50 hover:-translate-y-0.5 hover:shadow-lg'}`}>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-semibold text-slate-100">Cycle #{item.cycleId} {switched ? '↺' : '→'} {item.strategy}</p>
+                    <span className={`rounded-full border px-2 py-0.5 text-[10px] ${regimeMap[item.regime].badge}`}>{item.regime}</span>
+                  </div>
+                  <p className="mt-1 text-xs text-slate-300">profit {n(item.expectedProfit, 4)} | conf {n(item.confidence, 2)} | score {n(item.score, 4)}</p>
+                  <div className="mt-1 flex gap-2 text-[10px]">
+                    {switched ? <span className="text-amber-300">strategy flip</span> : null}
+                    {regimeFlip ? <span className="text-sky-300">regime change</span> : null}
+                    {jump ? <span className="text-emerald-300">profit jump</span> : null}
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
+      </Card>
+
+      <Card title="Decision Story">
+        <p className="text-sm text-slate-300 transition-all duration-300">{story}</p>
+      </Card>
+
+      <Card>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-slate-400">Cycle #{data.cycleId ?? '—'}</p>
+          <div className="flex items-center gap-2 text-xs">
+            <span className={`h-2 w-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
+            <span className="text-slate-300">{connected ? 'Live' : 'Disconnected'}</span>
+          </div>
+        </div>
+        <p className={`mt-2 text-3xl font-bold transition-all duration-300 ${netTone}`}>Net Profit: {typeof net === 'number' ? `${n(net)} BNB` : '—'}</p>
+      </Card>
+    </div>
+  )
 }

@@ -1,46 +1,44 @@
-import type { MarketState, Pool } from '../core/types';
+import { log } from '../core/logger'
+import type { MarketState, Pool } from '../core/types'
 
 export type PoolInsight = {
-  poolAddress: string;
-  liquidityScore: number;
-  imbalanceScore: number;
-  feePotential: number;
-  riskTier: 'low' | 'medium' | 'high';
-};
+  poolAddress: string
+  liquidityScore: number
+  imbalanceScore: number
+  feePotential: number
+  riskTier: 'low' | 'medium' | 'high'
+}
 
-const THRESHOLD_HIGH = 1000;
-const THRESHOLD_MID = 100;
+const THRESHOLD_HIGH = 1000
+const THRESHOLD_MID = 100
 
 function liquidityScore(pool: Pool): number {
-  return pool.liquidity * (Math.abs(pool.price) + 1);
+  return pool.liquidity * (Math.abs(pool.price) + 1)
 }
 
 function riskTier(score: number): PoolInsight['riskTier'] {
-  if (score > THRESHOLD_HIGH) return 'low';
-  if (score > THRESHOLD_MID) return 'medium';
-  return 'high';
+  if (score > THRESHOLD_HIGH) return 'low'
+  if (score > THRESHOLD_MID) return 'medium'
+  return 'high'
 }
 
 export function liquidityAgent(state: MarketState): PoolInsight[] {
-  console.log('Analyzing liquidity pools');
+  log('liquidity', 'Analyzing liquidity pools')
 
   return state.pools.map((pool) => {
-    const lScore = liquidityScore(pool);
-    const iScore = Math.abs(pool.price - 1);
+    const lScore = liquidityScore(pool)
+    const iScore = Math.abs(pool.price - 1)
     const insight: PoolInsight = {
       poolAddress: pool.address,
       liquidityScore: lScore,
       imbalanceScore: iScore,
       feePotential: iScore * lScore,
       riskTier: riskTier(lScore),
-    };
+    }
 
-    console.log(
-      `Pool analyzed | liquidityScore=${insight.liquidityScore} imbalanceScore=${insight.imbalanceScore} riskTier=${insight.riskTier}`,
-    );
-
-    return insight;
-  });
+    log('liquidity', `Pool analyzed ${insight.poolAddress} (${insight.riskTier})`)
+    return insight
+  })
 }
 
-export default liquidityAgent;
+export default liquidityAgent
