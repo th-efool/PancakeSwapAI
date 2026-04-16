@@ -10,3 +10,11 @@ declare namespace NodeJS {
 }
 
 declare var process: NodeJS.Process;
+
+declare module 'fs' {
+  const fs: {
+    writeFileSync(path: string, data: string): void;
+  };
+
+  export default fs;
+}

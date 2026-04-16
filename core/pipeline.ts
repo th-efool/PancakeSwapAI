@@ -1,4 +1,6 @@
-import { logPerformance, recordTrade } from '../agents/portfolio.agent';
+import { getPerformance, logPerformance, recordTrade } from '../agents/portfolio.agent';
+import { exportState } from './exportState';
+import { latestState } from './state';
 import type { MarketState, Opportunity, TradeResult } from './types';
 
 export type Pipeline = {
@@ -27,6 +29,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
       return;
     }
     console.log('Opportunity found');
+    latestState.opportunity = opportunity;
 
     console.log('Step 3: risk');
     if (!pipeline.risk(opportunity)) {
@@ -37,7 +40,9 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
     console.log('Step 4: execute');
     const result = await pipeline.execute(opportunity);
     recordTrade(result, opportunity);
+    latestState.performance = getPerformance();
     logPerformance();
+    exportState();
 
     if (!result.success) {
       console.log(`Trade failed${result.error ? `: ${result.error}` : ''}`);
