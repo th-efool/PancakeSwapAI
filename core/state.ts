@@ -12,6 +12,11 @@ export let latestState: {
     configuredSource: DataSourceType
     usedSource: DataSourceType | null
   }
+  runtime: {
+    executionDroughtCount: number
+    executionDroughtThreshold: number
+    lastExecutionReason: 'standard' | 'bootstrap' | null
+  }
 } = {
   opportunity: null,
   performance: null,
@@ -22,5 +27,10 @@ export let latestState: {
   marketData: {
     configuredSource: 'ON_CHAIN',
     usedSource: null,
+  },
+  runtime: {
+    executionDroughtCount: 0,
+    executionDroughtThreshold: 3,
+    lastExecutionReason: null,
   },
 }

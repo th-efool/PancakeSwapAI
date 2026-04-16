@@ -17,6 +17,7 @@ export type Pipeline = {
 }
 
 let cycleId = 0
+const EXECUTION_DROUGHT_THRESHOLD = 3
 
 const buildState = (
   state: MarketState | null,
@@ -63,6 +64,7 @@ const buildState = (
     logs: getLogs(),
     configuredSource: latestState.marketData.configuredSource,
     usedSource: latestState.marketData.usedSource,
+    runtime: latestState.runtime,
   }
 }
 
@@ -76,6 +78,7 @@ const flushState = (
   latestState.regime = regimeAssessment.regime
   latestState.regimeConfidence = regimeAssessment.confidence
   latestState.regimeReason = regimeAssessment.reason
+  latestState.runtime.executionDroughtThreshold = EXECUTION_DROUGHT_THRESHOLD
   exportState(buildState(state, opportunity, signals, regimeAssessment))
 }
 
@@ -103,6 +106,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
     latestState.regime = regimeAssessment.regime
     latestState.regimeConfidence = regimeAssessment.confidence
     latestState.regimeReason = regimeAssessment.reason
+    latestState.runtime.executionDroughtThreshold = EXECUTION_DROUGHT_THRESHOLD
 
     if (!state || !state.pools.length) {
       log('pipeline', 'No market data')
@@ -122,13 +126,31 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
       `Opportunity strategy=${opportunity.strategy} signalStrength=${(opportunity.signalStrength ?? 0).toFixed(3)} reason=${opportunity.reason ?? 'n/a'}`,
     )
 
-    if (!pipeline.risk(opportunity)) {
-      log('pipeline', 'Risk rejected')
-      flushState(state, opportunity, signals, regimeAssessment)
-      return
+    let shouldExecute = pipeline.risk(opportunity)
+    let execOpportunity = opportunity
+
+    if (!shouldExecute) {
+      latestState.runtime.executionDroughtCount += 1
+      const canBootstrap =
+        latestState.runtime.executionDroughtCount >= EXECUTION_DROUGHT_THRESHOLD && opportunity.expectedProfit > 0
+      if (canBootstrap) {
+        execOpportunity = { ...opportunity, executionReason: 'bootstrap' }
+        latestState.runtime.lastExecutionReason = 'bootstrap'
+        log(
+          'pipeline',
+          `Risk rejected; bootstrap execution enabled drought=${latestState.runtime.executionDroughtCount} expectedProfit=${opportunity.expectedProfit}`,
+        )
+        shouldExecute = true
+      } else {
+        log('pipeline', 'Risk rejected')
+        flushState(state, opportunity, signals, regimeAssessment)
+        return
+      }
+    } else {
+      latestState.runtime.lastExecutionReason = 'standard'
     }
 
-    const result: TradeResult = await pipeline.execute(opportunity)
+    const result: TradeResult = await pipeline.execute(execOpportunity)
     recordTrade(result, opportunity)
     logPerformance()
 
@@ -139,6 +161,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
       return
     }
 
+    latestState.runtime.executionDroughtCount = 0
     log('pipeline', `Trade success${typeof result.actualProfit === 'number' ? ` | profit: ${result.actualProfit}` : ''}`)
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)

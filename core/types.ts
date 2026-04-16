@@ -75,6 +75,7 @@ export type Opportunity = {
   volatility?: number;
   signalStrength?: number;
   reason?: string;
+  executionReason?: 'standard' | 'bootstrap';
   score?: number;
 };
 
