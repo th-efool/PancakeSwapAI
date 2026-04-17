@@ -10,8 +10,29 @@ import microMomentumProbeStrategy from './strategies/microMomentumProbe.strategy
 import adaptiveParticipationStrategy from './strategies/adaptiveParticipation.strategy.js'
 import riskAgent from './agents/risk.agent.js'
 import executionAgent from './agents/execution.agent.js'
+import path from 'path'
 
-console.log('ENTRY EXECUTED')
+function logBootstrap() {
+  const buildEntryPath = path.resolve(process.cwd(), 'dist/index.js')
+  console.log('ENTRY EXECUTED')
+  console.log('BOOTSTRAP CONTRACT:', {
+    node: process.version,
+    cwd: process.cwd(),
+    port: process.env.PORT ?? 'undefined',
+    buildEntryPath,
+    startedAt: new Date().toISOString(),
+  })
+}
+
+process.on('uncaughtException', (error) => {
+  console.error('UNCAUGHT EXCEPTION:', error)
+  process.exit(1)
+})
+
+process.on('unhandledRejection', (reason) => {
+  console.error('UNHANDLED REJECTION:', reason)
+  process.exit(1)
+})
 
 const pipeline = {
   market: marketAgent,
@@ -22,6 +43,7 @@ const pipeline = {
 }
 
 async function main() {
+  logBootstrap()
   console.log('Starting backend...')
 
   startServer()
