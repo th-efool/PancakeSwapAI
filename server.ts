@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import fs from 'fs'
+import * as fs from 'fs'
 import path from 'path'
 
 export function startServer() {
