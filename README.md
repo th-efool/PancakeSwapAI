@@ -1,104 +1,130 @@
 # PancakeSwapAI
 
-A TypeScript monorepo for an **AI-driven, multi-agent PancakeSwap trading system** with a real-time observability dashboard.
+![Node.js](https://img.shields.io/badge/Build-Node.js%2020%2B-339933?logo=node.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/Build-TypeScript-3178C6?logo=typescript&logoColor=white)
+![Next.js Dashboard](https://img.shields.io/badge/Dashboard-Next.js%20App%20Router-000000?logo=nextdotjs&logoColor=white)
+![Mode](https://img.shields.io/badge/Mode-Simulation%20%2F%20Dry%20Run-1E40AF)
+![Data Source](https://img.shields.io/badge/Data-DEX%20%2B%20On--chain-0F766E)
+![Status](https://img.shields.io/badge/Status-Active%20%2F%20Experimental-F59E0B)
 
-- **Backend:** market ingestion, signal extraction, regime detection, strategy selection, risk gating, and execution simulation.
-- **Frontend (Next.js):** live monitor for regime, strategy decisions, temporal signals, risk/execution outputs, and historical timeline.
-- **Mode:** currently demo-safe focused (dry-run style behavior and transparent state exports).
+## Overview
 
----
+PancakeSwapAI is an intelligent, adaptive multi-agent trading system designed to operate in real-time DeFi environments like PancakeSwap. The system continuously ingests market state, interprets changing conditions, selects opportunities with explicit confidence, applies risk gates, and produces transparent execution plans in simulation-first mode.
 
-## Table of contents
-
-- [Project goals](#project-goals)
-- [System architecture](#system-architecture)
-- [Repository structure](#repository-structure)
-- [How data flows](#how-data-flows)
-- [Getting started](#getting-started)
-- [Configuration](#configuration)
-- [API](#api)
-- [Dashboard](#dashboard)
-- [Build and deployment notes](#build-and-deployment-notes)
-- [Troubleshooting](#troubleshooting)
-- [Roadmap ideas](#roadmap-ideas)
+It is engineered as a decision system, not a signal script: each cycle combines market context, temporal behavior, regime interpretation, strategy competition, and risk adjudication before any action is proposed.
 
 ---
 
-## Project goals
+## Why this matters
 
-This repo is designed to make algorithmic decision-making observable end-to-end:
+DeFi markets are fast, fragmented, and noisy. Liquidity shifts quickly, volatility regimes change intraday, and static rule sets degrade under new conditions.
 
-1. Collect market state from configurable sources.
-2. Compute cross-pool + temporal signals.
-3. Detect market regime (for adaptive behavior).
-4. Choose strategy opportunities.
-5. Apply risk checks.
-6. Simulate/plan execution.
-7. Export structured state for UI + auditability.
-
-The priority is **decision quality and explainability** before live-capital execution.
+A resilient system must adapt in real time, avoid forcing low-quality trades, and make its internal reasoning observable. PancakeSwapAI is built around that principle.
 
 ---
 
 ## System architecture
 
-### Backend pipeline (Node + TypeScript)
+### Backend decision engine (Node.js + TypeScript)
 
-The backend runs an infinite loop and executes this sequence each cycle:
+The backend runs a continuous cycle and executes a deliberate multi-stage decision process:
 
-1. `market` agent returns normalized market state.
-2. History is updated and temporal/cross-pool signals are extracted.
-3. Regime is detected (`TRENDING`, `MEAN_REVERTING`, `VOLATILE`, etc.).
-4. `strategy` agent chooses the best opportunity across strategy modules.
-5. `risk` agent approves/rejects.
-6. `execution` agent simulates/executes trade output.
-7. State is exported for dashboard and `/state` consumers.
+1. **Market Agent** normalizes market state from configured sources and provides a coherent snapshot for downstream reasoning.
+2. **Signal Layer** updates rolling history and extracts cross-pool and temporal features from recent behavior.
+3. **Regime Detector** classifies the active market context (`TRENDING`, `MEAN_REVERTING`, `VOLATILE`, etc.) to condition strategy behavior.
+4. **Strategy Agent** evaluates competing hypotheses across strategy modules and selects the highest expected-value candidate.
+5. **Risk Agent** validates position quality against constraints (size, slippage, confidence, and safety checks) and can veto execution.
+6. **Execution Agent** emits a simulated or executable trade plan with full context for review.
+7. **State Export Layer** publishes structured state to in-memory and file-backed channels for APIs and UI observability.
 
-### Frontend dashboard (Next.js App Router)
+### Frontend observability application (Next.js App Router)
 
-The dashboard polls backend state every 2 seconds and renders:
+The dashboard polls backend state on a 2-second cadence and exposes:
 
-- Live monitor status
-- Current regime + temporal metrics
-- Selected strategy and confidence/profit metrics
-- Memory/simulation/decision cards
-- Timeline of recent cycle decisions
-- Per-agent pages, logs page, and settings page
+- live cycle status and system health
+- current regime and temporal metrics
+- selected strategy with confidence/profit context
+- per-agent pages (market, strategy, risk, execution, portfolio)
+- decision timeline and logs for auditability
+- market-data source settings controls
 
----
-
-## Repository structure
+### Repository layout
 
 ```text
 .
-├── agents/                 # market/strategy/risk/execution/portfolio logic
-├── core/                   # pipeline, signals, regime, history, export, market-data adapters
-├── strategies/             # strategy modules used by strategy agent
+├── agents/                 # market/strategy/risk/execution/portfolio agent logic
+├── core/                   # pipeline, signals, regime, history, export, adapters
+├── strategies/             # pluggable strategy modules
 ├── shared/                 # shared domain types
 ├── server.ts               # Express server + /state endpoint
-├── index.ts                # process bootstrap + pipeline loop
-├── config.ts               # runtime defaults + market-data config sync
-└── dashboard/              # Next.js dashboard application
-    ├── app/                # routes/pages and API route
-    ├── components/         # UI building blocks
-    └── public/             # default JSON config + static assets
+├── index.ts                # bootstrap + continuous pipeline loop
+├── config.ts               # runtime defaults + source sync
+└── dashboard/              # Next.js observability interface
 ```
+
+### PancakeSwap alignment
+
+The architecture is designed for AMM-style environments, optimized for pool-based liquidity behavior, and compatible with PancakeSwap-style markets without claiming official integration.
 
 ---
 
-## How data flows
+## Intelligence layers
 
-1. Backend cycle runs (`runPipeline`).
-2. In-memory latest state is updated.
-3. Snapshot is exported to `latest_state.json`.
-4. `GET /state` serves in-memory state first; falls back to file.
-5. Dashboard hook fetches remote `/state` on 2-second intervals.
-6. UI normalizes data and visualizes regime, strategy, and risk/execution context.
+### Adaptive learning
 
-This design gives both:
+The system adjusts behavior from observed outcomes over time. Strategy confidence and selection priority evolve as new cycle evidence accumulates.
 
-- **Low-latency UI updates** (in-memory path)
-- **Durable fallback** (`latest_state.json`)
+### Natural language interface
+
+Operators can query system state and interpret why decisions were taken, reducing dependence on raw log inspection alone.
+
+### What-if simulation engine
+
+Trade paths can be evaluated in simulation-first mode before execution. This supports counterfactual analysis and safer strategy iteration.
+
+---
+
+## Decision pipeline
+
+```text
+Market State
+   ↓
+Signal Extraction
+   ↓
+Regime Classification
+   ↓
+Strategy Selection
+   ↓
+Risk Adjudication
+   ↓
+Execution Planning (Sim/Dry Run)
+   ↓
+Feedback + State Export
+```
+
+This flow prioritizes selective action: no-trade outcomes are valid when expected value or risk quality is insufficient.
+
+---
+
+## Dashboard (Observability layer)
+
+The dashboard is the system’s observability layer, focused on decision transparency rather than output-only reporting.
+
+It surfaces live system thinking: regime interpretation, strategy rationale, risk approvals/rejections, and execution context across recent cycles.
+
+Primary routes:
+
+- `/` live monitor
+- `/logs`
+- `/agents/market`
+- `/agents/strategy`
+- `/agents/risk`
+- `/agents/execution`
+- `/agents/portfolio`
+- `/liquidity`
+- `/settings`
+
+> Local development note: the live-state hook currently targets `https://pancakeswapai-production.up.railway.app/state`. For local backend integration, update `dashboard/app/hooks/useLiveState.ts`.
 
 ---
 
@@ -122,23 +148,19 @@ npm --prefix dashboard install
 npm run build
 ```
 
-### 3) Start backend only
+### 3) Start backend
 
 ```bash
 npm start
 ```
 
-By default backend binds to `0.0.0.0:${PORT:-3000}`.
+Backend default bind: `0.0.0.0:${PORT:-3000}`.
 
-### 4) Run dashboard in development
-
-In another terminal:
+### 4) Start dashboard (development)
 
 ```bash
 npm run dev:frontend
 ```
-
-Dashboard default URL is typically `http://localhost:3000` for Next.js dev server, unless port is occupied.
 
 ### 5) Run backend + frontend together
 
@@ -146,7 +168,7 @@ Dashboard default URL is typically `http://localhost:3000` for Next.js dev serve
 npm run dev
 ```
 
-> Note: `dev` starts compiled backend (`dist/index.js`) and Next.js dev server concurrently. Ensure backend was built first (`npm run build`) or use `npm run dev:full`.
+> `npm run dev` starts compiled backend (`dist/index.js`) and Next.js dev server concurrently. Build first (`npm run build`) or use `npm run dev:full`.
 
 ---
 
@@ -159,30 +181,31 @@ npm run dev
 | `PRIVATE_KEY` | Optional in demo mode | Wallet key for real execution paths |
 | `PORT` | Optional | Backend listen port (default `3000`) |
 | `MARKET_DATA_SOURCE` | Optional | Initial source (`ON_CHAIN`, `DEXSCREENER`, `SUBGRAPH`) |
-| `SIGNAL_NOISE_SEED` | Optional | Seed used for deterministic signal noise |
-| `RAILWAY_GIT_COMMIT_SHA` / `GITHUB_SHA` / `VERCEL_GIT_COMMIT_SHA` | Optional | Commit metadata shown in boot logs |
+| `SIGNAL_NOISE_SEED` | Optional | Deterministic noise seed for temporal signals |
+| `RAILWAY_GIT_COMMIT_SHA` / `GITHUB_SHA` / `VERCEL_GIT_COMMIT_SHA` | Optional | Commit metadata for boot logs |
 
 ### Runtime defaults
 
-`config.ts` defines defaults for:
+`config.ts` includes defaults for chain/RPC (BSC), slippage, gas, sizing, poll interval, temporal signal noise, and market-data fallback order.
 
-- chain/RPC (BSC)
-- slippage, gas, trade sizing
-- temporal-signal noise settings
-- poll interval
-- market-data fallback order
+### Market-data source config sync
 
-### Market data source config file
-
-The backend can sync data-source preferences from disk:
+The backend reads preference from disk:
 
 - `dashboard/public/market_data_config.json`
 - fallback: `public/market_data_config.json`
 
-Dashboard settings API writes to dashboard public config via:
+Dashboard settings API endpoints:
 
 - `GET /api/market-data`
 - `POST /api/market-data`
+
+### System characteristics
+
+- **Adaptive**: behavior changes with observed market outcomes.
+- **Selective**: the system can intentionally abstain from trading.
+- **Transparent**: decisions are exported for operator visibility.
+- **Modular**: strategy modules are plug-and-play within the strategy agent.
 
 ---
 
@@ -190,17 +213,17 @@ Dashboard settings API writes to dashboard public config via:
 
 ### `GET /`
 
-Health text response:
+Returns health text:
 
 - `Backend alive`
 
 ### `GET /state`
 
-Returns:
+Returns, in order:
 
-1. Latest in-memory exported state, if valid.
-2. Fallback JSON from `latest_state.json`, if valid.
-3. Otherwise:
+1. latest valid in-memory exported state
+2. fallback `latest_state.json` payload
+3. default boot response:
 
 ```json
 { "status": "starting" }
@@ -208,79 +231,10 @@ Returns:
 
 ---
 
-## Dashboard
+## Roadmap
 
-The dashboard includes these primary routes:
-
-- `/` live monitor
-- `/logs`
-- `/agents/market`
-- `/agents/strategy`
-- `/agents/risk`
-- `/agents/execution`
-- `/agents/portfolio`
-- `/liquidity`
-- `/settings`
-
-### Important note for local development
-
-The current live-state hook fetch target is hardcoded to:
-
-- `https://pancakeswapai-production.up.railway.app/state`
-
-If you want local dashboard + local backend integration, update that URL in:
-
-- `dashboard/app/hooks/useLiveState.ts`
-
----
-
-## Build and deployment notes
-
-This project expects a strict backend start contract:
-
-1. `npm run build`
-2. `npm start`
-
-`npm start` launches `node dist/index.js`, and `prestart` enforces fresh build generation.
-
-Additional resiliency behavior:
-
-- fatal handlers for `uncaughtException` and `unhandledRejection`
-- fatal exit on server listen errors (useful for managed platform restart loops)
-
----
-
-## Troubleshooting
-
-### Dashboard shows "Waiting for first cycle..."
-
-- Confirm backend loop is running and not crashing.
-- Check `/state` response directly.
-- Verify state export path permissions for `latest_state.json`.
-
-### Dashboard does not reflect local backend
-
-- Update hardcoded remote URL in `useLiveState.ts` to local backend URL.
-
-### Backend returns `{ "status": "starting" }`
-
-- In-memory state may not be initialized yet.
-- `latest_state.json` may be missing or malformed.
-
----
-
-## Roadmap ideas
-
-- Switch dashboard fetch URL to environment-driven base URL.
-- Add test suites around regime detection and strategy ranking.
-- Add structured metrics endpoint for monitoring/alerting.
-- Introduce paper-trade ledger persistence and replay tooling.
-- Add CI checks for backend build + dashboard lint/build.
-
----
-
-If you want, I can also add:
-
-- architecture diagram (`docs/architecture.md` + Mermaid)
-- `.env.example`
-- contributor section with local dev workflows and release process
+- Move dashboard state endpoint to environment-driven configuration.
+- Expand automated tests for regime detection and strategy ranking.
+- Add structured metrics endpoints for monitoring and alerting.
+- Introduce persistent paper-trade ledger + replay tooling.
+- Add CI checks for backend build and dashboard lint/build.
