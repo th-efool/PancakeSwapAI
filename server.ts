@@ -10,7 +10,7 @@ export function startServer() {
   app.use(cors())
 
   const STATE_FILE = path.resolve('latest_state.json')
-  const PORT = process.env.PORT || 3000
+  const PORT = Number(process.env.PORT) || 3000
 
   app.get('/', (_req, res) => {
     res.send('Backend alive')
