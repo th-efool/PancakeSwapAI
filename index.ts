@@ -1,3 +1,4 @@
+import './server.js'
 import { runPipeline } from './core/pipeline.js'
 import marketAgent from './agents/market.agent.js'
 import strategyAgent from './agents/strategy.agent.js'
