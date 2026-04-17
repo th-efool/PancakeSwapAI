@@ -8,6 +8,9 @@
 ![Status](https://img.shields.io/badge/Status-Active%20%2F%20Experimental-F59E0B)
 
 ## Overview
+<p align="center">
+  <img src="https://raw.githubusercontent.com/th-efool/PancakeSwapAI/main/repo/ssx.png" width="900"/>
+</p>
 
 PancakeSwapAI is an intelligent, adaptive multi-agent trading system designed to operate in real-time DeFi environments like PancakeSwap. The system continuously ingests market state, interprets changing conditions, selects opportunities with explicit confidence, applies risk gates, and produces transparent execution plans in simulation-first mode.
 
@@ -24,6 +27,12 @@ A resilient system must adapt in real time, avoid forcing low-quality trades, an
 ---
 
 ## System architecture
+### System in action
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/th-efool/PancakeSwapAI/main/repo/marketpool.png" width="420"/>
+  <img src="https://raw.githubusercontent.com/th-efool/PancakeSwapAI/main/repo/execution.png" width="420"/>
+</p>
 
 ### Backend decision engine (Node.js + TypeScript)
 
@@ -101,7 +110,9 @@ Execution Planning (Sim/Dry Run)
    ↓
 Feedback + State Export
 ```
-
+<p align="center">
+  <img src="https://raw.githubusercontent.com/th-efool/PancakeSwapAI/main/repo/logs.png" width="800"/>
+</p>
 This flow prioritizes selective action: no-trade outcomes are valid when expected value or risk quality is insufficient.
 
 ---
@@ -125,7 +136,9 @@ Primary routes:
 - `/settings`
 
 > Local development note: the live-state hook currently targets `https://pancakeswapai-production.up.railway.app/state`. For local backend integration, update `dashboard/app/hooks/useLiveState.ts`.
-
+<p align="center">
+  <img src="https://raw.githubusercontent.com/th-efool/PancakeSwapAI/main/repo/ssx.png" width="900"/>
+</p>
 ---
 
 ## Getting started
