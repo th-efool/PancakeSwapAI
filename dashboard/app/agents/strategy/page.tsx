@@ -11,8 +11,8 @@ export default function StrategyPage() {
     return (
         <Card title="Strategy Matrix">
             <div className="space-y-4">
-                {rows.map((s, idx) => {
-                    const isTop = idx === 0;
+                {rows.map((s) => {
+                    const isTop = Boolean(s.selected)
                     const conf = (s.confidence * 100);
 
                     return (
@@ -30,6 +30,9 @@ export default function StrategyPage() {
                                     <div>
                                         <p className={`font-bold tracking-wide ${isTop ? 'text-red-600' : 'text-[#111111]'}`}>{s.name}</p>
                                         <p className="text-[10px] font-mono text-gray-500">SCORE: {s.score?.toFixed(6)}</p>
+                                        <p className={`text-[10px] ${isTop ? 'text-red-500 font-semibold' : 'text-gray-500'}`}>
+                                            {isTop ? 'Selected strategy' : 'Evaluated but not chosen'}
+                                        </p>
                                     </div>
                                 </div>
 

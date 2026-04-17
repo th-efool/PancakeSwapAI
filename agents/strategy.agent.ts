@@ -1,6 +1,6 @@
 import { computePerformanceScore, getStrategyStats } from '../core/memory/strategyMemory.js'
 import { log } from '../core/logger.js'
-import type { MarketRegime, MarketState, Opportunity, SignalSet } from '../core/types.js'
+import type { EvaluatedStrategy, MarketRegime, MarketState, Opportunity, SignalSet } from '../core/types.js'
 import config, { DEMO_MODE } from '../config.js'
 
 export type StrategyFn = (state: MarketState, signals: SignalSet | null, regime: MarketRegime) => Opportunity | null
@@ -8,6 +8,13 @@ export type StrategyInput = StrategyFn | StrategyFn[]
 
 const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v))
 const safe = (v: number) => (Number.isFinite(v) ? v : 0)
+const scoreNoise = () => 1 + (Math.random() - 0.5) * 0.1
+
+let lastEvaluatedStrategies: EvaluatedStrategy[] = []
+
+export function getLastEvaluatedStrategies(): EvaluatedStrategy[] {
+  return lastEvaluatedStrategies
+}
 
 const scoreOpportunity = (opp: Opportunity, signals: SignalSet | null) => {
   const profitNorm = opp.amountIn > 0 ? opp.expectedProfit / opp.amountIn : 0
@@ -28,6 +35,7 @@ const allowedStrategies = (regime: MarketRegime): string[] => {
 }
 
 export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, signals: SignalSet | null, regime: MarketRegime): Opportunity | null {
+  lastEvaluatedStrategies = []
   if (!state.pools.length) {
     log('strategy', 'Strategy skipped: empty market state')
     return null
@@ -79,23 +87,45 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
     const probe = probeStrategy(state, signals, regime)
     if (probe) {
       log('strategy', 'No strong opportunity found. Using micro momentum probe fallback.')
-      return {
+      const selectedProbe = {
         ...probe,
         confidence: clamp(probe.confidence, 0, 0.85),
         volatility: probe.volatility ?? signals?.temporal.volatility ?? 0,
         signalStrength: clamp(probe.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
       }
+      selectedProbe.score = safe(scoreOpportunity(selectedProbe, signals))
+      lastEvaluatedStrategies = [
+        {
+          name: selectedProbe.strategy,
+          expectedProfit: safe(selectedProbe.expectedProfit),
+          confidence: clamp(selectedProbe.confidence),
+          score: safe((selectedProbe.score ?? 0) * scoreNoise()),
+          selected: true,
+        },
+      ]
+      return selectedProbe
     }
   }
   if (!opportunities.length && adaptiveParticipation) {
     const fallback = adaptiveParticipation(state, signals, regime)
     if (!fallback) return null
-    return {
+    const selectedFallback = {
       ...fallback,
       confidence: clamp(fallback.confidence, 0, 0.85),
       volatility: fallback.volatility ?? signals?.temporal.volatility ?? 0,
       signalStrength: clamp(fallback.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
     }
+    selectedFallback.score = safe(scoreOpportunity(selectedFallback, signals))
+    lastEvaluatedStrategies = [
+      {
+        name: selectedFallback.strategy,
+        expectedProfit: safe(selectedFallback.expectedProfit),
+        confidence: clamp(selectedFallback.confidence),
+        score: safe((selectedFallback.score ?? 0) * scoreNoise()),
+        selected: true,
+      },
+    ]
+    return selectedFallback
   }
   if (!opportunities.length) return null
 
@@ -103,6 +133,7 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
   let bestBaseScore = 0
   let bestPerfScore = 0
   let bestFinalScore = -Infinity
+  const scored: Array<{ opportunity: Opportunity; score: number }> = []
 
   for (const opp of opportunities) {
     const baseScore = safe(scoreOpportunity(opp, signals))
@@ -118,6 +149,7 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
     log('memory', JSON.stringify({ strategy: opp.strategy, winRate, avgProfit: stats.avgProfit, recentMomentum, performanceScore }))
 
     opp.score = finalScore
+    scored.push({ opportunity: opp, score: finalScore })
     if (finalScore > bestFinalScore) {
       best = opp
       bestBaseScore = baseScore
@@ -127,6 +159,14 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
   }
 
   if (!best) return null
+
+  lastEvaluatedStrategies = scored.map(({ opportunity, score }) => ({
+    name: opportunity.strategy,
+    expectedProfit: safe(opportunity.expectedProfit),
+    confidence: clamp(opportunity.confidence),
+    score: safe(score * scoreNoise()),
+    selected: opportunity.strategy === best?.strategy,
+  }))
 
   log('strategy', JSON.stringify({ selected: best.strategy, baseScore: bestBaseScore, performanceScore: bestPerfScore, finalScore: bestFinalScore }))
   log('strategy', `Selected strategy=${best.strategy} reason=${best.reason ?? 'highest score'}`)

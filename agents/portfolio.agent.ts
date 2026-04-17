@@ -6,26 +6,37 @@ type StrategyStat = { trades: number; profit: number }
 
 type PortfolioState = {
   totalTrades: number
+  totalOpportunitiesSeen: number
+  totalTradesExecuted: number
+  totalRejected: number
+  rejectedOpportunities: number
   successfulTrades: number
   totalProfit: number
   totalGasSpent: number
   profitHistory: number[]
   strategyStats: Record<string, StrategyStat>
+  strategyUsage: Record<string, number>
 }
 
 let portfolio: PortfolioState = {
   totalTrades: 0,
+  totalOpportunitiesSeen: 0,
+  totalTradesExecuted: 0,
+  totalRejected: 0,
+  rejectedOpportunities: 0,
   successfulTrades: 0,
   totalProfit: 0,
   totalGasSpent: 0,
   profitHistory: [],
   strategyStats: {},
+  strategyUsage: {},
 }
 
 const safe = (v: number) => (Number.isFinite(v) ? v : 0)
 
 export function recordTrade(result: TradeResult, opportunity: Opportunity): void {
   portfolio.totalTrades += 1
+  portfolio.totalTradesExecuted += 1
   if (result.success) portfolio.successfulTrades += 1
 
   const profit = safe(result.actualProfit ?? 0)
@@ -43,14 +54,38 @@ export function recordTrade(result: TradeResult, opportunity: Opportunity): void
 
   portfolio.strategyStats[strategy].trades += 1
   portfolio.strategyStats[strategy].profit += profit
+  portfolio.strategyUsage[strategy] = (portfolio.strategyUsage[strategy] ?? 0) + 1
 
   updateStrategyStats(strategy, profit)
 }
 
+export function recordOpportunitySeen(): void {
+  portfolio.totalOpportunitiesSeen += 1
+}
+
+export function recordRejectedOpportunity(): void {
+  portfolio.totalRejected += 1
+  portfolio.rejectedOpportunities += 1
+}
+
 export function getPerformance() {
-  const { totalTrades, successfulTrades, totalProfit, totalGasSpent, profitHistory, strategyStats } = portfolio
-  const winRate = totalTrades ? successfulTrades / totalTrades : 0
-  const avgProfitPerTrade = totalTrades ? totalProfit / totalTrades : 0
+  const {
+    totalTrades,
+    totalTradesExecuted,
+    totalOpportunitiesSeen,
+    totalRejected,
+    rejectedOpportunities,
+    successfulTrades,
+    totalProfit,
+    totalGasSpent,
+    profitHistory,
+    strategyStats,
+    strategyUsage,
+  } = portfolio
+  const winRate = totalTradesExecuted ? successfulTrades / totalTradesExecuted : 0
+  const avgProfitPerTrade = totalTradesExecuted ? totalProfit / totalTradesExecuted : 0
+  const conversionRate = totalOpportunitiesSeen ? totalTradesExecuted / totalOpportunitiesSeen : 0
+  const selectivity = conversionRate
   const netProfit = totalProfit
   const gasEfficiency = totalGasSpent ? totalProfit / totalGasSpent : 0
 
@@ -63,17 +98,24 @@ export function getPerformance() {
 
   return {
     totalTrades,
+    totalTradesExecuted,
     successfulTrades,
     winRate,
     totalProfit,
     totalGasSpent,
     netProfit,
+    totalOpportunitiesSeen,
+    totalRejected,
+    rejectedOpportunities,
+    conversionRate,
+    selectivity,
     gasEfficiency,
     avgProfitPerTrade,
     avgProfit,
     stdDev,
     sharpe,
     strategyBreakdown: strategyStats,
+    strategyUsage,
   }
 }
 

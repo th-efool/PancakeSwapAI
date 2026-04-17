@@ -79,6 +79,14 @@ export type Opportunity = {
   score?: number;
 };
 
+export type EvaluatedStrategy = {
+  name: string
+  expectedProfit: number
+  confidence: number
+  score: number
+  selected: boolean
+}
+
 export type TradeResult = {
   success: boolean;
   txHash?: string;
@@ -88,11 +96,17 @@ export type TradeResult = {
 
 export type Performance = {
   totalTrades: number;
+  totalTradesExecuted: number;
   successfulTrades: number;
   winRate: number;
   totalProfit: number;
   totalGasSpent: number;
   netProfit: number;
+  totalOpportunitiesSeen: number;
+  totalRejected: number;
+  rejectedOpportunities: number;
+  conversionRate: number;
+  selectivity: number;
   gasEfficiency: number;
   avgProfitPerTrade: number;
   avgProfit: number;
@@ -105,6 +119,7 @@ export type Performance = {
       profit: number;
     }
   >;
+  strategyUsage: Record<string, number>;
 };
 
 export type Config = {
