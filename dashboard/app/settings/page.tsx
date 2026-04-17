@@ -50,15 +50,15 @@ export default function SettingsPage() {
 
   return (
     <div className="grid gap-4">
-      <div className="rounded-xl border border-white/10 bg-slate-900/50 p-4">
+      <div className="rounded-xl border border-gray-200 bg-[#f8f9fa] p-4">
         <h2 className="text-xl font-semibold">Market Data Settings</h2>
-        <p className="mt-1 text-sm text-slate-400">Configure source + fallback order.</p>
+        <p className="mt-1 text-sm text-gray-500">Configure source + fallback order.</p>
       </div>
 
-      <div className="rounded-xl border border-white/10 bg-slate-900/50 p-4 grid gap-3">
-        <label className="text-sm text-slate-300">Configured Source</label>
+      <div className="rounded-xl border border-gray-200 bg-[#f8f9fa] p-4 grid gap-3">
+        <label className="text-sm text-gray-500">Configured Source</label>
         <select
-          className="rounded-md border border-white/20 bg-slate-950 px-3 py-2 text-sm"
+          className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm"
           value={dataSource}
           onChange={(e) => setDataSource(e.target.value as Source)}
         >
@@ -69,7 +69,7 @@ export default function SettingsPage() {
           ))}
         </select>
 
-        <label className="mt-2 text-sm text-slate-300">Fallback Order</label>
+        <label className="mt-2 text-sm text-gray-500">Fallback Order</label>
         <div className="grid gap-2 md:grid-cols-3">
           {ALL.map((s) => {
             const enabled = fallbackOrder.includes(s)
@@ -77,7 +77,7 @@ export default function SettingsPage() {
               <button
                 key={s}
                 type="button"
-                className={`rounded-md border px-3 py-2 text-sm ${enabled ? 'border-cyan-400/40 bg-cyan-400/10 text-cyan-300' : 'border-white/15 bg-slate-950 text-slate-300'}`}
+                className={`rounded-md border px-3 py-2 text-sm ${enabled ? 'border-red-200 bg-red-50 text-red-600' : 'border-gray-200 bg-white text-gray-500'}`}
                 onClick={() => {
                   if (enabled) {
                     setFallbackOrder((prev) => prev.filter((x) => x !== s))
@@ -96,12 +96,12 @@ export default function SettingsPage() {
           type="button"
           onClick={save}
           disabled={saving}
-          className="mt-2 w-fit rounded-md bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 disabled:opacity-50"
+          className="mt-2 w-fit rounded-md bg-red-600 px-4 py-2 hover:bg-red-700 text-sm font-semibold text-white disabled:opacity-50"
         >
           {saving ? 'Saving...' : 'Save'}
         </button>
 
-        {status ? <p className="text-xs text-slate-400">{status}</p> : null}
+        {status ? <p className="text-xs text-gray-500">{status}</p> : null}
       </div>
     </div>
   )
