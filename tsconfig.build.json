@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "Node16",
+    "moduleResolution": "Node16",
     "rootDir": ".",
     "outDir": "dist",
     "strict": true,
@@ -20,6 +20,7 @@
     "strategies/**/*.ts",
     "types/**/*.ts",
     "index.ts",
+    "server.ts",
     "config.ts"
   ],
   "exclude": [
