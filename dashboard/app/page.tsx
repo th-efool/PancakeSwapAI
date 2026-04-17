@@ -2,6 +2,7 @@
 
 import Card from '../components/Card.tsx'
 import DecisionCard from '../components/DecisionCard.tsx'
+import LiveChart from '../components/LiveChart.tsx'
 import MemoryCard from '../components/MemoryCard.tsx'
 import MetricBox from '../components/MetricBox.tsx'
 import SimulationCard from '../components/SimulationCard.tsx'
@@ -140,6 +141,8 @@ export default function Page() {
           </div>
         </div>
       </Card>
+
+      <LiveChart state={data} />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <MemoryCard memory={memory} blink={blink} />
