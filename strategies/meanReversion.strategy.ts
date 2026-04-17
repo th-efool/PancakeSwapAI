@@ -1,6 +1,6 @@
 import { log } from '../core/logger.js'
 import type { MarketState, Opportunity, Pool } from '../core/types.js'
-import config from '../config.js'
+import config, { DEMO_MODE } from '../config.js'
 import { computeAmountIn, computeExpectedProfit, computeGasCost } from '../core/tradingModel.js'
 
 type PairGroup = Record<string, Pool[]>
@@ -69,6 +69,21 @@ function legacyMeanReversion(state: MarketState): Opportunity | null {
 
 export function meanReversionStrategy(state: MarketState, signals: any): Opportunity | null {
   const gasCost = computeGasCost(config)
+  const demoFallback = (pool: Pool, direction: number, edge: number): Opportunity => {
+    const amountIn = computeAmountIn(Math.max(Math.abs(edge), 0.001), config)
+    return {
+      tokenIn: direction > 0 ? pool.token0.address : pool.token1.address,
+      tokenOut: direction > 0 ? pool.token1.address : pool.token0.address,
+      amountIn,
+      expectedProfit: Math.abs(edge) * amountIn * 0.5,
+      gasCost,
+      slippage: config.slippageTolerance,
+      strategy: 'meanReversion',
+      confidence: Math.min(0.85, 0.3 + Math.random() * 0.3),
+      signalStrength: signals?.aggregate?.signalStrength ?? 0,
+      reason: 'Demo fallback: low-confidence mean reversion',
+    }
+  }
 
   const pool = state.pools
     .filter((p) => Number.isFinite(p.priceChange.h1))
@@ -79,14 +94,20 @@ export function meanReversionStrategy(state: MarketState, signals: any): Opportu
   let direction = 0
   if (priceChangeH1 < -1) direction = 1
   if (priceChangeH1 > 1) direction = -1
-  if (!direction) return legacyMeanReversion(state)
+  if (!direction) {
+    if (!DEMO_MODE) return legacyMeanReversion(state)
+    return demoFallback(pool, priceChangeH1 >= 0 ? 1 : -1, Math.abs(priceChangeH1) / 100)
+  }
   log('strategy', `Using DexScreener temporal data h1=${priceChangeH1}`)
 
   const volatility = Math.abs(priceChangeH1) / 100
   const amountIn = computeAmountIn(volatility, config)
   const edgeRate = Math.abs(priceChangeH1) / 100
   const expectedProfit = computeExpectedProfit(edgeRate, amountIn, gasCost, config.slippageTolerance)
-  if (!Number.isFinite(expectedProfit) || expectedProfit <= 0) return legacyMeanReversion(state)
+  if (!Number.isFinite(expectedProfit) || expectedProfit <= 0) {
+    if (!DEMO_MODE) return legacyMeanReversion(state)
+    return demoFallback(pool, direction || 1, edgeRate)
+  }
 
   return {
     tokenIn: direction > 0 ? pool.token0.address : pool.token1.address,

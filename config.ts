@@ -33,6 +33,8 @@ const DEFAULT_POLL_INTERVAL_MS = 5000
 const DEFAULT_DATA_SOURCE: DataSourceType = 'ON_CHAIN'
 const ALL_SOURCES: DataSourceType[] = ['ON_CHAIN', 'DEXSCREENER', 'SUBGRAPH']
 
+export const DEMO_MODE = true
+
 export const config: AppConfig = {
   rpcUrl: BSC_RPC_URL,
   chainId: BSC_CHAIN_ID,

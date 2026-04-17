@@ -1,5 +1,5 @@
 import type { MarketState, Opportunity, Pool } from '../core/types.js'
-import config from '../config.js'
+import config, { DEMO_MODE } from '../config.js'
 import { computeAmountIn, computeExpectedProfit, computeGasCost } from '../core/tradingModel.js'
 
 type PairGroup = Record<string, Pool[]>
@@ -60,6 +60,23 @@ export function arbitrageStrategy(state: MarketState, signals?: any): Opportunit
   }
 
   if (!best) {
+    if (DEMO_MODE) {
+      const pool = state.pools[0]
+      if (!pool) return null
+      const amountIn = computeAmountIn(0.001, config)
+      return {
+        tokenIn: pool.token0.address,
+        tokenOut: pool.token1.address,
+        amountIn,
+        expectedProfit: 0.0005 * amountIn,
+        gasCost,
+        slippage: config.slippageTolerance,
+        strategy: 'arbitrage',
+        confidence: Math.min(0.85, 0.3 + Math.random() * 0.3),
+        signalStrength: signals?.aggregate?.signalStrength ?? 0,
+        reason: 'Demo fallback: low-confidence arbitrage',
+      }
+    }
     console.log('No opportunity exists')
     return null
   }
@@ -67,6 +84,7 @@ export function arbitrageStrategy(state: MarketState, signals?: any): Opportunit
   console.log('Profitable opportunity found')
   return {
     ...best,
+    confidence: Math.min(best.confidence, 0.85),
     signalStrength: signals?.aggregate?.signalStrength ?? 0,
     reason: 'Cross-pool price dislocation',
   }

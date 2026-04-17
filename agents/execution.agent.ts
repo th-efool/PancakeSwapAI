@@ -44,7 +44,8 @@ function quoteAmountOut(opp: Opportunity): number {
 }
 
 function minAmountOut(amountOutQuote: number): number {
-  return amountOutQuote * (1 - config.slippageTolerance)
+  const slippageNoise = 0.98 + Math.random() * 0.04
+  return amountOutQuote * (1 - config.slippageTolerance) * slippageNoise
 }
 
 function buildSwapPrep(opp: Opportunity): SwapPrep {

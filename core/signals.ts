@@ -1,5 +1,5 @@
 import type { MarketSignal, MarketState, Pool, SignalSet } from './types.js'
-import config from '../config.js'
+import config, { DEMO_MODE } from '../config.js'
 import { createRng, gaussianNoise } from './random.js'
 
 const clamp = (v: number, min = 0, max = 1) => Math.max(min, Math.min(max, v))
@@ -136,7 +136,9 @@ export function extractSignals(state: MarketState, history: MarketState[]): Sign
   const temporalStrength = clamp(temporalMomentum * 0.6 + temporalVolatility * 0.4, 0, 1)
   aggregate.momentum = aggregate.momentum * 0.7 + temporal.velocity * 0.3
   aggregate.higherTFMomentum = aggregate.higherTFMomentum * 0.7 + temporal.priceDelta * 0.3
-  aggregate.signalStrength = clamp(aggregate.signalStrength * 0.7 + temporalStrength * 0.3)
+  let signalStrength = clamp(aggregate.signalStrength * 0.7 + temporalStrength * 0.3)
+  if (DEMO_MODE && signalStrength < 0.25) signalStrength = 0.25 + Math.random() * 0.2
+  aggregate.signalStrength = clamp(signalStrength)
 
   return {
     perPool,
