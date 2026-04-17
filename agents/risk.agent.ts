@@ -33,15 +33,21 @@ function isMicroProbe(opp: Opportunity): boolean {
   return opp.strategy === 'microMomentumProbe'
 }
 
+function isAdaptiveFallback(opp: Opportunity): boolean {
+  return opp.strategy === 'adaptiveParticipation'
+}
+
 export function getLastRiskDecision(): Decision {
   return lastDecision
 }
 
 export function riskAgent(opp: Opportunity): boolean {
   const microProbe = isMicroProbe(opp)
+  const adaptiveFallback = isAdaptiveFallback(opp)
   const smallProbeSize = opp.amountIn <= config.maxTradeSize * 0.2
+  const fallbackAllowed = adaptiveFallback && smallProbeSize && opp.expectedProfit >= 0
 
-  if (!checkProfitability(opp) && !(microProbe && smallProbeSize)) {
+  if (!checkProfitability(opp) && !(microProbe && smallProbeSize) && !fallbackAllowed) {
     lastDecision = { approved: false, reason: 'Profitability check failed' }
     log('risk', 'Risk rejected: profitability')
     return false
@@ -50,6 +56,12 @@ export function riskAgent(opp: Opportunity): boolean {
   if (microProbe && !smallProbeSize) {
     lastDecision = { approved: false, reason: 'Probe trade size exceeds 20% cap' }
     log('risk', 'Risk rejected: probe size cap')
+    return false
+  }
+
+  if (adaptiveFallback && !smallProbeSize) {
+    lastDecision = { approved: false, reason: 'Fallback trade size exceeds 20% cap' }
+    log('risk', 'Risk rejected: fallback size cap')
     return false
   }
 

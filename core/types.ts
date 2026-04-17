@@ -113,6 +113,7 @@ export type Config = {
   gasLimit: number;
   gasPriceGwei: number;
   slippageTolerance: number;
+  minProfitThreshold: number;
   maxTradeSize: number;
   tradeScaleK: number;
   minTradeSize: number;
