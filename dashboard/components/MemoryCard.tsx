@@ -8,6 +8,7 @@ type Props = {
 }
 
 const nf = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '--')
+const safe = <T,>(v: T) => (v === undefined || v === null || (typeof v === 'number' && Number.isNaN(v)) ? '--' : v)
 
 function AnimatedNumber({ value, suffix = '', digits = 2 }: { value?: number; suffix?: string; digits?: number }) {
   const [show, setShow] = useState(value)
@@ -16,7 +17,7 @@ function AnimatedNumber({ value, suffix = '', digits = 2 }: { value?: number; su
     setShow(value)
   }, [value])
 
-  return <span key={`${show}`}>{typeof show === 'number' ? `${show.toFixed(digits)}${suffix}` : '--'}</span>
+  return <span key={`${show}`}>{safe(typeof show === 'number' ? `${show.toFixed(digits)}${suffix}` : undefined)}</span>
 }
 
 export default function MemoryCard({ memory, blink }: Props) {
@@ -33,7 +34,7 @@ export default function MemoryCard({ memory, blink }: Props) {
       <div className="space-y-3 text-sm">
         <div className="flex items-center justify-between">
           <span className="text-slate-400">Strategy Name</span>
-          <span className="font-semibold text-slate-100">{memory?.strategy ?? '--'}</span>
+          <span className="font-semibold text-slate-100">{safe(memory?.strategy)}</span>
         </div>
         <div className="flex items-center justify-between">
           <span className="text-slate-400">Win Rate</span>

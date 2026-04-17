@@ -11,6 +11,7 @@ import { type MarketRegime, normalizeMarketRegime } from '../lib/market.ts'
 
 const n = (v?: number, d = 2) => (typeof v === 'number' ? v.toFixed(d) : '--')
 const signed = (v: number, d = 3) => `${v >= 0 ? '+' : ''}${v.toFixed(d)}`
+const safe = <T,>(v: T) => (v === undefined || v === null || (typeof v === 'number' && Number.isNaN(v)) ? '--' : v)
 
 const regimeMap: Record<MarketRegime, { badge: string; glow: string; note: string }> = {
   TRENDING: {
@@ -63,8 +64,12 @@ function statusTag(t: TimelineItem[], strategy?: string, connected?: boolean) {
 export default function Page() {
   const { data, blink, connected, timeline } = useLiveState()
   if (!data?.timestamp) return <p className="text-lg text-slate-300">Waiting for first cycle...</p>
+  console.log('LIVE STATE', data)
 
   const opp = data.selectedOpportunity
+  const memory = data.memory ?? {}
+  const simulation = data.simulation ?? {}
+  const decision = data.decision ?? {}
   const best = data.strategies?.[0]
   const net = data.performance?.netProfit
   const netTone = typeof net === 'number' && net > 0 ? 'text-emerald-300' : 'text-rose-300'
@@ -110,12 +115,12 @@ export default function Page() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <MetricBox label="Current Opportunity" value={noTrade ? 'No opportunity' : (opp?.strategy ?? '--')} />
-        <MetricBox label="Best Strategy" value={best?.name ?? '--'} />
+        <MetricBox label="Current Opportunity" value={noTrade ? 'No opportunity' : safe(opp?.strategy)} />
+        <MetricBox label="Best Strategy" value={safe(best?.name)} />
         <MetricBox label="Expected Profit" value={typeof opp?.expectedProfit === 'number' ? `${n(opp.expectedProfit, 4)} BNB` : '--'} />
         <MetricBox label="System Status" value={stateTag.toUpperCase()} tone={stateTag === 'executing' ? 'good' : stateTag === 'adapting' ? 'warn' : 'default'} />
-        <MetricBox label="Configured Source" value={data.configuredSource ?? '--'} />
-        <MetricBox label="Used Source" value={data.usedSource ?? '--'} />
+        <MetricBox label="Configured Source" value={safe(data.configuredSource)} />
+        <MetricBox label="Used Source" value={safe(data.usedSource)} />
       </div>
 
       <Card title="Market Regime">
@@ -134,9 +139,9 @@ export default function Page() {
       </Card>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <MemoryCard memory={data.memory} blink={blink} />
-        <SimulationCard simulation={data.simulation} blink={blink} />
-        <DecisionCard decision={data.decision} blink={blink} />
+        <MemoryCard memory={memory} blink={blink} />
+        <SimulationCard simulation={simulation} blink={blink} />
+        <DecisionCard decision={decision} blink={blink} />
       </div>
 
       <Card title="Strategy Timeline">
@@ -171,12 +176,12 @@ export default function Page() {
       </Card>
 
       <Card title="Decision Story">
-        <p className="text-sm text-slate-300 transition-all duration-300">{data.decision?.reason ?? story}</p>
+        <p className="text-sm text-slate-300 transition-all duration-300">{decision.reason ?? story}</p>
       </Card>
 
       <Card>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-slate-400">Cycle #{data.cycleId ?? '--'}</p>
+          <p className="text-sm text-slate-400">Cycle #{safe(data.cycleId)}</p>
           <div className="flex items-center gap-2 text-xs">
             <span className={`h-2 w-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
             <span className="text-slate-300">{connected ? 'Live' : 'Disconnected'}</span>
@@ -184,8 +189,8 @@ export default function Page() {
         </div>
         <p className={`mt-2 text-3xl font-bold transition-all duration-300 ${netTone}`}>Net Profit: {typeof net === 'number' ? `${n(net)} BNB` : '--'}</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          <p className="text-sm text-slate-300">Simulation Confidence: {typeof data.simulation?.confidenceAdjusted === 'number' ? `${(data.simulation.confidenceAdjusted * 100).toFixed(1)}%` : '--'}</p>
-          <p className="text-sm text-slate-300">Strategy Performance Score: {n(data.memory?.performanceScore, 3)}</p>
+          <p className="text-sm text-slate-300">Simulation Confidence: {typeof simulation.confidenceAdjusted === 'number' ? `${(simulation.confidenceAdjusted * 100).toFixed(1)}%` : '--'}</p>
+          <p className="text-sm text-slate-300">Strategy Performance Score: {n(memory.performanceScore, 3)}</p>
         </div>
         {noTrade ? <p className="mt-3 rounded-lg border border-white/10 bg-slate-900/50 p-3 text-sm text-slate-300">System evaluating conditions — no safe opportunity detected.</p> : null}
         {simRejected ? <p className="mt-3 rounded-lg border border-rose-400/30 bg-rose-500/10 p-3 text-sm text-rose-200">Trade rejected due to high downside risk.</p> : null}
