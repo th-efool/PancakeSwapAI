@@ -116,16 +116,20 @@ export default function Page() {
         <p className="mt-2 text-sm text-gray-500">Last updated: {new Date(data.timestamp).toLocaleString()}</p>
       </Card>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <MetricBox label="Current Opportunity" value={data.status === 'starting' ? 'Booting system...' : noTrade ? 'No opportunity' : safe(opp?.strategy)} />
-        <MetricBox label="Best Strategy" value={safe(best?.name)} />
-        <MetricBox label="Expected Profit" value={typeof opp?.expectedProfit === 'number' ? `${n(opp.expectedProfit, 4)} BNB` : '--'} />
-        <MetricBox label="System Status" value={stateTag.toUpperCase()} tone={stateTag === 'executing' ? 'good' : stateTag === 'adapting' ? 'warn' : 'default'} />
-        <MetricBox label="Configured Source" value={safe(data.configuredSource)} />
-        <MetricBox label="Used Source" value={safe(data.usedSource)} />
-      </div>
+      <LiveChart state={data} />
 
       <CommandConsole />
+
+      <Card title="System Snapshot">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          <MetricBox label="Current Opportunity" value={data.status === 'starting' ? 'Booting system...' : noTrade ? 'No opportunity' : safe(opp?.strategy)} />
+          <MetricBox label="Best Strategy" value={safe(best?.name)} />
+          <MetricBox label="Expected Profit" value={typeof opp?.expectedProfit === 'number' ? `${n(opp.expectedProfit, 4)} BNB` : '--'} />
+          <MetricBox label="System Status" value={stateTag.toUpperCase()} tone={stateTag === 'executing' ? 'good' : stateTag === 'adapting' ? 'warn' : 'default'} />
+          <MetricBox label="Configured Source" value={safe(data.configuredSource)} />
+          <MetricBox label="Used Source" value={safe(data.usedSource)} />
+        </div>
+      </Card>
 
       <Card title="Market Regime">
         <div key={regime} className={`rounded-2xl border border-gray-200 bg-[#f8f9fa] p-4 transition-all duration-500 ease-out ${blink ? 'opacity-100 translate-y-0 scale-[1.01]' : 'opacity-95 translate-y-[2px]'} ${regimeUi.glow}`}>
@@ -141,8 +145,6 @@ export default function Page() {
           </div>
         </div>
       </Card>
-
-      <LiveChart state={data} />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <MemoryCard memory={memory} blink={blink} />
