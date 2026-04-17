@@ -8,6 +8,7 @@ import { getMarketHistory, pushMarketState } from './history.js'
 import { extractSignals } from './signals.js'
 import type { MarketRegime, MarketState, Opportunity, TradeResult, RegimeAssessment, SignalSet } from './types.js'
 import { latestState } from './state.js'
+import { DEMO_MODE } from '../config.js'
 
 export type Pipeline = {
   market: () => Promise<MarketState>
@@ -143,6 +144,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
   try {
     cycleId += 1
     log('pipeline', `Cycle ${cycleId} start`)
+    log('pipeline', DEMO_MODE ? 'DEMO MODE ACTIVE — signal floor applied' : 'LIVE MODE')
 
     const state = await pipeline.market()
     pushMarketState(state)

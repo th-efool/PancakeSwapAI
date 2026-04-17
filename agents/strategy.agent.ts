@@ -1,7 +1,7 @@
 import { computePerformanceScore, getStrategyStats } from '../core/memory/strategyMemory.js'
 import { log } from '../core/logger.js'
 import type { MarketRegime, MarketState, Opportunity, SignalSet } from '../core/types.js'
-import config from '../config.js'
+import config, { DEMO_MODE } from '../config.js'
 
 export type StrategyFn = (state: MarketState, signals: SignalSet | null, regime: MarketRegime) => Opportunity | null
 export type StrategyInput = StrategyFn | StrategyFn[]
@@ -17,6 +17,7 @@ const scoreOpportunity = (opp: Opportunity, signals: SignalSet | null) => {
 }
 
 const allowedStrategies = (regime: MarketRegime): string[] => {
+  if (DEMO_MODE) return ['arbitrage', 'meanReversion', 'liquidityImbalance', 'momentum']
   if (regime === 'TRENDING') return ['momentum', 'arbitrage', 'liquidityImbalance']
   if (regime === 'MEAN_REVERTING') return ['meanReversion', 'arbitrage']
   if (regime === 'CHAOTIC') return ['arbitrage', 'meanReversion', 'liquidityImbalance', 'momentum']
@@ -51,16 +52,24 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
   log('strategy', `Running ${strategies.length} strategies | regime=${regime} | allowed=${Array.from(allow).join(',')}`)
 
   const minProfitThreshold = regime === 'CHAOTIC' ? 0.0001 : config.minProfitThreshold
+  const regimeWeight = DEMO_MODE
+    ? regime === 'IDLE'
+      ? 0.75
+      : regime === 'INSUFFICIENT_DATA'
+        ? 0.7
+        : 1
+    : regime === 'IDLE'
+      ? 0.7
+      : regime === 'INSUFFICIENT_DATA'
+        ? 0.5
+        : 1
   const opportunities = primaryStrategies
     .map((strategy) => strategy(state, signals, regime))
     .filter((opportunity): opportunity is Opportunity => opportunity !== null)
     .filter((opportunity) => safe(opportunity.expectedProfit) >= minProfitThreshold)
     .map((opportunity) => ({
       ...opportunity,
-      confidence: clamp(
-        opportunity.confidence *
-          (regime === 'IDLE' ? 0.7 : regime === 'INSUFFICIENT_DATA' ? 0.5 : 1),
-      ),
+      confidence: clamp(opportunity.confidence * regimeWeight, 0, 0.85),
       volatility: opportunity.volatility ?? signals?.temporal.volatility ?? 0,
       signalStrength: clamp(opportunity.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
     }))
@@ -72,7 +81,7 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
       log('strategy', 'No strong opportunity found. Using micro momentum probe fallback.')
       return {
         ...probe,
-        confidence: clamp(probe.confidence),
+        confidence: clamp(probe.confidence, 0, 0.85),
         volatility: probe.volatility ?? signals?.temporal.volatility ?? 0,
         signalStrength: clamp(probe.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
       }
@@ -83,7 +92,7 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
     if (!fallback) return null
     return {
       ...fallback,
-      confidence: clamp(fallback.confidence),
+      confidence: clamp(fallback.confidence, 0, 0.85),
       volatility: fallback.volatility ?? signals?.temporal.volatility ?? 0,
       signalStrength: clamp(fallback.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
     }

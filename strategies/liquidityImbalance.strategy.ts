@@ -1,12 +1,26 @@
 import type { MarketState, Opportunity, Pool } from '../core/types.js'
-import config from '../config.js'
+import config, { DEMO_MODE } from '../config.js'
 import { computeAmountIn, computeExpectedProfit, computeGasCost } from '../core/tradingModel.js'
 
 const THRESHOLD = 0.001
 const VOLUME_THRESHOLD = 1000
 
 function buildOpportunity(pool: Pool, imbalance: number, gasCost: number): Opportunity | null {
-  if (imbalance < THRESHOLD || pool.volume.m5 <= VOLUME_THRESHOLD) return null
+  if (imbalance < THRESHOLD || pool.volume.m5 <= VOLUME_THRESHOLD) {
+    if (!DEMO_MODE) return null
+    const amountIn = computeAmountIn(Math.max(Math.abs(pool.priceChange.m5) / 100, 0.001), config)
+    return {
+      tokenIn: pool.token0.address,
+      tokenOut: pool.token1.address,
+      amountIn,
+      expectedProfit: Math.abs(imbalance) * amountIn * 0.5,
+      gasCost,
+      slippage: config.slippageTolerance,
+      strategy: 'liquidityImbalance',
+      confidence: Math.min(0.85, 0.3 + Math.random() * 0.3),
+      reason: 'Demo fallback: low-confidence liquidity imbalance',
+    }
+  }
 
   const amountIn = computeAmountIn(Math.abs(pool.priceChange.m5) / 100, config)
   const edgeRate = Math.min(imbalance * 10, 0.03)
@@ -48,6 +62,7 @@ export function liquidityImbalanceStrategy(state: MarketState, signals?: any): O
   console.log('Liquidity imbalance opportunity found')
   return {
     ...best,
+    confidence: Math.min(best.confidence, 0.85),
     signalStrength: signals?.aggregate?.signalStrength ?? 0,
     reason: 'Short-term liquidity/flow imbalance',
   }
