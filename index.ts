@@ -1,4 +1,6 @@
-import './server.js'
+console.log('ENTRY FILE EXECUTED')
+
+import { startServer } from './server.js'
 import { runPipeline } from './core/pipeline.js'
 import marketAgent from './agents/market.agent.js'
 import strategyAgent from './agents/strategy.agent.js'
@@ -19,29 +21,21 @@ const pipeline = {
   execute: executionAgent,
 }
 
-async function startLoop() {
-  const INTERVAL_MS = 3000
+async function main() {
+  console.log('🔥 Starting backend...')
+  startServer()
 
   while (true) {
-    console.log('\n=== NEW CYCLE ===')
-
-    const start = Date.now()
-
     try {
       await runPipeline(pipeline)
     } catch (err) {
       console.error('Cycle failed:', err)
     }
 
-    const elapsed = Date.now() - start
-    const waitTime = INTERVAL_MS - elapsed
-
-    console.log(`Cycle duration: ${elapsed}ms`)
-
-    if (waitTime > 0) {
-      await new Promise((resolve) => setTimeout(resolve, waitTime))
-    }
+    await new Promise((r) => setTimeout(r, 2000))
   }
 }
 
-startLoop().catch(console.error)
+main().catch((err) => {
+  console.error('Fatal error:', err)
+})

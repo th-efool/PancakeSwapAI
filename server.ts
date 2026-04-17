@@ -1,21 +1,30 @@
 import express from 'express'
 import cors from 'cors'
-import * as fs from 'node:fs'
+import fs from 'fs'
 import path from 'path'
 
-const STATE_FILE = path.resolve('latest_state.json')
+export function startServer() {
+  const app = express()
+  app.use(cors())
 
-const app = express()
-app.use(cors())
+  const STATE_FILE = path.resolve('latest_state.json')
+  const PORT = process.env.PORT || 3000
 
-app.get('/state', (_req, res) => {
-  try {
-    const data = fs.readFileSync(STATE_FILE, 'utf-8')
-    res.json(JSON.parse(data))
-  } catch {
-    res.json({ status: 'starting' })
-  }
-})
+  app.get('/state', (_req, res) => {
+    try {
+      const data = fs.readFileSync(STATE_FILE, 'utf-8')
+      res.json(JSON.parse(data))
+    } catch (err) {
+      console.error('STATE READ ERROR:', err)
+      res.json({ status: 'starting' })
+    }
+  })
 
-const PORT = process.env.PORT || 3000
-app.listen(PORT, () => console.log('API running on', PORT))
+  app.get('/', (_req, res) => {
+    res.send('Backend alive')
+  })
+
+  app.listen(PORT, () => {
+    console.log('🚀 API running on port', PORT)
+  })
+}
