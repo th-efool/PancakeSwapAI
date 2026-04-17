@@ -21,6 +21,34 @@ function createSummary(): NormalizerDebugSummary {
   }
 }
 
+/** Max fractional price change (±0.3%). */
+const MAX_PRICE_DELTA = 0.003
+/** Pool-address bias scale (sub-range of max delta). */
+const POOL_BIAS_SCALE = 0.001
+
+const clampDelta = (v: number) => Math.max(-MAX_PRICE_DELTA, Math.min(MAX_PRICE_DELTA, v))
+
+/** Stable [-1, 1] from pool address (latency / venue style micro-drift). */
+function addressBiasUnit(address: string): number {
+  let h = 2166136261
+  const s = address.toLowerCase()
+  for (let i = 0; i < s.length; i += 1) {
+    h ^= s.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  return ((h >>> 0) / 0xffff_ffff) * 2 - 1
+}
+
+/** Uniform jitter + address bias, capped at ±MAX_PRICE_DELTA. */
+function applyPricePerturbation(price: number, poolAddress: string): number {
+  const u = (Math.random() * 2 - 1) * MAX_PRICE_DELTA
+  const bias = addressBiasUnit(poolAddress) * POOL_BIAS_SCALE
+  const delta = clampDelta(u + bias)
+  const next = price * (1 + delta)
+  if (!Number.isFinite(next) || next <= 0) return price
+  return next
+}
+
 export function normalizePoolsDetailed(rawPools: RawPool[]): { pools: Pool[]; debug: NormalizerDebugSummary } {
   const pools: Pool[] = []
   const debug = createSummary()
@@ -94,7 +122,16 @@ export function normalizePoolsDetailed(rawPools: RawPool[]): { pools: Pool[]; de
       })
     }
 
-    const normalizedPrice = typeof price === 'number' && Number.isFinite(price) ? price : 0
+    const validForPerturbation =
+      typeof price === 'number' &&
+      Number.isFinite(price) &&
+      price > 0 &&
+      typeof liquidity === 'number' &&
+      Number.isFinite(liquidity) &&
+      liquidity > 0
+
+    const baseNormalizedPrice = typeof price === 'number' && Number.isFinite(price) ? price : 0
+    const normalizedPrice = validForPerturbation ? applyPricePerturbation(price as number, raw.address) : baseNormalizedPrice
     const normalizedLiquidity = typeof liquidity === 'number' && Number.isFinite(liquidity) ? liquidity : 0
 
     pools.push({
