@@ -52,6 +52,37 @@ const buildState = (
           },
         ]
       : [],
+    memory: selectedOpportunity
+        ? {
+          strategy: selectedOpportunity.strategy,
+          winRate: performance.winRate ?? 0,
+          avgProfit: performance.avgProfit ?? performance.avgProfitPerTrade ?? 0,
+          recentMomentum: selectedOpportunity.expectedProfit ?? 0,
+          performanceScore: (performance.netProfit ?? 0) / Math.max(performance.totalTrades ?? 1, 1),
+        }
+        : null,
+
+    simulation: selectedOpportunity
+        ? {
+          bestCase: selectedOpportunity.expectedProfit * 1.2,
+          worstCase: selectedOpportunity.expectedProfit * 0.6,
+          avg: selectedOpportunity.expectedProfit,
+          riskScore: 1 - (selectedOpportunity.confidence ?? 0),
+          confidenceAdjusted: (selectedOpportunity.confidence ?? 0) * 0.9,
+        }
+        : null,
+
+    decision: selectedOpportunity
+        ? {
+          regime: regimeAssessment.regime,
+          selectedStrategy: selectedOpportunity.strategy,
+          baseScore: selectedOpportunity.signalStrength ?? 0,
+          memoryScore:
+              (performance.netProfit ?? 0) / Math.max(performance.totalTrades ?? 1, 1),
+          finalScore: selectedOpportunity.score ?? selectedOpportunity.expectedProfit ?? 0,
+          reason: selectedOpportunity.reason ?? regimeAssessment.reason,
+        }
+        : null,
     selectedOpportunity,
     signals,
     temporalSignals: signals?.temporal ?? null,
