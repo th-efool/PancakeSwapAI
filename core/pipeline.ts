@@ -1,6 +1,7 @@
 import { getLastExecution } from '../agents/execution.agent.js'
-import { getPerformance, logPerformance, recordTrade } from '../agents/portfolio.agent.js'
+import { getPerformance, logPerformance, recordOpportunitySeen, recordRejectedOpportunity, recordTrade } from '../agents/portfolio.agent.js'
 import { getLastRiskDecision } from '../agents/risk.agent.js'
+import { getLastEvaluatedStrategies } from '../agents/strategy.agent.js'
 import { getLogs, log } from './logger.js'
 import { detectRegime } from './regime.js'
 import { exportState } from './exportState.js'
@@ -23,6 +24,7 @@ const EXECUTION_DROUGHT_THRESHOLD = 3
 const buildState = (
   state: MarketState | null,
   selectedOpportunity: Opportunity | null,
+  evaluatedStrategies: ReturnType<typeof getLastEvaluatedStrategies>,
   signals: SignalSet | null,
   regimeAssessment: RegimeAssessment,
 ) => {
@@ -45,18 +47,7 @@ const buildState = (
         totalLiquidity: pools.reduce((a, p) => a + p.liquidity, 0),
       },
     },
-    strategies: selectedOpportunity
-      ? [
-          {
-            name: selectedOpportunity.strategy,
-            expectedProfit: selectedOpportunity.expectedProfit,
-            confidence: selectedOpportunity.confidence,
-            signalStrength: selectedOpportunity.signalStrength ?? signals?.aggregate.signalStrength ?? 0,
-            reason: selectedOpportunity.reason ?? regimeAssessment.reason,
-            score: selectedOpportunity.score ?? 0,
-          },
-        ]
-      : [],
+    strategies: evaluatedStrategies,
     memory: selectedOpportunity
         ? {
           strategy: selectedOpportunity.strategy,
@@ -107,6 +98,7 @@ const buildState = (
 const flushState = (
   state: MarketState | null,
   opportunity: Opportunity | null,
+  evaluatedStrategies: ReturnType<typeof getLastEvaluatedStrategies>,
   signals: SignalSet | null,
   regimeAssessment: RegimeAssessment,
 ) => {
@@ -115,7 +107,7 @@ const flushState = (
   latestState.regimeConfidence = regimeAssessment.confidence
   latestState.regimeReason = regimeAssessment.reason
   latestState.runtime.executionDroughtThreshold = EXECUTION_DROUGHT_THRESHOLD
-  exportState(buildState(state, opportunity, signals, regimeAssessment))
+  exportState(buildState(state, opportunity, evaluatedStrategies, signals, regimeAssessment))
 }
 
 export async function runPipeline(pipeline: Pipeline): Promise<void> {
@@ -147,16 +139,18 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
 
     if (!state || !state.pools.length) {
       log('pipeline', 'No market data')
-      flushState(state, null, signals, regimeAssessment)
+      flushState(state, null, [], signals, regimeAssessment)
       return
     }
 
     const opportunity: Opportunity | null = pipeline.strategy(state, signals, regimeAssessment.regime)
+    const evaluatedStrategies = getLastEvaluatedStrategies()
     if (!opportunity) {
       log('pipeline', `No opportunity | regime=${regimeAssessment.regime} reason=${regimeAssessment.reason}`)
-      flushState(state, null, signals, regimeAssessment)
+      flushState(state, null, evaluatedStrategies, signals, regimeAssessment)
       return
     }
+    recordOpportunitySeen()
 
     log(
       'pipeline',
@@ -180,7 +174,8 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
         shouldExecute = true
       } else {
         log('pipeline', 'Risk rejected')
-        flushState(state, opportunity, signals, regimeAssessment)
+        recordRejectedOpportunity()
+        flushState(state, opportunity, evaluatedStrategies, signals, regimeAssessment)
         return
       }
     } else {
@@ -191,7 +186,7 @@ export async function runPipeline(pipeline: Pipeline): Promise<void> {
     recordTrade(result, opportunity)
     logPerformance()
 
-    exportState(buildState(state, opportunity, signals, regimeAssessment))
+    exportState(buildState(state, opportunity, evaluatedStrategies, signals, regimeAssessment))
 
     if (!result.success) {
       log('pipeline', `Trade failed${result.error ? `: ${result.error}` : ''}`)

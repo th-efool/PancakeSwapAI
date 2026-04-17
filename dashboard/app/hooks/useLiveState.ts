@@ -27,6 +27,7 @@ export type LiveState = {
     expectedProfit: number
     confidence: number
     score: number
+    selected: boolean
   }>
   selectedOpportunity?: {
     strategy?: string
@@ -51,9 +52,16 @@ export type LiveState = {
   }
   performance?: {
     totalTrades?: number
+    totalTradesExecuted?: number
     netProfit?: number
     winRate?: number
     totalProfit?: number
+    totalOpportunitiesSeen?: number
+    totalRejected?: number
+    rejectedOpportunities?: number
+    conversionRate?: number
+    selectivity?: number
+    strategyUsage?: Record<string, number>
   }
 
   memory?: {
