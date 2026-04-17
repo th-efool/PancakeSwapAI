@@ -29,14 +29,27 @@ function checkSlippage(opp: Opportunity): boolean {
   return opp.slippage <= config.slippageTolerance
 }
 
+function isMicroProbe(opp: Opportunity): boolean {
+  return opp.strategy === 'microMomentumProbe'
+}
+
 export function getLastRiskDecision(): Decision {
   return lastDecision
 }
 
 export function riskAgent(opp: Opportunity): boolean {
-  if (!checkProfitability(opp)) {
+  const microProbe = isMicroProbe(opp)
+  const smallProbeSize = opp.amountIn <= config.maxTradeSize * 0.2
+
+  if (!checkProfitability(opp) && !(microProbe && smallProbeSize)) {
     lastDecision = { approved: false, reason: 'Profitability check failed' }
     log('risk', 'Risk rejected: profitability')
+    return false
+  }
+
+  if (microProbe && !smallProbeSize) {
+    lastDecision = { approved: false, reason: 'Probe trade size exceeds 20% cap' }
+    log('risk', 'Risk rejected: probe size cap')
     return false
   }
 
