@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import {
+  Area,
+  AreaChart,
   CartesianGrid,
   Line,
   LineChart,
@@ -29,20 +31,37 @@ type SparklineProps = {
 }
 
 function Sparkline({ data }: SparklineProps) {
+  const expectedValues = data.map((point) => point.expected)
+  const min = expectedValues.length > 0 ? Math.min(...expectedValues) : 0
+  const max = expectedValues.length > 0 ? Math.max(...expectedValues) : 0
+  const padding = (max - min) * 0.18 || Math.max(Math.abs(max) * 0.18, 0.0001)
+  const previous = data.length > 1 ? data[data.length - 2].expected : null
+  const latest = data.length > 0 ? data[data.length - 1].expected : null
+  const isPositiveSlope = previous !== null && latest !== null && latest > previous
+
+  const strokeColor = isPositiveSlope ? '#ef4444' : '#b91c1c'
+  const fillColor = isPositiveSlope ? '#fee2e2' : '#fecaca'
+
   return (
-    <ResponsiveContainer width="100%" height={40}>
-      <LineChart data={data}>
-        <Line
-          type="monotone"
-          dataKey="expected"
-          stroke="#dc2626"
-          strokeWidth={2}
-          dot={false}
-          isAnimationActive
-          animationDuration={400}
-        />
-      </LineChart>
-    </ResponsiveContainer>
+    <div className="rounded-md border border-gray-200 bg-white px-2 py-1">
+      <ResponsiveContainer width="100%" height={40}>
+        <AreaChart data={data}>
+          <XAxis dataKey="time" hide />
+          <YAxis hide domain={[min - padding, max + padding]} />
+          <Area
+            type="monotone"
+            dataKey="expected"
+            stroke={strokeColor}
+            strokeWidth={2}
+            fill={fillColor}
+            fillOpacity={0.65}
+            isAnimationActive
+            animationDuration={450}
+            dot={false}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 
@@ -103,9 +122,18 @@ export default function LiveChart({ state }: Props) {
         </div>
       ) : (
         <div className={`rounded-lg transition-colors duration-500 ${glowClass}`}>
-          <div className="mb-2">
-            <p className="text-xs text-gray-500">Expected Profit Trend</p>
-            <Sparkline data={history} />
+          <div className="mb-2 flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-xs text-gray-500">Expected Profit</p>
+              <p className="text-sm font-medium text-gray-900">
+                {history.length > 0
+                  ? `${history[history.length - 1].expected.toFixed(4)} BNB`
+                  : '--'}
+              </p>
+            </div>
+            <div className="w-[120px] shrink-0">
+              <Sparkline data={history} />
+            </div>
           </div>
 
           <ResponsiveContainer width="100%" height={250}>
