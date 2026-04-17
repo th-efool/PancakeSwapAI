@@ -1,6 +1,7 @@
 import { computePerformanceScore, getStrategyStats } from '../core/memory/strategyMemory.js'
 import { log } from '../core/logger.js'
 import type { MarketRegime, MarketState, Opportunity, SignalSet } from '../core/types.js'
+import config from '../config.js'
 
 export type StrategyFn = (state: MarketState, signals: SignalSet | null, regime: MarketRegime) => Opportunity | null
 export type StrategyInput = StrategyFn | StrategyFn[]
@@ -18,7 +19,7 @@ const scoreOpportunity = (opp: Opportunity, signals: SignalSet | null) => {
 const allowedStrategies = (regime: MarketRegime): string[] => {
   if (regime === 'TRENDING') return ['momentum', 'arbitrage', 'liquidityImbalance']
   if (regime === 'MEAN_REVERTING') return ['meanReversion', 'arbitrage']
-  if (regime === 'CHAOTIC') return ['arbitrage']
+  if (regime === 'CHAOTIC') return ['arbitrage', 'meanReversion', 'liquidityImbalance', 'momentum']
   if (regime === 'IDLE') return ['meanReversion', 'liquidityImbalance']
   if (regime === 'INSUFFICIENT_DATA') return ['meanReversion']
   if (regime === 'VOLATILE') return ['arbitrage', 'liquidityImbalance']
@@ -39,15 +40,21 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
 
   const strategies = (Array.isArray(strategyImpl) ? strategyImpl : [strategyImpl]).filter((fn) => {
     const key = fn.name.replace('Strategy', '')
-    return key === 'microMomentumProbe' || allow.has(key)
+    return key === 'microMomentumProbe' || key === 'adaptiveParticipation' || allow.has(key)
   })
-  const primaryStrategies = strategies.filter((fn) => fn.name.replace('Strategy', '') !== 'microMomentumProbe')
+  const primaryStrategies = strategies.filter((fn) => {
+    const key = fn.name.replace('Strategy', '')
+    return key !== 'microMomentumProbe' && key !== 'adaptiveParticipation'
+  })
+  const adaptiveParticipation = strategies.find((fn) => fn.name.replace('Strategy', '') === 'adaptiveParticipation')
   const probeStrategy = strategies.find((fn) => fn.name.replace('Strategy', '') === 'microMomentumProbe')
   log('strategy', `Running ${strategies.length} strategies | regime=${regime} | allowed=${Array.from(allow).join(',')}`)
 
+  const minProfitThreshold = regime === 'CHAOTIC' ? 0.0001 : config.minProfitThreshold
   const opportunities = primaryStrategies
     .map((strategy) => strategy(state, signals, regime))
     .filter((opportunity): opportunity is Opportunity => opportunity !== null)
+    .filter((opportunity) => safe(opportunity.expectedProfit) >= minProfitThreshold)
     .map((opportunity) => ({
       ...opportunity,
       confidence: clamp(
@@ -61,13 +68,24 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
   log('strategy', `Found ${opportunities.length} opportunities`)
   if (!opportunities.length && probeStrategy) {
     const probe = probeStrategy(state, signals, regime)
-    if (!probe) return null
-    log('strategy', 'No strong opportunity found. Using micro momentum probe fallback.')
+    if (probe) {
+      log('strategy', 'No strong opportunity found. Using micro momentum probe fallback.')
+      return {
+        ...probe,
+        confidence: clamp(probe.confidence),
+        volatility: probe.volatility ?? signals?.temporal.volatility ?? 0,
+        signalStrength: clamp(probe.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
+      }
+    }
+  }
+  if (!opportunities.length && adaptiveParticipation) {
+    const fallback = adaptiveParticipation(state, signals, regime)
+    if (!fallback) return null
     return {
-      ...probe,
-      confidence: clamp(probe.confidence),
-      volatility: probe.volatility ?? signals?.temporal.volatility ?? 0,
-      signalStrength: clamp(probe.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
+      ...fallback,
+      confidence: clamp(fallback.confidence),
+      volatility: fallback.volatility ?? signals?.temporal.volatility ?? 0,
+      signalStrength: clamp(fallback.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
     }
   }
   if (!opportunities.length) return null
