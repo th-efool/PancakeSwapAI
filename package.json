@@ -12,10 +12,14 @@
     "dev:full": "npm run build && npm run dev"
   },
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^16.4.5",
-    "ethers": "^6.13.0"
+    "ethers": "^6.13.0",
+    "express": "^5.2.1"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^20.19.39",
     "concurrently": "^9.2.1",
     "nodemon": "^3.1.14",

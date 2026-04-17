@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { isDataSource, normalizeMarketRegime, type DataSource, type MarketRegime } from '../../lib/market.ts'
 
 export type LiveState = {
+  status?: 'starting'
   timestamp?: string
   cycleId?: number
   regime?: MarketRegime
@@ -143,9 +144,14 @@ export function useLiveState() {
 
     const fetchData = async () => {
       try {
-        const res = await fetch('/latest_state.json', { cache: 'no-store' })
+        const res = await fetch('https://pancakeswapai-production.up.railway.app/state', { cache: 'no-store' })
         const json = normalizeLiveState(await res.json())
         if (!json) return
+        if (json.status === 'starting') {
+          setData(json)
+          setConnected(true)
+          return
+        }
         setData(json)
         setConnected(true)
         if (json.timestamp && json.timestamp !== last.current) {

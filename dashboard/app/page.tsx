@@ -63,6 +63,7 @@ function statusTag(t: TimelineItem[], strategy?: string, connected?: boolean) {
 
 export default function Page() {
   const { data, blink, connected, timeline } = useLiveState()
+  if (data?.status === 'starting') return <p className="text-lg text-slate-300">Booting system...</p>
   if (!data?.timestamp) return <p className="text-lg text-slate-300">Waiting for first cycle...</p>
   console.log('LIVE STATE', data)
 
@@ -115,7 +116,7 @@ export default function Page() {
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <MetricBox label="Current Opportunity" value={noTrade ? 'No opportunity' : safe(opp?.strategy)} />
+        <MetricBox label="Current Opportunity" value={data.status === 'starting' ? 'Booting system...' : noTrade ? 'No opportunity' : safe(opp?.strategy)} />
         <MetricBox label="Best Strategy" value={safe(best?.name)} />
         <MetricBox label="Expected Profit" value={typeof opp?.expectedProfit === 'number' ? `${n(opp.expectedProfit, 4)} BNB` : '--'} />
         <MetricBox label="System Status" value={stateTag.toUpperCase()} tone={stateTag === 'executing' ? 'good' : stateTag === 'adapting' ? 'warn' : 'default'} />
