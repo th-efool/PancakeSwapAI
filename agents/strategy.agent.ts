@@ -37,10 +37,15 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
     return null
   }
 
-  const strategies = (Array.isArray(strategyImpl) ? strategyImpl : [strategyImpl]).filter((fn) => allow.has(fn.name.replace('Strategy', '')))
+  const strategies = (Array.isArray(strategyImpl) ? strategyImpl : [strategyImpl]).filter((fn) => {
+    const key = fn.name.replace('Strategy', '')
+    return key === 'microMomentumProbe' || allow.has(key)
+  })
+  const primaryStrategies = strategies.filter((fn) => fn.name.replace('Strategy', '') !== 'microMomentumProbe')
+  const probeStrategy = strategies.find((fn) => fn.name.replace('Strategy', '') === 'microMomentumProbe')
   log('strategy', `Running ${strategies.length} strategies | regime=${regime} | allowed=${Array.from(allow).join(',')}`)
 
-  const opportunities = strategies
+  const opportunities = primaryStrategies
     .map((strategy) => strategy(state, signals, regime))
     .filter((opportunity): opportunity is Opportunity => opportunity !== null)
     .map((opportunity) => ({
@@ -54,6 +59,17 @@ export function strategyAgent(state: MarketState, strategyImpl: StrategyInput, s
     }))
 
   log('strategy', `Found ${opportunities.length} opportunities`)
+  if (!opportunities.length && probeStrategy) {
+    const probe = probeStrategy(state, signals, regime)
+    if (!probe) return null
+    log('strategy', 'No strong opportunity found. Using micro momentum probe fallback.')
+    return {
+      ...probe,
+      confidence: clamp(probe.confidence),
+      volatility: probe.volatility ?? signals?.temporal.volatility ?? 0,
+      signalStrength: clamp(probe.signalStrength ?? signals?.aggregate.signalStrength ?? 0),
+    }
+  }
   if (!opportunities.length) return null
 
   let best: Opportunity | null = null
