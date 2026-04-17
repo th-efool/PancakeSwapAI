@@ -8,6 +8,23 @@ function isObjectRecord(input: unknown): input is Record<string, unknown> {
   return typeof input === 'object' && input !== null && !Array.isArray(input)
 }
 
+function serializeState(value: unknown): string {
+  return JSON.stringify(
+    value,
+    (_key, nestedValue) => (typeof nestedValue === 'bigint' ? nestedValue.toString() : nestedValue),
+  )
+}
+
+function sendJsonSafely(res: express.Response, payload: unknown) {
+  try {
+    const serialized = serializeState(payload)
+    res.type('application/json').send(serialized)
+  } catch (err) {
+    console.error('STATE SERIALIZATION ERROR:', err)
+    res.json({ status: 'starting' })
+  }
+}
+
 export function startServer() {
   console.log('STARTING EXPRESS')
 
@@ -30,7 +47,7 @@ export function startServer() {
   app.get('/state', (_req, res) => {
     const inMemoryState = getLatestExportedState()
     if (isObjectRecord(inMemoryState)) {
-      res.json(inMemoryState)
+      sendJsonSafely(res, inMemoryState)
       return
     }
 
@@ -42,7 +59,7 @@ export function startServer() {
       const data = fs.readFileSync(STATE_FILE, 'utf-8')
       const parsed: unknown = JSON.parse(data)
       if (isObjectRecord(parsed)) {
-        res.json(parsed)
+        sendJsonSafely(res, parsed)
         return
       }
 
