@@ -19,11 +19,6 @@ type HistoryEntry = {
   system: string
 }
 
-const QUICK_QUERIES = ['best strategy right now', 'why no opportunity?', 'profit update', 'risk status', 'market status', 'simulate next trade']
-
-const formatNumber = (value?: number, digits = 4) => (typeof value === 'number' ? value.toFixed(digits) : '--')
-const formatPercent = (value?: number, digits = 1) => (typeof value === 'number' ? `${(value * 100).toFixed(digits)}%` : '--')
-
 function parseIntent(input: string): Intent {
   const q = input.toLowerCase()
 
@@ -37,39 +32,29 @@ function parseIntent(input: string): Intent {
 }
 
 function resolveIntent(intent: Intent, state: LiveState | null) {
-  const opp = state?.selectedOpportunity
-  const performance = state?.performance
-  const risk = state?.risk
-  const regime = state?.regime ?? 'UNKNOWN'
-  const confidence = opp?.confidence
-  const expectedProfit = opp?.expectedProfit
-
   switch (intent) {
     case 'BEST_STRATEGY':
-      if (!opp?.strategy || opp.strategy === 'none') return 'No active opportunity right now — system is still filtering for a safer edge.'
-      return `Current best strategy is ${opp.strategy}. Expected profit is ${formatNumber(expectedProfit)} BNB with confidence ${formatPercent(confidence)}.`
+      return state?.selectedOpportunity?.strategy
+        ? `Best strategy is ${state.selectedOpportunity.strategy} with expected profit ${state.selectedOpportunity.expectedProfit ?? 0}`
+        : 'No active opportunity.'
 
     case 'NO_OPPORTUNITY_REASON':
-      return risk?.reason
-        ? `No execution yet because ${risk.reason}.`
-        : `No clear opportunity detected in ${regime} conditions. Monitoring for stronger confirmations.`
+      return state?.risk?.reason || 'No clear opportunity detected.'
 
     case 'PROFIT_INFO':
-      return `Net profit is ${formatNumber(performance?.netProfit, 3)} BNB across ${performance?.totalTrades ?? 0} trades (win rate ${formatPercent(performance?.winRate)}).`
+      return `Net profit: ${state?.performance?.netProfit || 0}`
 
     case 'RISK_STATUS':
-      return risk?.approved
-        ? `Risk approved. Downside controls passed for ${opp?.strategy ?? 'the current setup'}.`
-        : `Risk rejected: ${risk?.reason ?? 'unknown reason.'} Current risk score: ${formatNumber(state?.simulation?.riskScore, 3)}.`
+      return state?.risk?.approved ? 'Risk approved.' : `Risk rejected: ${state?.risk?.reason ?? 'unknown reason.'}`
 
     case 'MARKET_STATUS':
-      return `Market regime is ${regime}. Volatility: ${formatNumber(state?.temporalSignals?.volatility, 4)}, velocity: ${formatNumber(state?.temporalSignals?.priceVelocity, 3)}.`
+      return `Market regime: ${state?.regime ?? 'UNKNOWN'}`
 
     case 'SIMULATION':
-      return `Simulation snapshot — best: ${formatNumber(state?.simulation?.bestCase)} BNB, avg: ${formatNumber(state?.simulation?.avg)} BNB, worst: ${formatNumber(state?.simulation?.worstCase)} BNB.`
+      return 'Simulation feature coming soon.'
 
     default:
-      return 'Command not recognized. Try one of the quick prompts below for live insights.'
+      return 'Command not recognized.'
   }
 }
 
@@ -100,17 +85,6 @@ export default function CommandConsole() {
     setSubmitting(false)
   }
 
-  const runQuickQuery = (query: string) => {
-    if (isLoading || submitting) return
-    setInput(query)
-    const intent = parseIntent(query)
-    const response = resolveIntent(intent, data)
-    setHistory((prev) => {
-      const next = [...prev, { id: Date.now(), user: query, system: response }]
-      return next.slice(-5)
-    })
-  }
-
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') submit()
   }
@@ -139,20 +113,6 @@ export default function CommandConsole() {
           >
             {submitting ? 'Submitting...' : 'Submit'}
           </button>
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {QUICK_QUERIES.map((query) => (
-            <button
-              key={query}
-              type="button"
-              onClick={() => runQuickQuery(query)}
-              disabled={isLoading || submitting}
-              className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-500 transition-colors hover:border-red-200 hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {query}
-            </button>
-          ))}
         </div>
 
         <div className="max-h-64 space-y-2 overflow-y-auto rounded-xl border border-gray-200 bg-[#f8f9fa] p-3">
