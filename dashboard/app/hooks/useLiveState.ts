@@ -63,16 +63,16 @@ export type LiveState = {
     performanceScore?: number
   }
   simulation?: {
-    bestProfit?: number
-    worstProfit?: number
-    avgProfit?: number
+    bestCase?: number
+    worstCase?: number
+    avg?: number
     riskScore?: number
     confidenceAdjusted?: number
   }
   decision?: {
     selectedStrategy?: string
     baseScore?: number
-    performanceScore?: number
+    memoryScore?: number
     finalScore?: number
     regime?: string
     reason?: string
@@ -95,9 +95,36 @@ export type TimelineItem = {
 function normalizeLiveState(input: unknown): LiveState | null {
   if (!input || typeof input !== 'object') return null
   const raw = input as LiveState
+  const perf = raw.performance ?? {}
+  const opp = raw.selectedOpportunity ?? null
+  const memory = raw.memory ?? {
+    strategy: opp?.strategy ?? 'none',
+    winRate: perf.winRate,
+    avgProfit: perf.totalTrades ? (perf.totalProfit ?? 0) / Math.max(perf.totalTrades, 1) : undefined,
+    recentMomentum: opp?.expectedProfit,
+    performanceScore: perf.totalTrades ? (perf.netProfit ?? 0) / Math.max(perf.totalTrades, 1) : undefined,
+  }
+  const simulation = raw.simulation ?? {
+    bestCase: opp?.expectedProfit != null ? opp.expectedProfit * 1.2 : undefined,
+    worstCase: opp?.expectedProfit != null ? opp.expectedProfit * 0.6 : undefined,
+    avg: opp?.expectedProfit,
+    riskScore: opp?.confidence != null ? 1 - opp.confidence : undefined,
+    confidenceAdjusted: opp?.confidence != null ? opp.confidence * 0.9 : undefined,
+  }
+  const decision = raw.decision ?? {
+    selectedStrategy: opp?.strategy ?? 'none',
+    baseScore: opp?.score,
+    memoryScore: memory.performanceScore,
+    finalScore: opp?.score,
+    regime: raw.regime,
+    reason: raw.risk?.reason,
+  }
 
   return {
     ...raw,
+    memory,
+    simulation,
+    decision,
     regime: normalizeMarketRegime(raw.regime),
     configuredSource: isDataSource(raw.configuredSource) ? raw.configuredSource : undefined,
     usedSource: raw.usedSource == null ? null : isDataSource(raw.usedSource) ? raw.usedSource : null,
