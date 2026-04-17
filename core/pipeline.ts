@@ -28,7 +28,10 @@ const buildState = (
   const pools = state?.pools ?? []
   const prices = pools.map((p) => p.price)
   const performance = getPerformance()
-  const fallbackProfit = performance.avgProfit ?? performance.avgProfitPerTrade ?? 0.0001
+  const fallbackProfit =
+    performance.avgProfit ??
+    performance.avgProfitPerTrade ??
+    0.0001
 
   return {
     timestamp: new Date().toISOString(),
@@ -101,9 +104,9 @@ const buildState = (
       performanceScore: (performance.netProfit ?? 0) / Math.max(performance.totalTrades ?? 1, 1),
     },
     simulation: {
-      bestProfit: (selectedOpportunity?.expectedProfit ?? fallbackProfit) * 1.2,
-      worstProfit: (selectedOpportunity?.expectedProfit ?? fallbackProfit) * 0.6,
-      avgProfit: selectedOpportunity?.expectedProfit ?? fallbackProfit,
+      bestCase: (selectedOpportunity?.expectedProfit ?? fallbackProfit) * 1.2,
+      worstCase: (selectedOpportunity?.expectedProfit ?? fallbackProfit) * 0.6,
+      avg: selectedOpportunity?.expectedProfit ?? fallbackProfit,
       riskScore: 1 - (selectedOpportunity?.confidence ?? 0.5),
       confidenceAdjusted: (selectedOpportunity?.confidence ?? 0.5) * 0.9,
     },
@@ -111,7 +114,7 @@ const buildState = (
       regime: regimeAssessment.regime,
       selectedStrategy: selectedOpportunity?.strategy ?? 'none',
       baseScore: selectedOpportunity?.signalStrength ?? signals?.aggregate.signalStrength ?? 0,
-      performanceScore: (performance.netProfit ?? 0) / Math.max(performance.totalTrades ?? 1, 1),
+      memoryScore: (performance.netProfit ?? 0) / Math.max(performance.totalTrades ?? 1, 1),
       finalScore: selectedOpportunity?.score ?? selectedOpportunity?.expectedProfit ?? 0,
       reason: selectedOpportunity?.reason ?? regimeAssessment.reason,
     },
