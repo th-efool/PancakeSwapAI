@@ -33,20 +33,20 @@ export default function MarketPage() {
             <Card title="Liquidity Pools & Depth">
                 <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {pools.map((p) => (
-                        <div key={p.address} className="group relative overflow-hidden rounded-xl border border-white/5 bg-slate-900/40 p-4 transition-all hover:border-cyan-500/30 hover:bg-slate-900/60 hover:shadow-[0_0_20px_-5px_rgba(34,211,238,0.15)]">
+                        <div key={p.address} className="group relative overflow-hidden rounded-xl border border-gray-200 bg-[#f8f9fa] p-4 transition-all hover:border-red-200 hover:bg-[#f8f9fa] hover:shadow-sm">
                             <div className="mb-4 flex items-center justify-between">
                                 <div className="flex items-center gap-2">
                                     <div className="flex -space-x-2">
-                                        <div className="h-6 w-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[8px] font-bold">{p.token0?.symbol?.[0]}</div>
-                                        <div className="h-6 w-6 rounded-full bg-slate-700 border border-slate-600 flex items-center justify-center text-[8px] font-bold">{p.token1?.symbol?.[0]}</div>
+                                        <div className="h-6 w-6 rounded-full bg-[#f8f9fa] border border-gray-200 flex items-center justify-center text-[8px] font-bold">{p.token0?.symbol?.[0]}</div>
+                                        <div className="h-6 w-6 rounded-full bg-[#f8f9fa] border border-gray-200 flex items-center justify-center text-[8px] font-bold">{p.token1?.symbol?.[0]}</div>
                                     </div>
-                                    <p className="font-bold tracking-wide text-slate-200">{p.token0?.symbol}/{p.token1?.symbol}</p>
+                                    <p className="font-bold tracking-wide text-[#111111]">{p.token0?.symbol}/{p.token1?.symbol}</p>
                                 </div>
-                                <p className="text-xs font-mono text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.5)]">
+                                <p className="text-xs font-mono text-red-600 ">
                                     {p.price?.toFixed(8) ?? '—'}
                                 </p>
                             </div>
-                            <p className="text-[10px] font-mono text-slate-500 truncate">{p.address}</p>
+                            <p className="text-[10px] font-mono text-gray-500 truncate">{p.address}</p>
                         </div>
                     ))}
                 </div>

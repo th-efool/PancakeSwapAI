@@ -15,38 +15,38 @@ const safe = <T,>(v: T) => (v === undefined || v === null || (typeof v === 'numb
 
 const regimeMap: Record<MarketRegime, { badge: string; glow: string; note: string }> = {
   TRENDING: {
-    badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40',
-    glow: 'shadow-[0_0_32px_rgba(16,185,129,0.25)]',
+    badge: 'bg-green-50 text-green-600 border-green-200',
+    glow: 'shadow-sm',
     note: 'Directional strength detected. Momentum-friendly strategies favored.',
   },
   MEAN_REVERTING: {
-    badge: 'bg-sky-500/20 text-sky-300 border-sky-400/40',
-    glow: 'shadow-[0_0_32px_rgba(56,189,248,0.2)]',
+    badge: 'bg-red-50 text-red-600 border-red-200',
+    glow: 'shadow-sm',
     note: 'Price is stabilizing around local fair value. Reversion favored.',
   },
   VOLATILE: {
-    badge: 'bg-amber-500/20 text-amber-300 border-amber-400/40',
-    glow: 'shadow-[0_0_32px_rgba(245,158,11,0.28)]',
+    badge: 'bg-gray-100 text-gray-500 border-gray-300',
+    glow: 'shadow-sm',
     note: 'Instability elevated. Confidence dampened and risk posture tightened.',
   },
   CHAOTIC: {
-    badge: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-400/40',
-    glow: 'shadow-[0_0_28px_rgba(217,70,239,0.24)]',
+    badge: 'bg-red-50 text-red-600 border-red-200',
+    glow: 'shadow-sm',
     note: 'High movement without volume confirmation. Signals conflict and quality is unstable.',
   },
   IDLE: {
-    badge: 'bg-teal-500/20 text-teal-200 border-teal-400/40',
-    glow: 'shadow-[0_0_18px_rgba(45,212,191,0.18)]',
+    badge: 'bg-red-50 text-red-600 border-red-200',
+    glow: 'shadow-sm',
     note: 'Participation is muted and momentum is flat. System stays selective and conservative.',
   },
   INSUFFICIENT_DATA: {
-    badge: 'bg-indigo-500/20 text-indigo-200 border-indigo-400/40',
-    glow: 'shadow-[0_0_20px_rgba(99,102,241,0.2)]',
+    badge: 'bg-gray-100 text-gray-500 border-gray-300',
+    glow: 'shadow-sm',
     note: 'Not enough stable observations yet. Holding until minimum signal quality is met.',
   },
   UNKNOWN: {
-    badge: 'bg-slate-500/20 text-slate-300 border-slate-400/40',
-    glow: 'shadow-[0_0_20px_rgba(148,163,184,0.18)]',
+    badge: 'bg-gray-100 text-gray-500 border-gray-300',
+    glow: 'shadow-sm',
     note: 'Signal history still building. System observing before stronger adaptation.',
   },
 } as const
@@ -63,17 +63,16 @@ function statusTag(t: TimelineItem[], strategy?: string, connected?: boolean) {
 
 export default function Page() {
   const { data, blink, connected, timeline } = useLiveState()
-  if (data?.status === 'starting') return <p className="text-lg text-slate-300">Booting system...</p>
-  if (!data?.timestamp) return <p className="text-lg text-slate-300">Waiting for first cycle...</p>
-  console.log('LIVE STATE', data)
-
+  if (data?.status === 'starting') return <p className="text-lg text-gray-500">Booting system...</p>
+  if (!data?.timestamp) return <p className="text-lg text-gray-500">Waiting for first cycle...</p>
+  
   const opp = data.selectedOpportunity
   const memory = data.memory ?? {}
   const simulation = data.simulation ?? {}
   const decision = data.decision ?? {}
   const best = data.strategies?.[0]
   const net = data.performance?.netProfit
-  const netTone = typeof net === 'number' && net > 0 ? 'text-emerald-300' : 'text-rose-300'
+  const netTone = typeof net === 'number' && net > 0 ? 'text-green-600' : 'text-red-600'
 
   const s = data.temporalSignals
   const hasSignals = !!s && typeof s.priceDelta === 'number' && typeof s.priceVelocity === 'number' && typeof s.volatility === 'number'
@@ -82,9 +81,9 @@ export default function Page() {
   const vel = s?.priceVelocity ?? 0
   const vol = s?.volatility ?? 0
 
-  const deltaTone = delta > 0 ? 'text-emerald-300' : delta < 0 ? 'text-rose-300' : 'text-slate-200'
-  const velTone = vel > 0 ? 'text-emerald-300' : vel < 0 ? 'text-rose-300' : 'text-slate-300'
-  const volTone = vol > 0.015 ? 'text-amber-300' : 'text-sky-300'
+  const deltaTone = delta > 0 ? 'text-green-600' : delta < 0 ? 'text-red-600' : 'text-[#111111]'
+  const velTone = vel > 0 ? 'text-green-600' : vel < 0 ? 'text-red-600' : 'text-gray-500'
+  const volTone = vol > 0.015 ? 'text-gray-500' : 'text-red-600'
 
   const regime = normalizeMarketRegime(data.regime)
   const regimeUi = getRegimeUi(regime)
@@ -110,9 +109,9 @@ export default function Page() {
       <Card>
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">Live Monitor</h2>
-          <span className={`h-3 w-3 rounded-full ${connected ? (blink ? 'animate-ping bg-emerald-300' : 'bg-emerald-400') : 'bg-rose-400'}`} />
+          <span className={`h-3 w-3 rounded-full ${connected ? 'bg-green-600' : 'bg-red-600'}`} />
         </div>
-        <p className="mt-2 text-sm text-slate-400">Last updated: {new Date(data.timestamp).toLocaleString()}</p>
+        <p className="mt-2 text-sm text-gray-500">Last updated: {new Date(data.timestamp).toLocaleString()}</p>
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
@@ -125,12 +124,12 @@ export default function Page() {
       </div>
 
       <Card title="Market Regime">
-        <div key={regime} className={`rounded-2xl border border-white/10 bg-slate-900/50 p-4 transition-all duration-500 ease-out ${blink ? 'opacity-100 translate-y-0 scale-[1.01]' : 'opacity-95 translate-y-[2px]'} ${regimeUi.glow}`}>
+        <div key={regime} className={`rounded-2xl border border-gray-200 bg-[#f8f9fa] p-4 transition-all duration-500 ease-out ${blink ? 'opacity-100 translate-y-0 scale-[1.01]' : 'opacity-95 translate-y-[2px]'} ${regimeUi.glow}`}>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${regimeUi.badge}`}>{regime}</span>
-            <p className="text-xs text-slate-400">{new Date(data.timestamp).toLocaleTimeString()}</p>
+            <p className="text-xs text-gray-500">{new Date(data.timestamp).toLocaleTimeString()}</p>
           </div>
-          <p className="mt-3 text-sm text-slate-200">{regimeUi.note}</p>
+          <p className="mt-3 text-sm text-[#111111]">{regimeUi.note}</p>
           <div className="mt-4 grid gap-3 md:grid-cols-3">
             <TemporalMetric label="Price Delta" value={signed(delta)} tone={deltaTone} pulse={blink} />
             <TemporalMetric label="Volatility" value={n(vol, 4)} tone={volTone} pulse={blink} />
@@ -148,7 +147,7 @@ export default function Page() {
       <Card title="Strategy Timeline">
         <div className="space-y-2">
           {hist.length === 0 ? (
-            <p className="text-sm text-slate-400">Waiting for cycle history...</p>
+            <p className="text-sm text-gray-500">Waiting for cycle history...</p>
           ) : (
             hist.map((item, i) => {
               const prev = i > 0 ? hist[i - 1] : null
@@ -158,16 +157,16 @@ export default function Page() {
               const jump = !!prev && Math.abs(item.expectedProfit - prev.expectedProfit) > 0.02
 
               return (
-                <div key={item.cycleId} className={`rounded-xl border p-3 text-sm transition-all ${active ? 'border-cyan-300/50 bg-cyan-500/10 shadow-[0_0_20px_rgba(34,211,238,0.2)]' : 'border-white/10 bg-slate-900/50 hover:-translate-y-0.5 hover:shadow-lg'}`}>
+                <div key={item.cycleId} className={`rounded-xl border p-3 text-sm transition-all ${active ? 'border-red-200 bg-red-50 shadow-sm' : 'border-gray-200 bg-[#f8f9fa] hover:-translate-y-0.5 hover:shadow-lg'}`}>
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <p className="font-semibold text-slate-100">Cycle #{item.cycleId} {switched ? '↺' : '→'} {item.strategy}</p>
+                    <p className="font-semibold text-[#111111]">Cycle #{item.cycleId} {switched ? '↺' : '→'} {item.strategy}</p>
                     <span className={`rounded-full border px-2 py-0.5 text-[10px] ${getRegimeUi(item.regime).badge}`}>{item.regime}</span>
                   </div>
-                  <p className="mt-1 text-xs text-slate-300">profit {n(item.expectedProfit, 4)} | conf {n(item.confidence, 2)} | score {n(item.score, 4)}</p>
+                  <p className="mt-1 text-xs text-gray-500">profit {n(item.expectedProfit, 4)} | conf {n(item.confidence, 2)} | score {n(item.score, 4)}</p>
                   <div className="mt-1 flex gap-2 text-[10px]">
-                    {switched ? <span className="text-amber-300">strategy flip</span> : null}
-                    {regimeFlip ? <span className="text-sky-300">regime change</span> : null}
-                    {jump ? <span className="text-emerald-300">profit jump</span> : null}
+                    {switched ? <span className="text-gray-500">strategy flip</span> : null}
+                    {regimeFlip ? <span className="text-red-600">regime change</span> : null}
+                    {jump ? <span className="text-green-600">profit jump</span> : null}
                   </div>
                 </div>
               )
@@ -177,24 +176,24 @@ export default function Page() {
       </Card>
 
       <Card title="Decision Story">
-        <p className="text-sm text-slate-300 transition-all duration-300">{decision.reason ?? story}</p>
+        <p className="text-sm text-gray-500 transition-all duration-300">{decision.reason ?? story}</p>
       </Card>
 
       <Card>
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm text-slate-400">Cycle #{safe(data.cycleId)}</p>
+          <p className="text-sm text-gray-500">Cycle #{safe(data.cycleId)}</p>
           <div className="flex items-center gap-2 text-xs">
-            <span className={`h-2 w-2 rounded-full ${connected ? 'bg-emerald-400 animate-pulse' : 'bg-rose-400'}`} />
-            <span className="text-slate-300">{connected ? 'Live' : 'Disconnected'}</span>
+            <span className={`h-2 w-2 rounded-full ${connected ? 'bg-green-600' : 'bg-red-600'}`} />
+            <span className="text-gray-500">{connected ? 'Live' : 'Disconnected'}</span>
           </div>
         </div>
         <p className={`mt-2 text-3xl font-bold transition-all duration-300 ${netTone}`}>Net Profit: {typeof net === 'number' ? `${n(net)} BNB` : '--'}</p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
-          <p className="text-sm text-slate-300">Simulation Confidence: {typeof simulation.confidenceAdjusted === 'number' ? `${(simulation.confidenceAdjusted * 100).toFixed(1)}%` : '--'}</p>
-          <p className="text-sm text-slate-300">Strategy Performance Score: {n(memory.performanceScore, 3)}</p>
+          <p className="text-sm text-gray-500">Simulation Confidence: {typeof simulation.confidenceAdjusted === 'number' ? `${(simulation.confidenceAdjusted * 100).toFixed(1)}%` : '--'}</p>
+          <p className="text-sm text-gray-500">Strategy Performance Score: {n(memory.performanceScore, 3)}</p>
         </div>
-        {noTrade ? <p className="mt-3 rounded-lg border border-white/10 bg-slate-900/50 p-3 text-sm text-slate-300">System evaluating conditions — no safe opportunity detected.</p> : null}
-        {simRejected ? <p className="mt-3 rounded-lg border border-rose-400/30 bg-rose-500/10 p-3 text-sm text-rose-200">Trade rejected due to high downside risk.</p> : null}
+        {noTrade ? <p className="mt-3 rounded-lg border border-gray-200 bg-[#f8f9fa] p-3 text-sm text-gray-500">System evaluating conditions — no safe opportunity detected.</p> : null}
+        {simRejected ? <p className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">Trade rejected due to high downside risk.</p> : null}
       </Card>
     </div>
   )

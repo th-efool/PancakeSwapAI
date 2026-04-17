@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100">
+      <body className="min-h-full bg-white text-[#111111]">
         <div className="flex min-h-screen flex-col md:flex-row">
           <Sidebar />
           <main className="flex-1 p-6">{children}</main>

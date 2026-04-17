@@ -12,8 +12,8 @@ const safe = <T,>(v: T) => (v === undefined || v === null || (typeof v === 'numb
 
 export default function SimulationCard({ simulation, blink }: Props) {
   const risk = simulation?.riskScore
-  const worstTone = typeof simulation?.worstCase !== 'number' ? 'text-slate-200' : simulation.worstCase >= 0 ? 'text-emerald-300' : 'text-rose-300'
-  const riskTone = typeof risk !== 'number' ? 'text-slate-200' : risk < 0.33 ? 'text-emerald-300' : risk < 0.66 ? 'text-amber-300' : 'text-rose-300'
+  const worstTone = typeof simulation?.worstCase !== 'number' ? 'text-[#111111]' : simulation.worstCase >= 0 ? 'text-green-600' : 'text-red-600'
+  const riskTone = typeof risk !== 'number' ? 'text-[#111111]' : risk < 0.33 ? 'text-green-600' : risk < 0.66 ? 'text-gray-500' : 'text-red-600'
   const riskText = typeof risk !== 'number' ? '--' : risk < 0.33 ? 'Low' : risk < 0.66 ? 'Medium' : 'High'
 
   const bars = useMemo(() => {
@@ -28,25 +28,25 @@ export default function SimulationCard({ simulation, blink }: Props) {
       label: ['Base', 'Down', 'Up', 'Slippage', 'Gas'][i],
       v,
       h: `${Math.max(12, Math.round((Math.abs(v) / max) * 72))}px`,
-      tone: v >= 0 ? 'bg-emerald-400/70' : 'bg-rose-400/70',
+      tone: v >= 0 ? 'bg-green-600/70' : 'bg-red-600/70',
     }))
   }, [simulation])
 
   return (
     <Card title="Pre-Trade Simulation" className={`transition-all duration-300 ${blink ? 'scale-[1.01]' : ''}`}>
       <div className="space-y-3 text-sm">
-        <div className="flex items-center justify-between"><span className="text-slate-400">Best Case Profit</span><span className="font-semibold text-emerald-300">{nf(simulation?.bestCase, 4)} BNB</span></div>
-        <div className="flex items-center justify-between"><span className="text-slate-400">Worst Case Profit</span><span className={`font-semibold ${worstTone}`}>{nf(simulation?.worstCase, 4)} BNB</span></div>
-        <div className="flex items-center justify-between"><span className="text-slate-400">Average Profit</span><span className="font-semibold text-slate-100">{nf(simulation?.avg, 4)} BNB</span></div>
-        <div className="flex items-center justify-between"><span className="text-slate-400">Risk Score</span><span className={`font-semibold ${riskTone}`}>{riskText} {nf(simulation?.riskScore, 3)}</span></div>
-        <div className="flex items-center justify-between"><span className="text-slate-400">Adjusted Confidence</span><span className="font-semibold text-cyan-200">{typeof simulation?.confidenceAdjusted === 'number' ? `${(simulation.confidenceAdjusted * 100).toFixed(1)}%` : safe(undefined)}</span></div>
+        <div className="flex items-center justify-between"><span className="text-gray-500">Best Case Profit</span><span className="font-semibold text-green-600">{nf(simulation?.bestCase, 4)} BNB</span></div>
+        <div className="flex items-center justify-between"><span className="text-gray-500">Worst Case Profit</span><span className={`font-semibold ${worstTone}`}>{nf(simulation?.worstCase, 4)} BNB</span></div>
+        <div className="flex items-center justify-between"><span className="text-gray-500">Average Profit</span><span className="font-semibold text-[#111111]">{nf(simulation?.avg, 4)} BNB</span></div>
+        <div className="flex items-center justify-between"><span className="text-gray-500">Risk Score</span><span className={`font-semibold ${riskTone}`}>{riskText} {nf(simulation?.riskScore, 3)}</span></div>
+        <div className="flex items-center justify-between"><span className="text-gray-500">Adjusted Confidence</span><span className="font-semibold text-red-600">{typeof simulation?.confidenceAdjusted === 'number' ? `${(simulation.confidenceAdjusted * 100).toFixed(1)}%` : safe(undefined)}</span></div>
 
-        <div className="rounded-xl border border-white/10 bg-slate-900/60 p-3">
+        <div className="rounded-xl border border-gray-200 bg-[#f8f9fa] p-3">
           <div className="flex h-[92px] items-end justify-between gap-2">
             {bars.map((b) => (
               <div key={b.label} className="flex flex-1 flex-col items-center gap-1">
                 <div className={`w-full rounded-sm ${b.tone} transition-all duration-300`} style={{ height: b.h }} />
-                <span className="text-[10px] text-slate-400">{b.label}</span>
+                <span className="text-[10px] text-gray-500">{b.label}</span>
               </div>
             ))}
           </div>
