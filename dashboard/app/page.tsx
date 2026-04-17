@@ -6,6 +6,7 @@ import MemoryCard from '../components/MemoryCard.tsx'
 import MetricBox from '../components/MetricBox.tsx'
 import SimulationCard from '../components/SimulationCard.tsx'
 import TemporalMetric from '../components/TemporalMetric.tsx'
+import CommandConsole from '../components/CommandConsole.tsx'
 import { type TimelineItem, useLiveState } from './hooks/useLiveState.ts'
 import { type MarketRegime, normalizeMarketRegime } from '../lib/market.ts'
 
@@ -122,6 +123,8 @@ export default function Page() {
         <MetricBox label="Configured Source" value={safe(data.configuredSource)} />
         <MetricBox label="Used Source" value={safe(data.usedSource)} />
       </div>
+
+      <CommandConsole />
 
       <Card title="Market Regime">
         <div key={regime} className={`rounded-2xl border border-gray-200 bg-[#f8f9fa] p-4 transition-all duration-500 ease-out ${blink ? 'opacity-100 translate-y-0 scale-[1.01]' : 'opacity-95 translate-y-[2px]'} ${regimeUi.glow}`}>
