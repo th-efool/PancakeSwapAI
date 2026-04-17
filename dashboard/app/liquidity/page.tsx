@@ -12,11 +12,11 @@ export default function LiquidityPage() {
       <div className="space-y-2">
         {pools.map((p) => {
           const depth = p.liquidity ?? 0
-          const cls = depth > 1000 ? 'text-emerald-300' : depth > 100 ? 'text-amber-300' : 'text-rose-300'
+          const cls = depth > 1000 ? 'text-green-600' : depth > 100 ? 'text-gray-500' : 'text-red-600'
           return (
-            <div key={p.address} className="rounded-xl border border-white/10 bg-slate-900/50 p-3 transition hover:border-blue-300/40">
+            <div key={p.address} className="rounded-xl border border-gray-200 bg-[#f8f9fa] p-3 transition hover:border-red-200">
               <p className="font-semibold">{p.token0?.symbol}/{p.token1?.symbol}</p>
-              <p className="text-sm text-slate-300">Depth: <span className={cls}>{depth.toFixed(2)}</span></p>
+              <p className="text-sm text-gray-500">Depth: <span className={cls}>{depth.toFixed(2)}</span></p>
             </div>
           )
         })}
