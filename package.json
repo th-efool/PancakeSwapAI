@@ -4,6 +4,7 @@
   "description": "AI-powered PancakeSwap trading bot (DRY_RUN MVP)",
   "type": "commonjs",
   "scripts": {
+    "prestart": "npm run build",
     "start": "node dist/index.js",
     "build": "tsc -p tsconfig.build.json",
     "start:backend": "node dist/index.js",
