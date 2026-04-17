@@ -10,7 +10,7 @@ export function startServer() {
   app.use(cors())
 
   const STATE_FILE = path.resolve('latest_state.json')
-  const PORT = process.env.PORT || 3000
+  const PORT = Number(process.env.PORT) || 3000
 
   app.get('/', (_req, res) => {
     res.send('Backend alive')
@@ -26,14 +26,11 @@ export function startServer() {
     }
   })
 
-  try {
-    app.listen(PORT, () => {
-      console.log('API RUNNING ON', PORT)
-    })
-  } catch (err) {
-    console.error('SERVER FAILED:', err)
-    process.exit(1)
-  }
+  console.log("PORT ENV:", process.env.PORT);
+
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log("API running on", PORT, "on 0.0.0.0");
+  });
 
   setTimeout(() => {
     console.log('Self-test: server should be live now')
