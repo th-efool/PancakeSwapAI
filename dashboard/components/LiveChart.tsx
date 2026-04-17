@@ -24,6 +24,28 @@ type Props = {
   state: LiveState | null
 }
 
+type SparklineProps = {
+  data: HistoryPoint[]
+}
+
+function Sparkline({ data }: SparklineProps) {
+  return (
+    <ResponsiveContainer width="100%" height={40}>
+      <LineChart data={data}>
+        <Line
+          type="monotone"
+          dataKey="expected"
+          stroke="#dc2626"
+          strokeWidth={2}
+          dot={false}
+          isAnimationActive
+          animationDuration={400}
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  )
+}
+
 export default function LiveChart({ state }: Props) {
   const [history, setHistory] = useState<HistoryPoint[]>([])
   const [visible, setVisible] = useState(false)
@@ -48,9 +70,30 @@ export default function LiveChart({ state }: Props) {
         },
       ]
 
-      return next.slice(-30)
+      return next.slice(-50)
     })
   }, [state])
+
+  const values = history.flatMap((point) => [point.profit, point.expected, point.score])
+  const min = values.length > 0 ? Math.min(...values) : 0
+  const max = values.length > 0 ? Math.max(...values) : 0
+  const padding = (max - min) * 0.2 || 0.001
+
+  const activeStrategy = state?.selectedOpportunity?.strategy
+
+  const strategyColors: Record<string, string> = {
+    arbitrage: '#2563eb',
+    meanReversion: '#9333ea',
+    liquidityImbalance: '#ea580c',
+    fallback: '#6b7280',
+  }
+
+  const activeColor = activeStrategy ? strategyColors[activeStrategy] || '#111827' : '#111827'
+
+  const slope =
+    history.length > 1 ? history[history.length - 1].profit - history[history.length - 2].profit : 0
+
+  const glowClass = slope > 0 ? 'bg-green-50' : slope < 0 ? 'bg-red-50' : ''
 
   return (
     <Card title="Live Performance Trend" className={`transition-opacity duration-500 ${visible ? 'opacity-100' : 'opacity-0'}`}>
@@ -59,18 +102,59 @@ export default function LiveChart({ state }: Props) {
           <p className="text-sm text-gray-500">Collecting data...</p>
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={250}>
-          <LineChart data={history}>
-            <CartesianGrid stroke="#e5e7eb" />
-            <XAxis dataKey="time" />
-            <YAxis />
-            <Tooltip />
+        <div className={`rounded-lg transition-colors duration-500 ${glowClass}`}>
+          <div className="mb-2">
+            <p className="text-xs text-gray-500">Expected Profit Trend</p>
+            <Sparkline data={history} />
+          </div>
 
-            <Line type="monotone" dataKey="profit" stroke="#16a34a" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="expected" stroke="#dc2626" strokeWidth={2} dot={false} />
-            <Line type="monotone" dataKey="score" stroke="#111827" strokeWidth={2} dot={false} />
-          </LineChart>
-        </ResponsiveContainer>
+          <ResponsiveContainer width="100%" height={250}>
+            <LineChart data={history}>
+              <CartesianGrid stroke="#e5e7eb" />
+              <XAxis dataKey="time" />
+              <YAxis
+                domain={[min - padding, max + padding]}
+                tickFormatter={(value: number) => value.toFixed(4)}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                }}
+                labelStyle={{ color: '#111827' }}
+              />
+
+              <Line
+                type="monotone"
+                dataKey="profit"
+                stroke={activeColor}
+                strokeWidth={3}
+                dot={false}
+                isAnimationActive
+                animationDuration={400}
+              />
+              <Line
+                type="monotone"
+                dataKey="expected"
+                stroke="#f87171"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive
+                animationDuration={400}
+              />
+              <Line
+                type="monotone"
+                dataKey="score"
+                stroke="#9ca3af"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive
+                animationDuration={400}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       )}
     </Card>
   )
